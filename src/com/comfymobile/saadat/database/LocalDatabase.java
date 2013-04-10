@@ -13,9 +13,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class LocalDatabase{
     DatabaseHelper helper;
     SQLiteDatabase database;
-    public LocalDatabase(Context context){
+    Context context;
+
+    private static LocalDatabase localDatabaseInstance;
+
+    private LocalDatabase(Context context){
         helper = new DatabaseHelper(context);
         database = helper.getWritableDatabase();
+    }
+
+    public static LocalDatabase getInstance(Context context) {
+        if (localDatabaseInstance == null){
+            localDatabaseInstance = new LocalDatabase(context);
+        }
+        return localDatabaseInstance;
     }
 
     public void clearDatabase(){
@@ -30,7 +41,7 @@ public class LocalDatabase{
                                         String address, String t_number, String site,
                                         int id_category,String last_mod){
         String query = "insert or replace into organization " +
-                "(id, name, description, id_city, address, t_number, site, id_category, last_mod)" +
+                "(_id, name, description, id_city, address, t_number, site, id_category, last_mod)" +
                 " values ("+String.valueOf(id)+", \""+name+"\", \""+description+"\", "+String.valueOf(id_city)+
                 ", \""+address+"\", \""+t_number+"\", \""+site+"\", "+String.valueOf(id_category)+", \""+last_mod+"\")";
         database.execSQL(query);
@@ -38,20 +49,59 @@ public class LocalDatabase{
 
     public void updateCity(int id_city, String name, String last_mod){
         String query = "insert or replace into city " +
-                "(id_city, name, last_mod)" +
+                "(_id, name, last_mod)" +
                 " values ("+String.valueOf(id_city)+", \""+name+"\", \""+last_mod+"\")";
         database.execSQL(query);
     }
     public void updateCategory(int id_category, String name, String last_mod){
         String query = "insert or replace into category " +
-                "(id_category, name, last_mod)" +
+                "(_id, name, last_mod)" +
                 " values ("+String.valueOf(id_category)+", \""+name+"\", \""+last_mod+"\")";
         database.execSQL(query);
     }
 
-    public Cursor getListSource(){
-        String query = "SELECT name , address FROM organization";
-        return database.rawQuery(query,null);
+    public Cursor getListSource(int city,int category){
+        String args = new String();
+        if (city != -1 || category != -1){
+            if (city != -1 && category != -1) args = "WHERE id_city="+String.valueOf(city)+" AND id_category="+String.valueOf(category);
+            if (city != -1 && category == -1) args = "WHERE id_city="+String.valueOf(city);
+            if (city == -1 && category != -1) args = "WHERE id_category="+String.valueOf(category);
+        }
+        String query = "SELECT _id, name, address FROM organization "+args;
+        Cursor cursor = database.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public Cursor getCitySource(){
+        String query = "SELECT _id , name FROM city";
+        Cursor cursor = database.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public Cursor getCategorySource(){
+        String query = "SELECT _id , name FROM category";
+        Cursor cursor = database.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    //o INNER JOIN city c ON o.id_city=c._id
+    public Cursor getDetal(int id){
+        String query = "SELECT _id, name, description, id_city, address, t_number, site, id_category " +
+                "FROM organization WHERE _id="+String.valueOf(id);
+        Cursor cursor = database.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
 }
@@ -59,13 +109,13 @@ public class LocalDatabase{
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATA_BASE_NAME = "base_of_org";
     public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization(  "+
-            " id integer primary key, name text not null,description text, "+
+            " _id integer primary key, name text not null,description text, "+
             " id_city integer, address text, t_number text, site text, id_category integer,"+
             " last_mod text  );";
-    public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city(id_city primary key, name text not null,"+
+    public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city(_id primary key, name text not null,"+
             "last_mod text ); ";
 
-    public static final String ON_DATA_BASE_CREATE_CATEGORY = " CREATE TABLE category( id_category primary key, name text " +
+    public static final String ON_DATA_BASE_CREATE_CATEGORY = " CREATE TABLE category(_id primary key, name text " +
             "not null, last_mod text);";
 
     public DatabaseHelper(Context context){

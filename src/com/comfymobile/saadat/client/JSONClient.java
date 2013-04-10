@@ -2,7 +2,12 @@ package com.comfymobile.saadat.client;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
+import com.comfymobile.saadat.activity.ListActivity;
+import com.comfymobile.saadat.activity.LoadingActivity;
+import com.comfymobile.saadat.activity.SearchActivity;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -71,12 +76,12 @@ public class JSONClient {
          new SynchronizeTask().execute(context);
     }
 
-
-    class SynchronizeTask extends AsyncTask<Context, Void, Void> {
+    class SynchronizeTask extends AsyncTask<Context, Void, Context> {
 
         JSONArray org;
         JSONArray cit;
         JSONArray cat;
+
         LocalDatabase database;
 
         @Override
@@ -85,14 +90,14 @@ public class JSONClient {
         }
 
         @Override
-        protected Void doInBackground(Context... params) {
+        protected Context doInBackground(Context... params) {
             try {
-                database = new LocalDatabase(params[0]);
+                database = LocalDatabase.getInstance(params[0]);
                 org = JSONClient.getData(JSONClient.ORG);
                 cit = JSONClient.getData(JSONClient.CITY);
                 cat = JSONClient.getData(JSONClient.CAT);
 
-                database.clearDatabase();
+                if (!(org.equals(null)||cit.equals(null)||cat.equals(null))) database.clearDatabase();
                 //update organization
                 for (int i=0; i < org.length(); i++){
                     int id = org.getJSONObject(i).getInt("id");
@@ -123,13 +128,17 @@ public class JSONClient {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.e("SynchronizeTask","no internet access");
             }
-            return null;
+            return params[0];
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Context result) {
             super.onPostExecute(result);
+            Intent intent = new Intent(result, SearchActivity.class);
+            result.startActivity(intent);
+            LoadingActivity.activity.finish();
         }
     }
 }
