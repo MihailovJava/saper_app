@@ -14,13 +14,12 @@ import com.comfymobile.saadat.database.LocalDatabase;
 
 
 public class ListActivity extends Activity {
-    /**
-     * Called when the activity is first created.
-     */
+
     int currentCity;
     int currentCategory;
     Cursor listSource;
     Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

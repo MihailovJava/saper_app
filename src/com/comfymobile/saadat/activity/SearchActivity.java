@@ -14,6 +14,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
 
 
 public class SearchActivity extends Activity {
+
     Button search;
     Context context;
 
@@ -22,6 +23,7 @@ public class SearchActivity extends Activity {
 
     Cursor citySource;
     Cursor categorySource;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

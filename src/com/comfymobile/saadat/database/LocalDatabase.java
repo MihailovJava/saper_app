@@ -93,10 +93,22 @@ public class LocalDatabase{
         return cursor;
     }
 
-    //o INNER JOIN city c ON o.id_city=c._id
     public Cursor getDetal(int id){
-        String query = "SELECT _id, name, description, id_city, address, t_number, site, id_category " +
-                "FROM organization WHERE _id="+String.valueOf(id);
+        String query = "SELECT " +
+                "T1.name as org_name, " +
+                "T1.description, " +
+                "T1.address, " +
+                "T1.t_number, " +
+                "T1.site, " +
+                "T1.id_category, " +
+                "T1.id_city, " +
+                "T1.last_mod, " +
+                "T2.name as cat_name, " +
+                "T2._id " +
+                "FROM organization as T1 " +
+                "LEFT JOIN category as T2 " +
+                "ON T1.id_category = T2._id " +
+                "WHERE T1._id="+String.valueOf(id);
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
