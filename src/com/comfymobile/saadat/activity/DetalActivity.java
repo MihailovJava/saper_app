@@ -17,6 +17,7 @@ public class DetalActivity extends Activity {
     TextView site;
     TextView description;
     TextView category;
+    TextView email;
 
     Cursor sourceOrganization;
     int currentID;
@@ -36,6 +37,7 @@ public class DetalActivity extends Activity {
         site = (TextView) findViewById(R.id.site);
         description = (TextView) findViewById(R.id.description);
         category = (TextView) findViewById(R.id.category);
+        email = (TextView) findViewById(R.id.email);
 
         sourceOrganization = LocalDatabase.getInstance(this).getDetal(currentID);
 
@@ -45,5 +47,6 @@ public class DetalActivity extends Activity {
         site.setText("Site: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site")));
         description.setText("Description: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.description")));
         category.setText("Category: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
+        email.setText("E-mail:"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email")));
     }
 }

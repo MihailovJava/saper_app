@@ -109,7 +109,8 @@ public class JSONClient {
                     String site = org.getJSONObject(i).getString("site");
                     int id_category = org.getJSONObject(i).getInt("id_category");
                     String last_mod = org.getJSONObject(i).getString("last_mod");
-                    database.updateOrganization(id,name,description,id_city,address,t_number,site,id_category,last_mod);
+                    String email = org.getJSONObject(i).getString("email");
+                    database.updateOrganization(id,name,description,id_city,address,t_number,site,id_category,last_mod,email);
                 }
                 //update city
                 for (int i=0; i < cit.length(); i++){
