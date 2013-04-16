@@ -2,10 +2,24 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent" android:background="@drawable/bg">
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/logo" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:paddingTop="20dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading"
+            android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp" android:textStyle="bold" android:textColor="#ffffff"/>
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar" android:layout_centerHorizontal="true" android:layout_centerVertical="true"/>
+            android:id="@+id/progressBar"
+            android:layout_alignParentLeft="false" android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" android:layout_marginBottom="40dp"/>
 </RelativeLayout>

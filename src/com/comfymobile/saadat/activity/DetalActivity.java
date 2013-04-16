@@ -47,6 +47,6 @@ public class DetalActivity extends Activity {
         site.setText("Site: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site")));
         description.setText("Description: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.description")));
         category.setText("Category: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
-        email.setText("E-mail:"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email")));
+        email.setText("E-mail: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email")));
     }
 }
