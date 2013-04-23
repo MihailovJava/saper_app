@@ -20,4 +20,8 @@ public class LoadingActivity extends Activity {
         setContentView(R.layout.loading);
         new JSONClient().synchronizeDataBase(this);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

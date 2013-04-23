@@ -56,18 +56,22 @@ public class SearchActivity extends Activity {
     View.OnClickListener searchEvent = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            int cityPosition = city.getSelectedItemPosition();
-            citySource.moveToPosition(cityPosition);
-            int cityID = citySource.getInt(citySource.getColumnIndex("_id"));
+            try{
+                int cityPosition = city.getSelectedItemPosition();
+                citySource.moveToPosition(cityPosition);
+                int cityID = citySource.getInt(citySource.getColumnIndex("_id"));
 
-            int categoryPosition = category.getSelectedItemPosition();
-            categorySource.moveToPosition(categoryPosition);
-            int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
+                int categoryPosition = category.getSelectedItemPosition();
+                categorySource.moveToPosition(categoryPosition);
+                int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
 
-            Intent intent = new Intent(context, ListActivity.class);
-            intent.putExtra("cityID", cityID);
-            intent.putExtra("categoryID", categoryID);
-            context.startActivity(intent);
+                Intent intent = new Intent(context, ListActivity.class);
+                intent.putExtra("cityID", cityID);
+                intent.putExtra("categoryID", categoryID);
+                context.startActivity(intent);
+            }catch (Exception e){
+
+            }
         }
     };
 }
