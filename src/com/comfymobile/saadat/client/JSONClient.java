@@ -33,10 +33,9 @@ public class JSONClient {
     public static final String CITY = "city";
     public static final String CAT = "category";
     public static final String PROTOCOL = "http://";
-    public static final String DOMEN = "mai-dormitory.ru";
+    public static final String DOMEN = "saadatru.166.com1.ru";
     public static final String PORT = ":80/";
     public static final String SCRIPT = "db.php?param=";
-
 
     private static String getRequestString(String key){
         HttpClient client = new DefaultHttpClient(new BasicHttpParams());
