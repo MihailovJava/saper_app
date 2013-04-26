@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.comfymobile.saadat.R;
@@ -19,6 +20,7 @@ public class ListActivity extends Activity {
     int currentCategory;
     Cursor listSource;
     Context context;
+    Button back;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,15 @@ public class ListActivity extends Activity {
                 listSource.moveToPosition(orgPosition);
                 int orgID = listSource.getInt(listSource.getColumnIndex("_id"));
                 Intent intent = new Intent(context, DetalActivity.class);
-                intent.putExtra("id",orgID);
+                intent.putExtra("id", orgID);
                 context.startActivity(intent);
+            }
+        });
+        back = (Button) findViewById(R.id.back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

@@ -15,4 +15,5 @@
             android:layout_height="wrap_content"
             android:text="address"
             android:id="@+id/address" android:layout_gravity="left|center_vertical"/>
+
 </LinearLayout>
