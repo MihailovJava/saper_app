@@ -139,6 +139,8 @@ public class JSONClient {
             Intent intent = new Intent(result, SearchActivity.class);
             result.startActivity(intent);
             LoadingActivity.activity.finish();
+
+
         }
     }
 }
