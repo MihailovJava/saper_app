@@ -23,7 +23,7 @@ public class ListActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.orglist);
         context = this;
         Intent intent = getIntent();
         currentCity = intent.getIntExtra("cityID",-1);

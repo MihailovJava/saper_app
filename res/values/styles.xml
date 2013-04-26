@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Button1Style" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button1_normal</item>
+    </style>
+</resources>
