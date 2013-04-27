@@ -11,10 +11,8 @@
     <style name="SpinerStyle" parent="@android:style/Widget.Spinner">
         <item name="android:background">@drawable/spiner_normal</item>
     </style>
-    <style name="SpinerPressed" parent="@android:style/Widget.Spinner">
-        <item name="android:background">@drawable/spiner_dropdown</item>
-    </style>
     <style name="TextSyle" parent="@android:style/Widget.TextView">
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/text_view</item>
     </style>
 </resources>

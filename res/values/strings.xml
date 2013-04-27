@@ -3,5 +3,7 @@
     <string name="app_name">Saadat</string>
     <string name="search_button">ПОИСК</string>
     <string name="back_button">Назад</string>
+    <string name="choose_city">Выбрать город</string>
+    <string name="choose_cat">Выбрать категорию</string>
 
 </resources>
