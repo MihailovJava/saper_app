@@ -14,20 +14,20 @@
                 android:layout_height="wrap_content"
                 android:text="@string/choose_city"
                 android:id="@+id/textView"
-                style="@style/TextSyle"/>
+                style="@style/TextSyle" android:paddingLeft="10dp" android:paddingTop="5dp"/>
         <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinner"
                 style="@style/SpinerStyle"
-               />
+                android:layout_marginBottom="40dp"/>
 
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/choose_cat"
                 android:id="@+id/textView1"
-                style="@style/TextSyle"/>
+                style="@style/TextSyle" android:paddingLeft="10dp" android:paddingTop="5dp"/>
 
         <Spinner
                 android:layout_width="fill_parent"
@@ -35,12 +35,15 @@
                 android:id="@+id/spinner1"
                 android:layout_gravity="center"
                 style="@style/SpinerStyle"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_button"
-                android:id="@+id/button"
-                style="@style/Button1Style" android:layout_gravity="center" android:layout_marginTop="10dp"/>
 
     </LinearLayout>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:src="@drawable/title_logo" android:layout_marginTop="10dp"/>
+    <Button style="@style/Button1Style" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/search_button" android:id="@+id/button" android:layout_gravity="center"
+            android:padding="10dp" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"/>
 </RelativeLayout>

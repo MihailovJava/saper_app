@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -27,6 +28,7 @@ public class SearchActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.search);
         context = this;
         search = (Button) findViewById(R.id.button);
@@ -41,6 +43,7 @@ public class SearchActivity extends Activity {
                 citySource,
                 new String[] {"name","_id"},
                 new int[] { R.id.name});
+        cityAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         city.setAdapter(cityAdapter);
 
         category = (Spinner) findViewById(R.id.spinner1);
@@ -50,6 +53,7 @@ public class SearchActivity extends Activity {
                 categorySource,
                 new String[] {"name","_id"},
                 new int[] { R.id.name });
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         category.setAdapter(categoryAdapter);
     }
 
