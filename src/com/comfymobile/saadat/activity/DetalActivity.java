@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -14,13 +15,8 @@ import com.comfymobile.saadat.database.LocalDatabase;
 
 public class DetalActivity extends Activity {
 
-    TextView name;
-    TextView address;
-    TextView tn;
-    TextView site;
-    TextView description;
+    TextView text;
     TextView category;
-    TextView email;
     Button back;
     Cursor sourceOrganization;
     int currentID;
@@ -35,6 +31,7 @@ public class DetalActivity extends Activity {
         initUI();
     }
     void initUI(){
+<<<<<<< HEAD
         name = (TextView) findViewById(R.id.name);
         address = (TextView) findViewById(R.id.address);
       /*  tn = (TextView) findViewById(R.id.tn);
@@ -43,15 +40,32 @@ public class DetalActivity extends Activity {
         category = (TextView) findViewById(R.id.category);   */
         email = (TextView) findViewById(R.id.email);
         back = (Button) findViewById(R.id.back_button);
+=======
+>>>>>>> origin/master
         sourceOrganization = LocalDatabase.getInstance(this).getDetal(currentID);
 
-        name.setText("Name: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("org_name")));
-        address.setText("Address: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.address")));
-        tn.setText("T/N: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.t_number")));
-        site.setText("Site: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site")));
-        description.setText("Description: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.description")));
-        category.setText("Category: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
-        email.setText("E-mail: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email")));
+        StringBuilder info = new StringBuilder();
+        info.append("<b>");
+        info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("org_name")));
+        info.append("</b><br>");
+        info.append("<b>Адрес:</b> ");
+        info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.address")));
+        info.append("<br><b>Телефон:</b> ");
+        info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.t_number")));
+        info.append("<br><b>E-mail:</b> ");
+        info.append("<a href=\"mailto:"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email"))+"\">"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email"))+"</a> ");
+        info.append("<br><b>Сайт:</b> ");
+        info.append("<a href=\""+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site"))+"\">"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site"))+"</a>");
+        info.append("<br><b>Дополнительная информация:</b><br>");
+        info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.description")));
+
+        text = (TextView) findViewById(R.id.text);
+        text.setText(Html.fromHtml(info.toString()));
+
+        category = (TextView) findViewById(R.id.category);
+        category.setText("Категория: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
+
+        back = (Button) findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
