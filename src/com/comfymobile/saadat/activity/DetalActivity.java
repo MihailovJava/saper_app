@@ -37,10 +37,10 @@ public class DetalActivity extends Activity {
     void initUI(){
         name = (TextView) findViewById(R.id.name);
         address = (TextView) findViewById(R.id.address);
-        tn = (TextView) findViewById(R.id.tn);
+      /*  tn = (TextView) findViewById(R.id.tn);
         site = (TextView) findViewById(R.id.site);
         description = (TextView) findViewById(R.id.description);
-        category = (TextView) findViewById(R.id.category);
+        category = (TextView) findViewById(R.id.category);   */
         email = (TextView) findViewById(R.id.email);
         back = (Button) findViewById(R.id.back_button);
         sourceOrganization = LocalDatabase.getInstance(this).getDetal(currentID);
