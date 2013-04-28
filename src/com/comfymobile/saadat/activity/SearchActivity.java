@@ -39,7 +39,7 @@ public class SearchActivity extends Activity {
         city = (Spinner) findViewById(R.id.spinner);
         citySource = LocalDatabase.getInstance(this).getCitySource();
         SimpleCursorAdapter cityAdapter = new SimpleCursorAdapter(this,
-                R.layout.city_item,
+                R.layout.spinner_item,
                 citySource,
                 new String[] {"name","_id"},
                 new int[] { R.id.name});
@@ -49,7 +49,7 @@ public class SearchActivity extends Activity {
         category = (Spinner) findViewById(R.id.spinner1);
         categorySource = LocalDatabase.getInstance(this).getCategorySource();
         SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
-                R.layout.city_item,
+                R.layout.spinner_item,
                 categorySource,
                 new String[] {"name","_id"},
                 new int[] { R.id.name });
