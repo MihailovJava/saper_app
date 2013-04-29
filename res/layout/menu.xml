@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+
+             android:background="@drawable/bg" >
+
+
+<com.comfymobile.saadat.activity.layout.DashboardLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <Button android:id="@+id/news_button"
+          style="@style/DashboardButton"
+            />
+
+    <Button android:id="@+id/afisha_button"
+            style="@style/DashboardButton"
+            />
+
+    <Button android:id="@+id/list_button"
+            style="@style/DashboardButton"
+             />
+
+    <Button android:id="@+id/namaz_button"
+            style="@style/DashboardButton"
+            />
+
+    <Button android:id="@+id/radio_button"
+            style="@style/DashboardButton"
+            />
+</com.comfymobile.saadat.activity.layout.DashboardLayout>
+
+        </LinearLayout>

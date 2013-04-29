@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import com.comfymobile.saadat.activity.ListActivity;
 import com.comfymobile.saadat.activity.LoadingActivity;
+import com.comfymobile.saadat.activity.MenuActivity;
 import com.comfymobile.saadat.activity.SearchActivity;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -136,11 +137,9 @@ public class JSONClient {
         @Override
         protected void onPostExecute(Context result) {
             super.onPostExecute(result);
-            Intent intent = new Intent(result, SearchActivity.class);
+            Intent intent = new Intent(result, MenuActivity.class);
             result.startActivity(intent);
             LoadingActivity.activity.finish();
-
-
         }
     }
 }

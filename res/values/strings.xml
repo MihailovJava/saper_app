@@ -5,5 +5,5 @@
     <string name="back_button">Назад</string>
     <string name="choose_city">Выбрать город</string>
     <string name="choose_cat">Выбрать категорию</string>
-
+    <string name="menu_button">Меню</string>
 </resources>
