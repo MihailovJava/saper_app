@@ -16,22 +16,27 @@
 
     <Button android:id="@+id/news_button"
           style="@style/DashboardButton"
+          android:background="@drawable/news"
             />
 
     <Button android:id="@+id/afisha_button"
             style="@style/DashboardButton"
+            android:background="@drawable/afisha"
             />
 
     <Button android:id="@+id/list_button"
             style="@style/DashboardButton"
+            android:background="@drawable/directory"
              />
 
     <Button android:id="@+id/namaz_button"
             style="@style/DashboardButton"
+            android:background="@drawable/namaz"
             />
 
     <Button android:id="@+id/radio_button"
             style="@style/DashboardButton"
+            android:background="@drawable/radio"
             />
 </com.comfymobile.saadat.activity.layout.DashboardLayout>
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageView"
