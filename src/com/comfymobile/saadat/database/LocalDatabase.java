@@ -33,9 +33,11 @@ public class LocalDatabase{
         database.execSQL("DROP TABLE organization");
         database.execSQL("DROP TABLE city");
         database.execSQL("DROP TABLE category");
+        database.execSQL("DROP TABLE news");
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_ORGANIZATION);
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_CITY);
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_CATEGORY);
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS);
     }
     public void updateOrganization(int id, String name, String description, int id_city,
                                         String address, String t_number, String site,
@@ -55,6 +57,11 @@ public class LocalDatabase{
     public void updateCategory(int id_category, String name, String last_mod){
         String query = "insert or replace into category (_id, name, last_mod) values (?,?,?)";
         database.execSQL(query, new String[]{String.valueOf(id_category),name,last_mod});
+    }
+
+    public void updateNews(int news_id,String title, String text){
+        String query = "insert or replace into news ( _id , title , news_text) values (?,?,?)";
+        database.execSQL(query,new  String[]{String.valueOf(news_id),title,text});
     }
 
     public Cursor getListSource(int city,int category){
@@ -114,6 +121,15 @@ public class LocalDatabase{
         return cursor;
     }
 
+    public Cursor getNews(){
+        String query = "SELECT title , news_text FROM news";
+        Cursor cursor = database.rawQuery(query,null);
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
@@ -128,6 +144,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ON_DATA_BASE_CREATE_CATEGORY = " CREATE TABLE category(_id primary key, name text " +
             "not null, last_mod text);";
 
+    public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id primary key, title text" +
+            ", news_text text); ";
+
     public DatabaseHelper(Context context){
         super(context,DATA_BASE_NAME,null,1);
     }
@@ -137,6 +156,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_ORGANIZATION);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CATEGORY);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
     }
 
     @Override
