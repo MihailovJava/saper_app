@@ -17,6 +17,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
 public class SearchActivity extends Activity {
 
     Button search;
+    Button back;
     Context context;
 
     Spinner city;
@@ -55,6 +56,13 @@ public class SearchActivity extends Activity {
                 new int[] { R.id.name });
         categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         category.setAdapter(categoryAdapter);
+        back = (Button) findViewById(R.id.back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     View.OnClickListener searchEvent = new View.OnClickListener() {

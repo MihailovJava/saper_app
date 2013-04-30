@@ -22,6 +22,7 @@ public class MenuActivity extends Activity {
     private Button afisha_button;
     private Button radio_button;
     private Button catalog_button;
+
     private Context context;
 
     private void initUI(){
