@@ -36,7 +36,7 @@ public class NewsActivity extends Activity {
     }
     void initUI(){
         ListView list = (ListView) findViewById(R.id.listView);
-        listSource = LocalDatabase.getInstance(this).getNews();
+        listSource = LocalDatabase.getInstance(this).getNews(-1);
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this,
                 R.layout.news_item,
                 listSource,
@@ -46,13 +46,13 @@ public class NewsActivity extends Activity {
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-               /* int orgPosition = i;
-                listSource.moveToPosition(orgPosition);
-                int orgID = listSource.getInt(listSource.getColumnIndex("_id"));
-                Intent intent = new Intent(context, DetalActivity.class);
-                intent.putExtra("id", orgID);
+                int newsPosition = i;
+                listSource.moveToPosition(newsPosition);
+                int newsID = listSource.getInt(listSource.getColumnIndex("_id"));
+                Intent intent = new Intent(context, EventActivity.class);
+                intent.putExtra("id", newsID);
                 context.startActivity(intent);
-                */
+
             }
         });
         back = (Button) findViewById(R.id.back_button);

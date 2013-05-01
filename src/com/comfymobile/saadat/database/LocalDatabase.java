@@ -132,9 +132,14 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getNews(){
+    public Cursor getNews(int id){
+        String args[] = null;
         String query = "SELECT title , news_text, _id FROM news";
-        Cursor cursor = database.rawQuery(query,null);
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
         if (cursor != null){
             cursor.moveToFirst();
         }
