@@ -29,16 +29,25 @@ public class LocalDatabase{
         return localDatabaseInstance;
     }
 
-    public void clearDatabase(){
+    public void clearOrganization(){
         database.execSQL("DROP TABLE organization");
-        database.execSQL("DROP TABLE city");
-        database.execSQL("DROP TABLE category");
-        database.execSQL("DROP TABLE news");
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_ORGANIZATION);
+    }
+
+    public void clearCity(){
+        database.execSQL("DROP TABLE city");
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_CITY);
+    }
+
+    public void clearCategory(){
+        database.execSQL("DROP TABLE category");
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_CATEGORY);
+    }
+    public void clearNews(){
+        database.execSQL("DROP TABLE news");
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS);
     }
+
     public void updateOrganization(int id, String name, String description, int id_city,
                                         String address, String t_number, String site,
                                         int id_category,String last_mod,String email){
@@ -59,9 +68,9 @@ public class LocalDatabase{
         database.execSQL(query, new String[]{String.valueOf(id_category),name,last_mod});
     }
 
-    public void updateNews(int news_id,String title, String text){
-        String query = "insert or replace into news ( _id , title , news_text) values (?,?,?)";
-        database.execSQL(query,new  String[]{String.valueOf(news_id),title,text});
+    public void updateNews(int news_id,String title, String text, String last_mod){
+        String query = "insert or replace into news ( _id , title , news_text, last_mod) values (?,?,?,?)";
+        database.execSQL(query,new  String[]{String.valueOf(news_id),title,text,last_mod});
     }
 
     public Cursor getListSource(int city,int category){
@@ -90,8 +99,12 @@ public class LocalDatabase{
 
     public Cursor getCategorySource(int cityID){
         String query = "SELECT _id , name FROM category WHERE _id IN (SELECT id_category " +
+<<<<<<< HEAD
                        "FROM organization WHERE id_city= ? );" ;
 
+=======
+                       "FROM organization WHERE id_city= ? );";
+>>>>>>> origin/master
         Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(cityID)});
         if (cursor != null) {
             cursor.moveToFirst();
@@ -124,7 +137,7 @@ public class LocalDatabase{
     }
 
     public Cursor getNews(){
-        String query = "SELECT title , news_text FROM news";
+        String query = "SELECT title , news_text, _id FROM news";
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null){
             cursor.moveToFirst();
@@ -147,7 +160,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             "not null, last_mod text);";
 
     public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id primary key, title text" +
-            ", news_text text); ";
+            ", news_text text, last_mod text);";
 
     public DatabaseHelper(Context context){
         super(context,DATA_BASE_NAME,null,1);

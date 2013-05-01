@@ -84,9 +84,12 @@ public class SearchActivity extends Activity {
 
     int getCityID(){
         int cityPosition = city.getSelectedItemPosition();
-        citySource.moveToPosition(cityPosition);
-        int cityID = citySource.getInt(citySource.getColumnIndex("_id"));
-        return cityID;
+        if (cityPosition != -1){
+            citySource.moveToPosition(cityPosition);
+            int cityID = citySource.getInt(citySource.getColumnIndex("_id"));
+            return cityID;
+        }
+        return -1;
     }
 
     int getCategoryID(){

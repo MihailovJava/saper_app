@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import com.comfymobile.saadat.R;
-import com.comfymobile.saadat.client.JSONClient;
 
 /**
  * User: Nixy
