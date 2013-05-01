@@ -38,7 +38,7 @@ public class NewsActivity extends Activity {
         ListView list = (ListView) findViewById(R.id.listView);
         listSource = LocalDatabase.getInstance(this).getNews();
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this,
-                R.layout.list_item,
+                R.layout.news_item,
                 listSource,
                 new String[] {"title","news_text","_id"},
                 new int[] { R.id.title, R.id.text});
