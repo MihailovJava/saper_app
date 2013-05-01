@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Loading"
-            android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
+            android:id="@+id/loadText" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp" android:textStyle="bold" android:textColor="#ffffff"/>
     <ProgressBar
             android:layout_width="wrap_content"
