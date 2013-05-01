@@ -28,4 +28,8 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+    <style name="EventButton">
+        <item name="android:background">@drawable/event_button</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 </resources>
