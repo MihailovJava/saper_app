@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -46,16 +47,18 @@ public class SearchActivity extends Activity {
                 new int[] { R.id.name});
         cityAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         city.setAdapter(cityAdapter);
+        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                updateCategories();
+            }
 
-        category = (Spinner) findViewById(R.id.spinner1);
-        categorySource = LocalDatabase.getInstance(this).getCategorySource();
-        SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
-                R.layout.spinner_item,
-                categorySource,
-                new String[] {"name","_id"},
-                new int[] { R.id.name });
-        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        category.setAdapter(categoryAdapter);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //Code here
+            }
+        });
+
         back = (Button) findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,23 +66,43 @@ public class SearchActivity extends Activity {
                 finish();
             }
         });
+
+        category = (Spinner) findViewById(R.id.spinner1);
+        updateCategories();
+    }
+
+    void updateCategories(){
+        categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID());
+        SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
+                R.layout.spinner_item,
+                categorySource,
+                new String[] {"name","_id"},
+                new int[] { R.id.name });
+        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        category.setAdapter(categoryAdapter);
+    }
+
+    int getCityID(){
+        int cityPosition = city.getSelectedItemPosition();
+        citySource.moveToPosition(cityPosition);
+        int cityID = citySource.getInt(citySource.getColumnIndex("_id"));
+        return cityID;
+    }
+
+    int getCategoryID(){
+        int categoryPosition = category.getSelectedItemPosition();
+        categorySource.moveToPosition(categoryPosition);
+        int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
+        return categoryID;
     }
 
     View.OnClickListener searchEvent = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             try{
-                int cityPosition = city.getSelectedItemPosition();
-                citySource.moveToPosition(cityPosition);
-                int cityID = citySource.getInt(citySource.getColumnIndex("_id"));
-
-                int categoryPosition = category.getSelectedItemPosition();
-                categorySource.moveToPosition(categoryPosition);
-                int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
-
                 Intent intent = new Intent(context, ListActivity.class);
-                intent.putExtra("cityID", cityID);
-                intent.putExtra("categoryID", categoryID);
+                intent.putExtra("cityID", getCityID());
+                intent.putExtra("categoryID", getCategoryID());
                 context.startActivity(intent);
             }catch (Exception e){
 

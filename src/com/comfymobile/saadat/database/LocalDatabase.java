@@ -81,7 +81,7 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getCategorySource(){
+    public Cursor getCategorySource(int cityID){
         String query = "SELECT _id , name FROM category";
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
