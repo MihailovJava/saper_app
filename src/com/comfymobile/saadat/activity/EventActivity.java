@@ -38,12 +38,12 @@ public class EventActivity extends Activity {
         sourceEvent = LocalDatabase.getInstance(this).getNews(currentID);
 
         StringBuilder info = new StringBuilder();
-        info.append("<b><h1>");
+        info.append("<b><h4>");
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
-        info.append("</b></h1><br>");
+        info.append("</b></h4>");
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
-        info.append("<br>");
-        info.append(sourceEvent.getString(sourceEvent.getColumnIndex("text")));
+        info.append("<br><br>");
+        info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
         text = (TextView) findViewById(R.id.text);
         text.setText(Html.fromHtml(info.toString()));
 

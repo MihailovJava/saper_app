@@ -134,7 +134,7 @@ public class LocalDatabase{
 
     public Cursor getNews(int id){
         String args[] = null;
-        String query = "SELECT title , news_text, _id FROM news";
+        String query = "SELECT last_mod, title , news_text, _id FROM news";
         if (id > 0){
             query += " WHERE _id = ?";
             args = new String[]{String.valueOf(id)};
