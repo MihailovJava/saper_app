@@ -99,12 +99,8 @@ public class LocalDatabase{
 
     public Cursor getCategorySource(int cityID){
         String query = "SELECT _id , name FROM category WHERE _id IN (SELECT id_category " +
-<<<<<<< HEAD
                        "FROM organization WHERE id_city= ? );" ;
 
-=======
-                       "FROM organization WHERE id_city= ? );";
->>>>>>> origin/master
         Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(cityID)});
         if (cursor != null) {
             cursor.moveToFirst();

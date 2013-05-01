@@ -34,7 +34,8 @@ public class MenuActivity extends Activity {
         news_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                Intent intent = new Intent(context,NewsActivity.class);
+                context.startActivity(intent);
             }
         });
 
