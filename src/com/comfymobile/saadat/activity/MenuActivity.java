@@ -59,7 +59,8 @@ public class MenuActivity extends Activity {
         radio_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(context,RadioActivity.class);
+                context.startActivity(intent);
             }
         });
 
