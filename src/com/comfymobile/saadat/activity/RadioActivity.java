@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import com.comfymobile.saadat.R;
 
@@ -36,10 +37,21 @@ public class RadioActivity extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             setContentView(R.layout.radio);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             initUI();
+        }
+
+        @Override
+        protected void onResume(){
+            super.onResume();
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            intialStage = true;
+            playPause = false;
+            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.play_button));
         }
 
         private void initUI(){
@@ -77,6 +89,7 @@ public class RadioActivity extends Activity {
                 }
             });
         }
+
 
 
         /**

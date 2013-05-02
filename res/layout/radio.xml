@@ -36,8 +36,9 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:text="MIRadio"
-                android:id="@+id/textView" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-                android:layout_margin="5dp"/>
+                android:id="@+id/textView"
+                android:layout_alignLeft="@+id/playbutton" android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp" android:textSize="20dp"/>
     </RelativeLayout>
 
 </RelativeLayout>
