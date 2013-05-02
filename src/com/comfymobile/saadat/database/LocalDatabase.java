@@ -48,6 +48,11 @@ public class LocalDatabase{
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS);
     }
 
+    public void clearEvents(){
+        database.execSQL("DROP TABLE events");
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS);
+    }
+
     public void updateOrganization(int id, String name, String description, int id_city,
                                         String address, String t_number, String site,
                                         int id_category,String last_mod,String email){
@@ -71,6 +76,11 @@ public class LocalDatabase{
     public void updateNews(int news_id,String title, String text, String last_mod){
         String query = "insert or replace into news ( _id , title , news_text, last_mod) values (?,?,?,?)";
         database.execSQL(query,new  String[]{String.valueOf(news_id),title,text,last_mod});
+    }
+
+    public void updateEvents(int events_id,String title, String text,String last_mod){
+        String query = "insert or replace into events ( _id , title , events_text, last_mod) values (?,?,?,?)";
+        database.execSQL(query,new  String[]{String.valueOf(events_id),title,text,last_mod});
     }
 
     public Cursor getListSource(int city,int category){
@@ -146,6 +156,20 @@ public class LocalDatabase{
         return cursor;
     }
 
+    public Cursor getEvents(int id){
+        String args[] = null;
+        String query = "SELECT title , events_text, _id, last_mod FROM events";
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
@@ -163,6 +187,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id primary key, title text" +
             ", news_text text, last_mod text);";
 
+    public static final String ON_DATA_BASE_CREATE_EVENTS = " CREATE TABLE events (_id primary key, title text, " +
+            "events_text text, last_mod text);";
+
     public DatabaseHelper(Context context){
         super(context,DATA_BASE_NAME,null,1);
     }
@@ -173,6 +200,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CATEGORY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
     }
 
     @Override

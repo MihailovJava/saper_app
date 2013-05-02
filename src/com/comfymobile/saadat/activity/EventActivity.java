@@ -23,6 +23,7 @@ public class EventActivity extends Activity {
     Button back;
     Cursor sourceEvent;
     int currentID;
+    boolean isNews;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,19 +32,25 @@ public class EventActivity extends Activity {
         setContentView(R.layout.event);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
+        isNews = intent.getBooleanExtra("news",true);
         initUI();
     }
     void initUI(){
 
-        sourceEvent = LocalDatabase.getInstance(this).getNews(currentID);
+        if (isNews)
+         sourceEvent = LocalDatabase.getInstance(this).getNews(currentID);
+        else
+         sourceEvent = LocalDatabase.getInstance(this).getEvents(currentID);
 
         StringBuilder info = new StringBuilder();
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
         info.append("<br><b><h4>");
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
         info.append("</b></h4>");
-        info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
-
+        if (isNews)
+            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
+        else
+            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("events_text")));
         text = (TextView) findViewById(R.id.text);
         text.setText(Html.fromHtml(info.toString()));
 

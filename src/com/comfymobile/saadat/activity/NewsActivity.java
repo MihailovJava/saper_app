@@ -24,6 +24,7 @@ public class NewsActivity extends Activity {
     Cursor listSource;
     Context context;
     Button back;
+    boolean isNews;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,18 +32,32 @@ public class NewsActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.news);
         context = this;
-
+        isNews = getIntent().getBooleanExtra("news",true);
         initUI();
     }
     void initUI(){
+        SimpleCursorAdapter listAdapter;
         ListView list = (ListView) findViewById(R.id.listView);
-        listSource = LocalDatabase.getInstance(this).getNews(-1);
-        SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this,
+
+        if (isNews){
+         listSource = LocalDatabase.getInstance(this).getNews(-1);
+         listAdapter = new SimpleCursorAdapter(this,
                 R.layout.news_item,
                 listSource,
                 new String[] {"title","news_text","_id"},
                 new int[] { R.id.title, R.id.text});
-        list.setAdapter(listAdapter);
+         list.setAdapter(listAdapter);
+        } else {
+            listSource = LocalDatabase.getInstance(this).getEvents(-1);
+            listAdapter = new SimpleCursorAdapter(this,
+                    R.layout.news_item,
+                    listSource,
+                    new String[] {"title","events_text","_id"},
+                    new int[] { R.id.title, R.id.text});
+            list.setAdapter(listAdapter);
+        }
+
+
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -51,6 +66,7 @@ public class NewsActivity extends Activity {
                 int newsID = listSource.getInt(listSource.getColumnIndex("_id"));
                 Intent intent = new Intent(context, EventActivity.class);
                 intent.putExtra("id", newsID);
+                intent.putExtra("news",isNews);
                 context.startActivity(intent);
 
             }
