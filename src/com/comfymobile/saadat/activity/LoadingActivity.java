@@ -52,6 +52,7 @@ public class LoadingActivity extends Activity {
     public static final String CITY = "city";
     public static final String CAT = "category";
     public static final String NEWS = "news";
+    public static final String EVENTS = "events";
 
     public static final String PROTOCOL = "http://";
     public static final String DOMEN = "saadatru.166.com1.ru";
@@ -102,6 +103,8 @@ public class LoadingActivity extends Activity {
         JSONArray cit;
         JSONArray cat;
         JSONArray news;
+        JSONArray events;
+
         Context context;
 
         LocalDatabase database;
@@ -129,6 +132,8 @@ public class LoadingActivity extends Activity {
                 cat = getData(CAT);
                 publishProgress(LOAD_NEWS);
                 news = getData(NEWS);
+                publishProgress(LOAD_EVENTS);
+                events = getData(EVENTS);
 
                 if (!(org.equals(null))) database.clearOrganization();
                 //update organization
@@ -173,6 +178,15 @@ public class LoadingActivity extends Activity {
                     String last_mod = news.getJSONObject(i).getString("last_mod");
                     database.updateNews(news_id,title,text,last_mod);
                 }
+                if (!(events.equals(null))) database.clearEvents();
+                //update events
+                for (int i = 0 ; i < events.length(); i++){
+                    int events_id = news.getJSONObject(i).getInt("id_events");
+                    String title = news.getJSONObject(i).getString("title");
+                    String text = news.getJSONObject(i).getString("text");
+                    String last_mod = news.getJSONObject(i).getString("last_mod");
+                    database.updateNews(events_id,title,text,last_mod);
+                }
                 publishProgress(LOAD_DONE);
 
             } catch (Exception e) {
@@ -195,6 +209,7 @@ public class LoadingActivity extends Activity {
         private static final int LOAD_CITY = 2;
         private static final int LOAD_CATS = 3;
         private static final int LOAD_NEWS = 4;
+        private static final int LOAD_EVENTS = 5;
         private static final int LOAD_DONE = 100;
 
         @Override
@@ -224,6 +239,10 @@ public class LoadingActivity extends Activity {
                 }
                 case LOAD_DONE:{
                     message = "done";
+                    break;
+                }
+                case LOAD_EVENTS:{
+                    message = "events";
                     break;
                 }
             }

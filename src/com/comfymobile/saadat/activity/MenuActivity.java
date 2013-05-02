@@ -35,6 +35,7 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,NewsActivity.class);
+                intent.putExtra("news",true);
                 context.startActivity(intent);
             }
         });
@@ -49,7 +50,9 @@ public class MenuActivity extends Activity {
         afisha_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                Intent intent = new Intent(context,NewsActivity.class);
+                intent.putExtra("news",false);
+                context.startActivity(intent);
             }
         });
 
