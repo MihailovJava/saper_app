@@ -134,6 +134,7 @@ public class LoadingActivity extends Activity {
                 news = getData(NEWS);
                 publishProgress(LOAD_EVENTS);
                 events = getData(EVENTS);
+                publishProgress(LOAD_DONE);
 
                 if (!(org.equals(null))) database.clearOrganization();
                 //update organization
@@ -187,7 +188,6 @@ public class LoadingActivity extends Activity {
                     String last_mod = news.getJSONObject(i).getString("last_mod");
                     database.updateNews(events_id,title,text,last_mod);
                 }
-                publishProgress(LOAD_DONE);
 
             } catch (Exception e) {
                 e.printStackTrace();
