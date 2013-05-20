@@ -90,7 +90,7 @@ public class LocalDatabase{
 
     public void updateNamas(int id,String date,String fajr,String sunrise,String dhuhr,String asr
                             , String maghrib, String isha,int city_id){
-        String query = "insert or replace into namas ( id, date, fajr, sunrise," +
+        String query = "insert or replace into namas ( _id, date, fajr, sunrise," +
                                                     " dhuhr, asr, maghrib, isha, city_id) values (?,?,?,?,?,?,?,?,?)";
         database.execSQL(query,new  String[]{String.valueOf(id),date,fajr,sunrise,dhuhr,asr,maghrib,isha,String.valueOf(city_id)});
     }
@@ -228,7 +228,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CATEGORY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
-   //     sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
     }
 
     @Override

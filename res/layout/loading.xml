@@ -4,12 +4,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:background="@drawable/bg">
 
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/logo" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
-            android:paddingTop="20dp"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,4 +16,11 @@
             android:id="@+id/progressBar"
             android:layout_alignParentLeft="false" android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" android:layout_marginBottom="40dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Loading_logo"
+            android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_centerVertical="true"
+            android:gravity="center_vertical|center_horizontal" android:textSize="30dp" android:textColor="#dfffde"
+            android:textStyle="bold"/>
 </RelativeLayout>

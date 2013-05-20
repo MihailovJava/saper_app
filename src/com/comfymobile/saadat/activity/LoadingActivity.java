@@ -53,6 +53,7 @@ public class LoadingActivity extends Activity {
     public static final String CAT = "category";
     public static final String NEWS = "news";
     public static final String EVENTS = "events";
+    public static final String NAMAS = "namas";
 
     public static final String PROTOCOL = "http://";
     public static final String DOMEN = "saadatru.166.com1.ru";
@@ -104,6 +105,7 @@ public class LoadingActivity extends Activity {
         JSONArray cat;
         JSONArray news;
         JSONArray events;
+        JSONArray namas;
 
         Context context;
 
@@ -134,6 +136,8 @@ public class LoadingActivity extends Activity {
                 news = getData(NEWS);
                 publishProgress(LOAD_EVENTS);
                 events = getData(EVENTS);
+                publishProgress(LOAD_NAMAS);
+                namas = getData(NAMAS);
                 publishProgress(LOAD_DONE);
 
                 if (!(org.equals(null))) database.clearOrganization();
@@ -188,6 +192,20 @@ public class LoadingActivity extends Activity {
                     String last_mod = events.getJSONObject(i).getString("last_mod");
                     database.updateEvents(events_id,title,text,last_mod);
                 }
+                if (!(namas.equals(null))) database.clearNamas();
+                //update namas
+                for (int i = 0 ; i < namas.length(); i++){
+                    int namas_id = namas.getJSONObject(i).getInt("id_namas");
+                    String date = namas.getJSONObject(i).getString("date");
+                    String fajr = namas.getJSONObject(i).getString("fajr");
+                    String sunrise = namas.getJSONObject(i).getString("sunrise");
+                    String dhuhr = namas.getJSONObject(i).getString("dhuhr");
+                    String asr = namas.getJSONObject(i).getString("asr");
+                    String maghrib = namas.getJSONObject(i).getString("maghrib");
+                    String isha = namas.getJSONObject(i).getString("isha");
+                    int city_id = namas.getJSONObject(i).getInt("city_id");
+                    database.updateNamas(namas_id,date,fajr,sunrise,dhuhr,asr,maghrib,isha,city_id);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -210,6 +228,7 @@ public class LoadingActivity extends Activity {
         private static final int LOAD_CATS = 3;
         private static final int LOAD_NEWS = 4;
         private static final int LOAD_EVENTS = 5;
+        private static final int LOAD_NAMAS = 6;
         private static final int LOAD_DONE = 100;
 
         @Override
@@ -243,6 +262,10 @@ public class LoadingActivity extends Activity {
                 }
                 case LOAD_EVENTS:{
                     message = "events";
+                    break;
+                }
+                case LOAD_NAMAS:{
+                    message = "namas";
                     break;
                 }
             }
