@@ -228,7 +228,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CATEGORY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
-        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
+   //     sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
     }
 
     @Override
