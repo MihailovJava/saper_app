@@ -38,6 +38,10 @@
             style="@style/DashboardButton"
             android:background="@drawable/radio"
             />
+        <Button android:id="@+id/info_button"
+                style="@style/DashboardButton"
+                android:background="@drawable/info"
+                />
 </com.comfymobile.saadat.activity.layout.DashboardLayout>
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageView"
                android:src="@drawable/title_logo"

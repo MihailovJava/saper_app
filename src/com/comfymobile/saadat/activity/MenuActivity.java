@@ -21,6 +21,7 @@ public class MenuActivity extends Activity {
     private Button afisha_button;
     private Button radio_button;
     private Button catalog_button;
+    private Button info_button;
 
     private Context context;
 
@@ -30,6 +31,7 @@ public class MenuActivity extends Activity {
         afisha_button = (Button) findViewById(R.id.afisha_button);
         radio_button = (Button) findViewById(R.id.radio_button);
         catalog_button = (Button) findViewById(R.id.list_button);
+        info_button =   (Button) findViewById(R.id.info_button);
 
         news_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +72,13 @@ public class MenuActivity extends Activity {
             public void onClick(View view) {
                Intent intent = new Intent(context,SearchActivity.class);
                context.startActivity(intent);
+            }
+        });
+
+        info_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //To change body of implemented methods use File | Settings | File Templates.
             }
         });
     }
