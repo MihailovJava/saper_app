@@ -50,7 +50,7 @@ public class LocalDatabase{
 
     public void clearEvents(){
         database.execSQL("DROP TABLE events");
-        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS);
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_EVENTS);
     }
 
     public void updateOrganization(int id, String name, String description, int id_city,

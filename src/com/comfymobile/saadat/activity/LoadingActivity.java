@@ -182,11 +182,11 @@ public class LoadingActivity extends Activity {
                 if (!(events.equals(null))) database.clearEvents();
                 //update events
                 for (int i = 0 ; i < events.length(); i++){
-                    int events_id = news.getJSONObject(i).getInt("id_events");
-                    String title = news.getJSONObject(i).getString("title");
-                    String text = news.getJSONObject(i).getString("text");
-                    String last_mod = news.getJSONObject(i).getString("last_mod");
-                    database.updateNews(events_id,title,text,last_mod);
+                    int events_id = events.getJSONObject(i).getInt("id_events");
+                    String title = events.getJSONObject(i).getString("title");
+                    String text = events.getJSONObject(i).getString("text");
+                    String last_mod = events.getJSONObject(i).getString("last_mod");
+                    database.updateEvents(events_id,title,text,last_mod);
                 }
 
             } catch (Exception e) {
