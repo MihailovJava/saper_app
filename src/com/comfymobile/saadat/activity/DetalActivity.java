@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
 
 
 public class DetalActivity extends Activity {
@@ -62,5 +63,16 @@ public class DetalActivity extends Activity {
                 finish();
             }
         });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

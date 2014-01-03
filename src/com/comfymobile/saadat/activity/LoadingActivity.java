@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -22,6 +23,12 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
 
 
 public class LoadingActivity extends Activity {
@@ -36,6 +43,18 @@ public class LoadingActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = this;
         setContentView(R.layout.loading);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 
     @Override
@@ -60,7 +79,9 @@ public class LoadingActivity extends Activity {
     public static final String PORT = ":80/";
     public static final String SCRIPT = "db.php?param=";
 
+
     private static String getRequestString(String key){
+
         HttpClient client = new DefaultHttpClient(new BasicHttpParams());
         URI website ;
         HttpGet request = new HttpGet();
@@ -272,4 +293,6 @@ public class LoadingActivity extends Activity {
             loadText.setText("Loading - "+message.toString());
         }
     }
+
 }
+

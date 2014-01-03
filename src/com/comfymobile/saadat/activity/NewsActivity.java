@@ -13,6 +13,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 /**
  * User: Nixy
@@ -67,6 +71,12 @@ public class NewsActivity extends Activity {
                 Intent intent = new Intent(context, EventActivity.class);
                 intent.putExtra("id", newsID);
                 intent.putExtra("news",isNews);
+                String newsName = listSource.getString(LocalDatabase.NEWS_NAME_IND);
+                String whatThis = isNews ? " Новость " : " Cобытие ";
+                EasyTracker.getInstance(context).send(MapBuilder
+                        .createEvent("ui_action","newsSelect", whatThis + " = " + newsName,null)
+                        .build());
+
                 context.startActivity(intent);
 
             }
@@ -78,5 +88,16 @@ public class NewsActivity extends Activity {
                 finish();
             }
         });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

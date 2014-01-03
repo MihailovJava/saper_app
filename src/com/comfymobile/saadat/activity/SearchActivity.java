@@ -13,6 +13,10 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 
 
 public class SearchActivity extends Activity {
@@ -106,10 +110,27 @@ public class SearchActivity extends Activity {
                 Intent intent = new Intent(context, ListActivity.class);
                 intent.putExtra("cityID", getCityID());
                 intent.putExtra("categoryID", getCategoryID());
+                String categoryName = categorySource.getString(LocalDatabase.CATEGORY_NAME_IND);
+                String cityName = citySource.getString(LocalDatabase.CITY_NAME_IND);
+                EasyTracker.getInstance(context).send(MapBuilder
+                        .createEvent("ui_action", "categorySelect", "Категория =" + categoryName + " Город = " + cityName, null)
+                        .build());
                 context.startActivity(intent);
             }catch (Exception e){
 
             }
         }
     };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
 }

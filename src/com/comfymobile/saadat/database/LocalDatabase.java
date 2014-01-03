@@ -15,6 +15,12 @@ public class LocalDatabase{
     SQLiteDatabase database;
     Context context;
 
+    public static final int CATEGORY_NAME_IND = 1;
+    public static final int CITY_NAME_IND = 1;
+    public static final int ORG_NAME_IND = 1;
+    public static final int NEWS_NAME_IND = 0;
+
+
     private static LocalDatabase localDatabaseInstance;
 
     private LocalDatabase(Context context){
@@ -119,6 +125,15 @@ public class LocalDatabase{
         return cursor;
     }
 
+    public Cursor getCitySource(int id){
+        String query = "SELECT _id , name FROM city WHERE _id = ?";
+        Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
     public Cursor getCategorySource(int cityID){
         String query = "SELECT _id , name FROM category WHERE _id IN (SELECT id_category " +
                        "FROM organization WHERE id_city= ? );" ;
@@ -198,6 +213,9 @@ public class LocalDatabase{
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
+
+
+
     public static final String DATA_BASE_NAME = "base_of_org";
     public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization(  "+
             " _id integer primary key, name text not null,description text, "+
