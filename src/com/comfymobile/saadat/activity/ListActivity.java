@@ -60,7 +60,7 @@ public class ListActivity extends Activity {
                 citySource = LocalDatabase.getInstance(context).getCitySource(currentCity);
                 String cityName = citySource.getString(LocalDatabase.CITY_NAME_IND);
                 EasyTracker.getInstance(context).send(MapBuilder
-                        .createEvent("ui_action", "organizationSelect", "Город = " + cityName + "Организация = " + orgName, null)
+                        .createEvent("ui_action", "organizationSelect", "Город = " + cityName + " Организация = " + orgName, null)
                         .build());
                 context.startActivity(intent);
             }

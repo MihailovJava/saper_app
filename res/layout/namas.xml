@@ -4,26 +4,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:background="@drawable/bg">
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" android:layout_above="@+id/back_button"
-            android:layout_marginRight="50dp" android:layout_marginBottom="10dp" android:id="@+id/linearLayout">
-        <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/choose_city"
-                android:id="@+id/textView"
-                style="@style/TextSyle" android:paddingLeft="10dp" android:paddingTop="5dp"/>
-        <Spinner
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinner"
-                style="@style/SpinerStyle"
-                />
-
-    </LinearLayout>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,10 +21,9 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="113dp" android:layout_alignLeft="@+id/linearLayout"
-            android:layout_above="@+id/linearLayout"
-            android:layout_alignRight="@+id/linearLayout"
-            android:layout_below="@+id/date">
+            android:layout_height="113dp"
+            android:layout_below="@+id/date" android:layout_centerHorizontal="true"
+            android:layout_above="@+id/back_button" android:layout_margin="16dp">
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -56,6 +35,11 @@
                     android:layout_weight="1"
                     android:id="@+id/textView1"
                     style="@style/NamasText" android:autoText="false"/>
+            <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_weight="0" android:id="@+id/alarm_fajr"
+
+                      android:button="@drawable/alarm_style"
+                    />
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -70,6 +54,10 @@
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Sunrise"
                       android:layout_weight="1" android:id="@+id/textView3"
                       style="@style/NamasText" android:autoText="false"/>
+            <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_weight="0" android:id="@+id/alarm_sunrise"
+                      android:button="@drawable/alarm_style"
+                       />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
                       android:layout_weight="1" android:id="@+id/textView4"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
@@ -81,6 +69,10 @@
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Dhuhr"
                       android:layout_weight="1" android:id="@+id/textView5"
                       style="@style/NamasText" android:autoText="false"/>
+            <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_weight="0" android:id="@+id/alarm_duhr"
+                      android:button="@drawable/alarm_style"
+                    />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
                       android:layout_weight="1" android:id="@+id/textView6"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
@@ -92,6 +84,10 @@
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Asr"
                       android:layout_weight="1" android:id="@+id/textView7"
                       style="@style/NamasText" android:autoText="false"/>
+            <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_weight="0" android:id="@+id/alarm_asr"
+                      android:button="@drawable/alarm_style"
+                    />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
                       android:layout_weight="1" android:id="@+id/textView8"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
@@ -103,6 +99,10 @@
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Maghrib"
                       android:layout_weight="1" android:id="@+id/textView9"
                       style="@style/NamasText" android:autoText="false"/>
+            <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_weight="0" android:id="@+id/alarm_maghrib"
+                      android:button="@drawable/alarm_style"
+                    />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
                       android:layout_weight="1" android:id="@+id/textView10"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
@@ -114,6 +114,10 @@
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Isha"
                       android:layout_weight="1" android:id="@+id/textView11"
                       style="@style/NamasText" android:autoText="false"/>
+            <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_weight="0" android:id="@+id/alarm_isha"
+                      android:button="@drawable/alarm_style"
+                    />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
                       android:layout_weight="1" android:id="@+id/textView12"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
