@@ -13,10 +13,6 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
 
 /**
  * User: Nixy
@@ -44,20 +40,20 @@ public class NewsActivity extends Activity {
         ListView list = (ListView) findViewById(R.id.listView);
 
         if (isNews){
-         listSource = LocalDatabase.getInstance(this).getNews(-1);
+         listSource = LocalDatabase.getInstance(this).getNewsSource();
          listAdapter = new SimpleCursorAdapter(this,
                 R.layout.news_item,
                 listSource,
-                new String[] {"title","news_text","_id"},
+                new String[] {"name","source_text","_id"},
                 new int[] { R.id.title, R.id.text});
          list.setAdapter(listAdapter);
         } else {
             listSource = LocalDatabase.getInstance(this).getEvents(-1);
             listAdapter = new SimpleCursorAdapter(this,
-                    R.layout.news_item,
+                    R.layout.event_item,
                     listSource,
-                    new String[] {"title","events_text","_id"},
-                    new int[] { R.id.title, R.id.text});
+                    new String[] {"title","name","time","_id"},
+                    new int[] { R.id.title, R.id.city, R.id.date});
             list.setAdapter(listAdapter);
         }
 
@@ -65,19 +61,26 @@ public class NewsActivity extends Activity {
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int newsPosition = i;
-                listSource.moveToPosition(newsPosition);
-                int newsID = listSource.getInt(listSource.getColumnIndex("_id"));
-                Intent intent = new Intent(context, EventActivity.class);
-                intent.putExtra("id", newsID);
-                intent.putExtra("news",isNews);
-                String newsName = listSource.getString(LocalDatabase.NEWS_NAME_IND);
-                String whatThis = isNews ? " Новость " : " Cобытие ";
-                EasyTracker.getInstance(context).send(MapBuilder
-                        .createEvent("ui_action","newsSelect", whatThis + " = " + newsName,null)
-                        .build());
-
-                context.startActivity(intent);
+                if (isNews){
+                    int newsPosition = i;
+                    listSource.moveToPosition(newsPosition);
+                    int newsID = listSource.getInt(listSource.getColumnIndex("_id"));
+                    String name = listSource.getString(listSource.getColumnIndex("name"));
+                    String caption = listSource.getString(listSource.getColumnIndex("source_text"));
+                    Intent intent = new Intent(context, NewsListActivity.class);
+                    intent.putExtra("id", newsID);
+                    intent.putExtra("name",name);
+                    intent.putExtra("caption",caption);
+                    context.startActivity(intent);
+                }else{
+                    int newsPosition = i;
+                    listSource.moveToPosition(newsPosition);
+                    int newsID = listSource.getInt(listSource.getColumnIndex("_id"));
+                    Intent intent = new Intent(context, EventActivity.class);
+                    intent.putExtra("id", newsID);
+                    intent.putExtra("news",isNews);
+                    context.startActivity(intent);
+                }
 
             }
         });
@@ -88,16 +91,5 @@ public class NewsActivity extends Activity {
                 finish();
             }
         });
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

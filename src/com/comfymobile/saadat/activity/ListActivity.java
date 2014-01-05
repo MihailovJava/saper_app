@@ -13,10 +13,6 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
 
 
 public class ListActivity extends Activity {
@@ -24,7 +20,6 @@ public class ListActivity extends Activity {
     int currentCity;
     int currentCategory;
     Cursor listSource;
-    Cursor citySource;
     Context context;
     Button back;
 
@@ -56,12 +51,6 @@ public class ListActivity extends Activity {
                 int orgID = listSource.getInt(listSource.getColumnIndex("_id"));
                 Intent intent = new Intent(context, DetalActivity.class);
                 intent.putExtra("id", orgID);
-                String orgName = listSource.getString(LocalDatabase.ORG_NAME_IND);
-                citySource = LocalDatabase.getInstance(context).getCitySource(currentCity);
-                String cityName = citySource.getString(LocalDatabase.CITY_NAME_IND);
-                EasyTracker.getInstance(context).send(MapBuilder
-                        .createEvent("ui_action", "organizationSelect", "Город = " + cityName + "Организация = " + orgName, null)
-                        .build());
                 context.startActivity(intent);
             }
         });
@@ -72,16 +61,5 @@ public class ListActivity extends Activity {
                 finish();
             }
         });
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

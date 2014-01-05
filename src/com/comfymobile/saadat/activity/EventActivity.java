@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
-import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * User: Nixy
@@ -24,6 +23,7 @@ public class EventActivity extends Activity {
     Button back;
     Cursor sourceEvent;
     int currentID;
+    int id_s;
     boolean isNews;
 
     @Override
@@ -33,25 +33,34 @@ public class EventActivity extends Activity {
         setContentView(R.layout.event);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
+        id_s = intent.getIntExtra("id_s",0);
         isNews = intent.getBooleanExtra("news",true);
         initUI();
     }
     void initUI(){
 
         if (isNews)
-         sourceEvent = LocalDatabase.getInstance(this).getNews(currentID);
+         sourceEvent = LocalDatabase.getInstance(this).getNews(currentID,id_s);
         else
          sourceEvent = LocalDatabase.getInstance(this).getEvents(currentID);
 
         StringBuilder info = new StringBuilder();
-        info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
-        info.append("<br><b><h4>");
+        info.append("<b><h4>");
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
         info.append("</b></h4>");
-        if (isNews)
+        if (isNews){
+            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
+            info.append("<br>");
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
-        else
+        }else{
+            info.append("<em>");
+            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("time")));
+            info.append("<br><br>Адрес: ");
+            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("address")));
+            info.append("</em><br><br>");
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("events_text")));
+
+        }
         text = (TextView) findViewById(R.id.text);
         text.setText(Html.fromHtml(info.toString()));
 
@@ -62,17 +71,6 @@ public class EventActivity extends Activity {
                 finish();
             }
         });
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 
 }
