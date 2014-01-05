@@ -8,4 +8,10 @@
     <string name="menu_button">Меню</string><string name="Loading_logo">Саадат\nМусульманский гид</string>
     <string name="miradio">Сейчас в эфире:\n______________________</string>
     <string name="info">Саадат - приложение информационно-справочного характера.\nТелефон: +7(916)026-92-91</string>
+    <string name="btn_news">Новости</string>
+    <string name="btn_namaz">Намаз</string>
+    <string name="btn_afisha">События</string>
+    <string name="btn_radio">Радио</string>
+    <string name="btn_info">Инфо</string>
+    <string name="btn_catalog">Каталог</string>
 </resources>

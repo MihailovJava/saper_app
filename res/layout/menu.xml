@@ -13,35 +13,114 @@
     android:layout_height="168dp" android:layout_alignParentLeft="true" android:layout_marginLeft="0dp"
     android:id="@+id/view"
     android:layout_below="@+id/imageView" android:layout_alignParentBottom="true">
-
-    <Button android:id="@+id/news_button"
-          style="@style/DashboardButton"
-          android:background="@drawable/news"
-            />
-
-    <Button android:id="@+id/afisha_button"
-            style="@style/DashboardButton"
-            android:background="@drawable/afisha"
-            />
-
-    <Button android:id="@+id/list_button"
-            style="@style/DashboardButton"
-            android:background="@drawable/directory"
-             />
-
-    <Button android:id="@+id/namaz_button"
-            style="@style/DashboardButton"
-            android:background="@drawable/namaz"
-            />
-
-    <Button android:id="@+id/radio_button"
-            style="@style/DashboardButton"
-            android:background="@drawable/radio"
-            />
-        <Button android:id="@+id/info_button"
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <Button
+                android:id="@+id/news_button"
                 style="@style/DashboardButton"
-                android:background="@drawable/info"
+                android:background="@drawable/menu_news"
+            />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/btn_news"
+                style="@style/TextStyle"
                 />
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <Button
+                android:id="@+id/afisha_button"
+                style="@style/DashboardButton"
+                android:background="@drawable/menu_afisha"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/btn_afisha"
+                style="@style/TextStyle"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <Button
+                android:id="@+id/list_button"
+                style="@style/DashboardButton"
+                android:background="@drawable/menu_catalog"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/btn_catalog"
+                style="@style/TextStyle"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <Button
+                android:id="@+id/namaz_button"
+                style="@style/DashboardButton"
+                android:background="@drawable/menu_namaz"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/btn_namaz"
+                style="@style/TextStyle"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <Button
+                android:id="@+id/radio_button"
+                style="@style/DashboardButton"
+                android:background="@drawable/menu_radio"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/btn_radio"
+                style="@style/TextStyle"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <Button
+                android:id="@+id/info_button"
+                style="@style/DashboardButton"
+                android:background="@drawable/menu_info"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/btn_info"
+                style="@style/TextStyle"
+                />
+    </LinearLayout>
+
+
 </com.comfymobile.saadat.activity.layout.DashboardLayout>
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/imageView"
                android:src="@drawable/title_logo"

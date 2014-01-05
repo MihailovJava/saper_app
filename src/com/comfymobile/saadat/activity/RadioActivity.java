@@ -2,22 +2,17 @@ package com.comfymobile.saadat.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import com.comfymobile.saadat.R;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: Nixy
@@ -48,7 +43,7 @@ public class RadioActivity extends Activity {
         @Override
         protected void onResume(){
             super.onResume();
-            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.play_button));
+            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
             if (player == null){
                 player = new Player();
                 player.execute(RADIO_URL);
@@ -71,9 +66,9 @@ public class RadioActivity extends Activity {
                 public void onClick(View v) {
                        if (!mediaPlayer.isPlaying()){
                              mediaPlayer.start();
-                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.pause_button));
+                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_prev));
                        }else {
-                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.play_button));
+                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
                              mediaPlayer.pause();
                         }
                 }
@@ -111,7 +106,7 @@ public class RadioActivity extends Activity {
                         public void onCompletion(MediaPlayer mp) {
                             // TODO Auto-generated method stub
 
-                            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.play_button));
+                            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
                             mediaPlayer.stop();
                             mediaPlayer.reset();
                         }

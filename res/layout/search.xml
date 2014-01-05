@@ -14,7 +14,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/choose_city"
                 android:id="@+id/textView"
-                style="@style/TextSyle" android:paddingLeft="10dp" android:paddingTop="5dp"/>
+                style="@style/SpinerSelectTextStyle"
+                android:paddingLeft="10dp" android:paddingTop="5dp"/>
         <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -26,8 +27,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/choose_cat"
+                style="@style/SpinerSelectTextStyle"
                 android:id="@+id/textView1"
-                style="@style/TextSyle" android:paddingLeft="10dp" android:paddingTop="5dp"/>
+                android:paddingLeft="10dp" android:paddingTop="5dp"/>
 
         <Spinner
                 android:layout_width="fill_parent"
@@ -42,18 +44,19 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
             android:src="@drawable/title_logo" android:layout_marginTop="10dp"/>
-    <Button style="@style/Button1Style" android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <Button
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="@string/search_button" android:id="@+id/button" android:layout_gravity="center"
             android:paddingTop="10dp" android:paddingBottom="10dp"
+            style="@style/ButtonStyle"
             android:paddingRight="20dp" android:paddingLeft="20dp" android:layout_centerHorizontal="true"
             android:layout_above="@+id/back_button"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/back_button"
-            style="@style/BackStyle"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp" android:paddingTop="10px" android:paddingBottom="10px"
-            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp"/>
+            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp" style="@style/BackStyle"/>
 </RelativeLayout>

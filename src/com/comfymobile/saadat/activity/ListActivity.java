@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 
 public class ListActivity extends Activity {
@@ -22,6 +24,7 @@ public class ListActivity extends Activity {
     Cursor listSource;
     Context context;
     Button back;
+    Cursor citySource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,15 +54,14 @@ public class ListActivity extends Activity {
                 int orgID = listSource.getInt(listSource.getColumnIndex("_id"));
                 Intent intent = new Intent(context, DetalActivity.class);
                 intent.putExtra("id", orgID);
-<<<<<<< HEAD
+
                 String orgName = listSource.getString(LocalDatabase.ORG_NAME_IND);
                 citySource = LocalDatabase.getInstance(context).getCitySource(currentCity);
                 String cityName = citySource.getString(LocalDatabase.CITY_NAME_IND);
                 EasyTracker.getInstance(context).send(MapBuilder
                         .createEvent("ui_action", "organizationSelect", "Город = " + cityName + " Организация = " + orgName, null)
                         .build());
-=======
->>>>>>> origin/master
+
                 context.startActivity(intent);
             }
         });

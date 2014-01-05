@@ -24,14 +24,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:id="@+id/imageView" android:src="@drawable/logo" android:layout_gravity="center_horizontal"
+                android:id="@+id/imageView" android:src="@drawable/title_logo" android:layout_gravity="center_horizontal"
                 android:scaleType="centerInside" android:layout_margin="10dp"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:text="@string/info"
                 android:layout_weight="1"
-                android:id="@+id/textView" android:layout_gravity="center_horizontal" style="@style/NamasText"
+                style="@style/TextStyle"
+                android:id="@+id/textView" android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical|center_horizontal" android:layout_margin="10dp"
                 android:textSize="20dp"/>
     </LinearLayout>
@@ -40,7 +41,8 @@
             android:layout_height="wrap_content"
             android:text="Наш сайт"
             android:id="@+id/site"
-            style="@style/Button1Style" android:paddingTop="5dp"
+            style="@style/ButtonStyle"
+            android:paddingTop="5dp"
             android:paddingBottom="5dp" android:paddingRight="30dp" android:paddingLeft="30dp"
             android:layout_centerHorizontal="true" android:layout_above="@+id/email"/>
     <TextView
@@ -54,7 +56,7 @@
             android:layout_height="wrap_content"
             android:text="E-mail"
             android:id="@+id/email" android:layout_centerHorizontal="true" android:layout_above="@+id/back_button"
-            android:layout_marginBottom="10dp" android:layout_marginTop="10dp" style="@style/Button1Style"
+            android:layout_marginBottom="10dp" android:layout_marginTop="10dp" style="@style/ButtonStyle"
             android:paddingLeft="30dp" android:paddingTop="5dp" android:paddingRight="30dp"
             android:paddingBottom="5dp"/>
 </RelativeLayout>

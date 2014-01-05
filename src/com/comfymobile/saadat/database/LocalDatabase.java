@@ -14,6 +14,10 @@ public class LocalDatabase{
     DatabaseHelper helper;
     SQLiteDatabase database;
     Context context;
+    public static final int CATEGORY_NAME_IND = 1;
+    public static final int CITY_NAME_IND = 1;
+    public static final int ORG_NAME_IND = 1;
+    public static final int NEWS_NAME_IND = 0;
 
     private static LocalDatabase localDatabaseInstance;
 
@@ -147,6 +151,15 @@ public class LocalDatabase{
             cursor.moveToFirst();
         }
         return cursor;
+    }
+
+    public Cursor getCitySource(int id){
+          String query = "SELECT _id , name FROM city WHERE _id = ?";
+          Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
+          if (cursor != null) {
+                  cursor.moveToFirst();
+              }
+          return cursor;
     }
 
     public Cursor getDetal(int id){

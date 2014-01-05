@@ -21,13 +21,15 @@
             android:smoothScrollbar="true" android:layout_margin="10dp"
             android:layout_below="@+id/caption"/>
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="title"
-              android:textSize="20dp" android:id="@+id/source" android:layout_gravity="left|center_vertical"
-              android:textColor="#034700" android:textStyle="bold" android:paddingLeft="10dp" android:paddingTop="5dp"
-              android:layout_alignParentLeft="true" android:layout_alignParentTop="true" style="@style/NamasText"/>
+              android:id="@+id/source" android:layout_gravity="left|center_vertical"
+              style="@style/SpinerSelectTextStyle"
+              android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+              android:layout_marginLeft="16dp" android:layout_marginTop="8dp" android:layout_marginRight="16dp"
+              android:layout_marginBottom="4dp"/>
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="text"
               android:maxLines="3" android:id="@+id/caption" android:layout_gravity="left|center_vertical"
-              android:textColor="#034700" android:textStyle="bold" android:paddingTop="5dp" android:paddingLeft="10dp"
-              android:paddingBottom="5dp"
-              android:layout_alignLeft="@+id/source" android:layout_below="@+id/source" style="@style/NamasText"
-              android:textSize="16dp"/>
+              style="@style/TextStyle"
+              android:layout_alignLeft="@+id/source" android:layout_below="@+id/source"
+              android:textSize="16dp" android:layout_marginTop="4dp"
+              android:layout_marginRight="16dp" android:layout_marginBottom="8dp"/>
 </RelativeLayout>

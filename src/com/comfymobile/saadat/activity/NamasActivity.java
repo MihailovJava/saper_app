@@ -46,7 +46,7 @@ public class NamasActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.namas);
         context = this;
-        date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        date = new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime());
         initUI();
     }
     void initUI(){
@@ -64,8 +64,8 @@ public class NamasActivity extends Activity {
                 new String[] {"name","_id"},
                 new int[] { R.id.name});
         cityAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        city.setAdapter(cityAdapter);
-        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+       // city.setAdapter(cityAdapter);
+     /*   city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 updateTimes();
@@ -75,7 +75,7 @@ public class NamasActivity extends Activity {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 //Code here
             }
-        });
+        });*/
 
         back = (Button) findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +123,8 @@ public class NamasActivity extends Activity {
     }
 
     void getCityID(){
-        int cityPosition = city.getSelectedItemPosition();
+        //int cityPosition = city.getSelectedItemPosition();
+        int cityPosition = 0;
         if (cityPosition != -1){
             citySource.moveToPosition(cityPosition);
             utc = citySource.getInt(citySource.getColumnIndex("tzone"));
