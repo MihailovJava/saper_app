@@ -15,12 +15,6 @@ public class LocalDatabase{
     SQLiteDatabase database;
     Context context;
 
-    public static final int CATEGORY_NAME_IND = 1;
-    public static final int CITY_NAME_IND = 1;
-    public static final int ORG_NAME_IND = 1;
-    public static final int NEWS_NAME_IND = 0;
-
-
     private static LocalDatabase localDatabaseInstance;
 
     private LocalDatabase(Context context){
@@ -33,6 +27,11 @@ public class LocalDatabase{
             localDatabaseInstance = new LocalDatabase(context);
         }
         return localDatabaseInstance;
+    }
+
+    public void clearNewsSource(){
+        database.execSQL("DROP TABLE newssource");
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWSSOURCE);
     }
 
     public void clearOrganization(){
@@ -75,23 +74,28 @@ public class LocalDatabase{
                 address,t_number,site,String.valueOf(id_category),last_mod,email});
     }
 
-    public void updateCity(int id_city, String name, String last_mod){
-        String query = "insert or replace into city (_id, name, last_mod) values (?,?,?)";
-        database.execSQL(query,new String[]{String.valueOf(id_city),name,last_mod});
+    public void updateCity(int id_city, String name, String last_mod, String x, String y, int tzone){
+        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone) values (?,?,?,?,?,?)";
+        database.execSQL(query,new String[]{String.valueOf(id_city),name,last_mod,x,y,String.valueOf(tzone)});
     }
     public void updateCategory(int id_category, String name, String last_mod){
         String query = "insert or replace into category (_id, name, last_mod) values (?,?,?)";
         database.execSQL(query, new String[]{String.valueOf(id_category),name,last_mod});
     }
 
-    public void updateNews(int news_id,String title, String text, String last_mod){
-        String query = "insert or replace into news ( _id , title , news_text, last_mod) values (?,?,?,?)";
-        database.execSQL(query,new  String[]{String.valueOf(news_id),title,text,last_mod});
+    public void updateNews(int news_id,String title, String text, String last_mod, int id_source){
+        String query = "insert or replace into news ( _id , title , news_text, last_mod, id_source) values (?,?,?,?,?)";
+        database.execSQL(query,new  String[]{String.valueOf(news_id),title,text,last_mod,String.valueOf(id_source)});
     }
 
-    public void updateEvents(int events_id,String title, String text,String last_mod){
-        String query = "insert or replace into events ( _id , title , events_text, last_mod) values (?,?,?,?)";
-        database.execSQL(query,new  String[]{String.valueOf(events_id),title,text,last_mod});
+    public void updateNewsSource(int id_source,String name, String source_text, String last_mod){
+        String query = "insert or replace into newssource ( _id , name , source_text, last_mod) values (?,?,?,?)";
+        database.execSQL(query,new  String[]{String.valueOf(id_source),name,source_text,last_mod});
+    }
+
+    public void updateEvents(int events_id,String title, String text,String last_mod,String time, String city, String address){
+        String query = "insert or replace into events ( _id , title , events_text, last_mod, time, city, address) values (?,?,?,?,?,?,?)";
+        database.execSQL(query,new  String[]{String.valueOf(events_id),title,text,last_mod, time, city, address});
     }
 
     public void updateNamas(int id,String date,String fajr,String sunrise,String dhuhr,String asr
@@ -117,7 +121,7 @@ public class LocalDatabase{
     }
 
     public Cursor getCitySource(){
-        String query = "SELECT _id , name FROM city";
+        String query = "SELECT _id , name, x, y, tzone FROM city";
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -125,9 +129,9 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getCitySource(int id){
-        String query = "SELECT _id , name FROM city WHERE _id = ?";
-        Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
+    public Cursor getNewsSource(){
+        String query = "SELECT _id , name, source_text FROM newssource";
+        Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -169,11 +173,11 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getNews(int id){
+    public Cursor getNews(int id, int id_s){
         String args[] = null;
-        String query = "SELECT title , news_text, _id, last_mod FROM news";
+        String query = "SELECT title , news_text, _id, last_mod, id_source FROM news WHERE id_source = "+String.valueOf(id_s);
         if (id > 0){
-            query += " WHERE _id = ?";
+            query += " AND _id = ?";
             args = new String[]{String.valueOf(id)};
         }
         Cursor cursor = database.rawQuery(query,args);
@@ -185,9 +189,19 @@ public class LocalDatabase{
 
     public Cursor getEvents(int id){
         String args[] = null;
-        String query = "SELECT title , events_text, _id, last_mod FROM events";
+        String query = "SELECT " +
+                       "T1.title , " +
+                       "T1.events_text, " +
+                       "T1.last_mod, " +
+                       "T1.time, " +
+                       "T1.city, " +
+                       "T1.address, " +
+                       "T2.name, " +
+                       "T2._id, " +
+                       "T1._id " +
+                       "FROM events as T1, city as T2 WHERE T1.city = T2._id";
         if (id > 0){
-            query += " WHERE _id = ?";
+            query += " AND T1._id = ?";
             args = new String[]{String.valueOf(id)};
         }
         Cursor cursor = database.rawQuery(query,args);
@@ -213,27 +227,28 @@ public class LocalDatabase{
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
-
-
-
     public static final String DATA_BASE_NAME = "base_of_org";
     public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization(  "+
             " _id integer primary key, name text not null,description text, "+
             " id_city integer, address text, t_number text, site text, id_category integer,"+
             " last_mod text , email text );";
     public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city(_id primary key, name text not null, "+
-            "last_mod text ); ";
+            "last_mod text, x text, y text, tzone integer); ";
 
     public static final String ON_DATA_BASE_CREATE_CATEGORY = " CREATE TABLE category(_id primary key, name text " +
             "not null, last_mod text);";
 
     public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id primary key, title text" +
-            ", news_text text, last_mod text);";
+            ", news_text text, id_source text, last_mod text);";
 
     public static final String ON_DATA_BASE_CREATE_EVENTS = " CREATE TABLE events (_id primary key, title text, " +
-            "events_text text, last_mod text);";
+            "events_text text, last_mod text, time text, city text, address text);";
+
     public static final String ON_DATA_BASE_CREATE_NAMAS = " CREATE TABLE namas (_id primary key," +
             " date text, fajr text, sunrise text, dhuhr text, asr text, maghrib text, isha  text, city_id text);";
+
+    public static final String ON_DATA_BASE_CREATE_NEWSSOURCE = " CREATE TABLE newssource(_id primary key, name text " +
+            "not null, source_text text, last_mod text);";
 
     public DatabaseHelper(Context context){
         super(context,DATA_BASE_NAME,null,1);
@@ -245,6 +260,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CATEGORY);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWSSOURCE);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
     }

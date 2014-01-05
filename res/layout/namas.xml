@@ -45,9 +45,9 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:layout_weight="1"
-                    android:id="@+id/textView2" android:layout_gravity="center_horizontal|top" android:gravity="right"
+                    android:id="@+id/n1" android:layout_gravity="center_horizontal|top" android:gravity="right"
                     android:textColor="#034700" android:textStyle="bold"
-                    style="@style/NamasText"/>
+                    style="@style/NamasText" android:maxLength="5"/>
         </LinearLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout1">
@@ -59,10 +59,10 @@
                       android:button="@drawable/alarm_style"
                        />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
-                      android:layout_weight="1" android:id="@+id/textView4"
+                      android:layout_weight="1" android:id="@+id/n2"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
                       android:textColor="#034700" android:textStyle="bold"
-                      style="@style/NamasText"/>
+                      style="@style/NamasText" android:maxLength="5"/>
         </LinearLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout2">
@@ -74,10 +74,10 @@
                       android:button="@drawable/alarm_style"
                     />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
-                      android:layout_weight="1" android:id="@+id/textView6"
+                      android:layout_weight="1" android:id="@+id/n3"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
                       android:textColor="#034700" android:textStyle="bold"
-                      style="@style/NamasText"/>
+                      style="@style/NamasText" android:maxLength="5"/>
         </LinearLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout3">
@@ -89,10 +89,10 @@
                       android:button="@drawable/alarm_style"
                     />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
-                      android:layout_weight="1" android:id="@+id/textView8"
+                      android:layout_weight="1" android:id="@+id/n4"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
                       android:textColor="#034700" android:textStyle="bold"
-                      style="@style/NamasText"/>
+                      style="@style/NamasText" android:maxLength="5"/>
         </LinearLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout4">
@@ -104,10 +104,10 @@
                       android:button="@drawable/alarm_style"
                     />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
-                      android:layout_weight="1" android:id="@+id/textView10"
+                      android:layout_weight="1" android:id="@+id/n5"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
                       android:textColor="#034700" android:textStyle="bold"
-                      style="@style/NamasText"/>
+                      style="@style/NamasText" android:maxLength="5"/>
         </LinearLayout>
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout5">
@@ -119,10 +119,10 @@
                       android:button="@drawable/alarm_style"
                     />
             <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="00:00"
-                      android:layout_weight="1" android:id="@+id/textView12"
+                      android:layout_weight="1" android:id="@+id/n6"
                       android:layout_gravity="center_horizontal|top" android:gravity="right"
                       android:textColor="#034700" android:textStyle="bold"
-                      style="@style/NamasText"/>
+                      style="@style/NamasText" android:maxLength="5"/>
         </LinearLayout>
     </LinearLayout>
     <TextView
