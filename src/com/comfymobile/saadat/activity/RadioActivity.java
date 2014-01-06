@@ -66,7 +66,7 @@ public class RadioActivity extends Activity {
                 public void onClick(View v) {
                        if (!mediaPlayer.isPlaying()){
                              mediaPlayer.start();
-                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_prev));
+                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_pause));
                        }else {
                              playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
                              mediaPlayer.pause();

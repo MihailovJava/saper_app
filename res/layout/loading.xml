@@ -8,20 +8,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Loading"
-            android:id="@+id/loadText" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
-            style="@style/SpinerItemTextStyle" android:layout_marginBottom="16dp" android:layout_marginTop="8dp"/>
+            android:id="@+id/loadText"
+            style="@style/SpinerItemTextStyle" android:layout_below="@+id/progressBar"
+            android:layout_centerHorizontal="true"/>
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
-            android:layout_alignParentLeft="false"
-            android:layout_centerHorizontal="true" android:layout_above="@+id/loadText"
-            android:layout_marginBottom="8dp"/>
+            android:layout_below="@+id/textView" android:layout_margin="4dp" android:layout_centerHorizontal="true"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/title_logo"
-            android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_centerVertical="true"
+            android:id="@+id/textView"
             android:gravity="center_vertical|center_horizontal"
-            />
+            android:layout_below="@+id/imageView" android:layout_centerHorizontal="true" android:layout_margin="8dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_loading"
+            android:id="@+id/imageView"
+            android:layout_centerVertical="true" android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"/>
 </RelativeLayout>
