@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
@@ -16,7 +18,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
  * Date: 30.04.13
  * Time: 23:30
  */
-public class NewsListActivity extends Activity {
+public class NewsListActivity extends SherlockActivity {
 
     Cursor listSource;
     Context context;
@@ -31,7 +33,7 @@ public class NewsListActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.news_list);
         context = this;
         id_s = getIntent().getIntExtra("id",0);
@@ -39,6 +41,18 @@ public class NewsListActivity extends Activity {
         caption = getIntent().getStringExtra("caption");
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
         name_source = (TextView) findViewById(R.id.source);
         caption_source = (TextView) findViewById(R.id.caption);
@@ -66,13 +80,6 @@ public class NewsListActivity extends Activity {
                 intent.putExtra("id_s",id_s);
                 context.startActivity(intent);
 
-            }
-        });
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
             }
         });
     }

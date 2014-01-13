@@ -8,20 +8,20 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" android:layout_marginRight="70dp">
+            android:layout_centerVertical="true" android:layout_marginRight="70dp" android:id="@+id/linearLayout">
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/choose_city"
                 android:id="@+id/textView"
                 style="@style/SpinerSelectTextStyle"
-                android:paddingLeft="10dp" android:paddingTop="5dp"/>
+                android:paddingLeft="10dp" android:paddingTop="5dp" android:layout_margin="8dp"/>
         <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinner"
                 style="@style/SpinerStyle"
-                android:layout_marginBottom="40dp"/>
+                android:layout_margin="8dp"/>
 
         <TextView
                 android:layout_width="fill_parent"
@@ -29,14 +29,14 @@
                 android:text="@string/choose_cat"
                 style="@style/SpinerSelectTextStyle"
                 android:id="@+id/textView1"
-                android:paddingLeft="10dp" android:paddingTop="5dp"/>
+                android:paddingLeft="10dp" android:paddingTop="5dp" android:layout_margin="8dp"/>
 
         <Spinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinner1"
                 android:layout_gravity="center"
-                style="@style/SpinerStyle"/>
+                style="@style/SpinerStyle" android:layout_margin="8dp"/>
 
     </LinearLayout>
     <ImageView
@@ -49,14 +49,8 @@
             android:text="@string/search_button" android:id="@+id/button" android:layout_gravity="center"
             android:paddingTop="10dp" android:paddingBottom="10dp"
             style="@style/ButtonStyle"
-            android:paddingRight="20dp" android:paddingLeft="20dp" android:layout_centerHorizontal="true"
-            android:layout_above="@+id/back_button"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp" android:paddingTop="10px" android:paddingBottom="10px"
-            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp" style="@style/BackStyle"/>
+            android:paddingRight="20dp" android:paddingLeft="20dp"
+            android:layout_below="@+id/linearLayout" android:layout_alignParentLeft="false"
+            android:layout_centerHorizontal="true" android:layout_margin="8dp"/>
+
 </RelativeLayout>

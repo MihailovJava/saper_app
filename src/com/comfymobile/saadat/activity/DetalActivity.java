@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
 
-public class DetalActivity extends Activity {
+public class DetalActivity extends SherlockActivity {
 
     TextView text;
     TextView category;
@@ -24,12 +26,24 @@ public class DetalActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.detal);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
 
         sourceOrganization = LocalDatabase.getInstance(this).getDetal(currentID);
@@ -55,12 +69,5 @@ public class DetalActivity extends Activity {
         category = (TextView) findViewById(R.id.category);
         category.setText("Категория: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
 
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 }

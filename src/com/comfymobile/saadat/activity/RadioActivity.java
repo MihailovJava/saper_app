@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.io.IOException;
  * Date: 02.05.13
  * Time: 22:47
  */
-public class RadioActivity extends Activity {
+public class RadioActivity extends SherlockActivity {
         private Button playbutton;
         private Button backbutton;
 
@@ -32,8 +34,9 @@ public class RadioActivity extends Activity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setContentView(R.layout.radio);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -74,14 +77,18 @@ public class RadioActivity extends Activity {
                 }
             });
 
-            backbutton = (Button) findViewById(R.id.back_button);
-            backbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
         }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 

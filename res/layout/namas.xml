@@ -9,21 +9,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
             android:src="@drawable/title_logo" android:layout_marginTop="10dp"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            style="@style/BackStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp" android:paddingTop="10px" android:paddingBottom="10px"
-            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="113dp"
             android:layout_below="@+id/date" android:layout_centerHorizontal="true"
-            android:layout_above="@+id/back_button" android:layout_margin="8dp">
+            android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginTop="8dp"
+            android:layout_alignParentBottom="true">
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"

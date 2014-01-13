@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
@@ -19,7 +21,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
  * Date: 30.04.13
  * Time: 23:30
  */
-public class NewsActivity extends Activity {
+public class NewsActivity extends SherlockActivity {
 
     Cursor listSource;
     Context context;
@@ -29,12 +31,24 @@ public class NewsActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.news);
         context = this;
         isNews = getIntent().getBooleanExtra("news",true);
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
         SimpleCursorAdapter listAdapter;
         ListView list = (ListView) findViewById(R.id.listView);
@@ -84,12 +98,6 @@ public class NewsActivity extends Activity {
 
             }
         });
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
     }
 }

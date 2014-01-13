@@ -11,11 +11,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends SherlockActivity {
 
     Button search;
     Button back;
@@ -30,13 +32,25 @@ public class SearchActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.search);
         context = this;
         search = (Button) findViewById(R.id.button);
         search.setOnClickListener(searchEvent);
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
         city = (Spinner) findViewById(R.id.spinner);
         citySource = LocalDatabase.getInstance(this).getCitySource();
@@ -59,13 +73,6 @@ public class SearchActivity extends Activity {
             }
         });
 
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         category = (Spinner) findViewById(R.id.spinner1);
         updateCategories();

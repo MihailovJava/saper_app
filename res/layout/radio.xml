@@ -5,48 +5,40 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/bg">
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            style="@style/BackStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp" android:paddingTop="10px" android:paddingBottom="10px"
-            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp"/>
+
     <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="150dp" android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" android:layout_alignParentRight="true"
 
-            android:layout_margin="10dp" android:layout_alignParentTop="true" android:layout_above="@+id/back_button">
-        <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/playbutton" android:layout_marginTop="40dp"
-
-                android:layout_marginLeft="-5dp" android:layout_marginRight="-5dp" android:layout_marginBottom="-5dp">
-        </RelativeLayout>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_play"
-                android:id="@+id/playbutton"
-                android:layout_centerHorizontal="true" android:layout_alignParentBottom="true"
-                android:layout_marginBottom="20dp"/>
+            android:layout_margin="10dp" android:layout_alignParentTop="true" android:layout_above="@+id/back_button"
+            android:id="@+id/relativeLayout">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView" android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"  android:layout_marginTop="20dp"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/miradio"
-                android:id="@+id/textView" android:layout_centerHorizontal="true" android:layout_centerVertical="true"
-                android:gravity="center_vertical|center_horizontal"
-                style="@style/TextStyle"
-                />
+    </RelativeLayout>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/miradio"
+            android:id="@+id/textView"
+            android:gravity="center_vertical|center_horizontal"
+            style="@style/TextStyle"
+            android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_margin="8dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_play"
+            android:id="@+id/playbutton"
+            android:layout_below="@+id/textView" android:layout_centerHorizontal="true" android:layout_margin="8dp"
+            android:layout_marginTop="16dp"/>
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+
+            android:layout_above="@+id/textView" android:layout_margin="8dp">
     </RelativeLayout>
 
 </RelativeLayout>

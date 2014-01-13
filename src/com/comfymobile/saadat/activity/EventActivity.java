@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
@@ -17,7 +19,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
  * Date: 01.05.13
  * Time: 22:07
  */
-public class EventActivity extends Activity {
+public class EventActivity extends SherlockActivity {
 
     TextView text;
     Button back;
@@ -29,7 +31,7 @@ public class EventActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.event);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
@@ -37,6 +39,18 @@ public class EventActivity extends Activity {
         isNews = intent.getBooleanExtra("news",true);
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
 
         if (isNews)
@@ -64,13 +78,7 @@ public class EventActivity extends Activity {
         text = (TextView) findViewById(R.id.text);
         text.setText(Html.fromHtml(info.toString()));
 
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
     }
 
 }

@@ -5,21 +5,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/bg">
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            style="@style/BackStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp" android:paddingTop="10px" android:paddingBottom="10px"
-            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp"/>
+
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="95dp"
-            android:id="@+id/listView" android:layout_above="@+id/back_button"
-            android:smoothScrollbar="true" android:layout_margin="10dp"
-            android:layout_below="@+id/caption"/>
+            android:id="@+id/listView"
+            android:smoothScrollbar="true"
+            android:layout_below="@+id/caption" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" android:layout_alignParentBottom="true"/>
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="title"
               android:id="@+id/source" android:layout_gravity="left|center_vertical"
               style="@style/SpinerSelectTextStyle"

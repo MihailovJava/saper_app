@@ -5,27 +5,19 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/bg">
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/back_button"
-            style="@style/BackStyle"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp" android:paddingTop="10px" android:paddingBottom="10px"
-            android:paddingRight="20px" android:paddingLeft="20px" android:textSize="15dp"/>
+
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" android:id="@+id/linearLayout" android:layout_alignParentTop="true"
-            android:layout_above="@+id/site" android:layout_margin="10dp">
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_centerVertical="true" android:layout_alignParentLeft="true">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/imageView" android:src="@drawable/title_logo" android:layout_gravity="center_horizontal"
-                android:scaleType="centerInside" android:layout_margin="10dp"/>
+                android:scaleType="centerInside" android:layout_margin="8dp"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -33,30 +25,31 @@
                 android:layout_weight="1"
                 style="@style/TextStyle"
                 android:id="@+id/textView" android:layout_gravity="center_horizontal"
-                android:gravity="center_vertical|center_horizontal" android:layout_margin="10dp"
+                android:gravity="center_vertical|center_horizontal" android:layout_margin="8dp"
                 android:textSize="20dp"/>
+        <Button
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="Наш сайт"
+                android:id="@+id/site"
+                style="@style/ButtonStyle"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" android:paddingRight="30dp" android:paddingLeft="30dp"
+                android:layout_centerHorizontal="true" android:layout_above="@+id/email"
+                android:layout_gravity="center_horizontal" android:layout_margin="8dp"/>
+        <Button
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="E-mail"
+                android:id="@+id/email" android:layout_centerHorizontal="true" android:layout_above="@+id/back_button"
+                style="@style/ButtonStyle"
+                android:paddingLeft="30dp" android:paddingTop="5dp" android:paddingRight="30dp"
+                android:paddingBottom="5dp" android:layout_gravity="center_horizontal" android:layout_margin="8dp"/>
     </LinearLayout>
-    <Button
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="Наш сайт"
-            android:id="@+id/site"
-            style="@style/ButtonStyle"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" android:paddingRight="30dp" android:paddingLeft="30dp"
-            android:layout_centerHorizontal="true" android:layout_above="@+id/email"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/version" android:layout_alignRight="@+id/linearLayout"
             android:layout_alignParentBottom="true" android:textColor="#ffffff"/>
-    <Button
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="E-mail"
-            android:id="@+id/email" android:layout_centerHorizontal="true" android:layout_above="@+id/back_button"
-            android:layout_marginBottom="10dp" android:layout_marginTop="10dp" style="@style/ButtonStyle"
-            android:paddingLeft="30dp" android:paddingTop="5dp" android:paddingRight="30dp"
-            android:paddingBottom="5dp"/>
 </RelativeLayout>

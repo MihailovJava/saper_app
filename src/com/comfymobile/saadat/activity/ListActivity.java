@@ -11,13 +11,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 
 
-public class ListActivity extends Activity {
+public class ListActivity extends SherlockActivity {
 
     int currentCity;
     int currentCategory;
@@ -29,7 +31,7 @@ public class ListActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.orglist);
         context = this;
         Intent intent = getIntent();
@@ -37,6 +39,18 @@ public class ListActivity extends Activity {
         currentCategory = intent.getIntExtra("categoryID",-1);
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
         ListView list = (ListView) findViewById(R.id.listView);
         listSource = LocalDatabase.getInstance(this).getListSource(currentCity,currentCategory);
@@ -65,12 +79,6 @@ public class ListActivity extends Activity {
                 context.startActivity(intent);
             }
         });
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
     }
 }

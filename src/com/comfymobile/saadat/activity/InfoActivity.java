@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
 
-public class InfoActivity extends Activity {
+public class InfoActivity extends SherlockActivity {
 
     Button back;
     Button site;
@@ -24,11 +26,23 @@ public class InfoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.info);
 
         initUI();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     void initUI(){
         String app_ver = "Версия: ";
         version = (TextView)findViewById(R.id.version);
@@ -59,13 +73,6 @@ public class InfoActivity extends Activity {
                 it.putExtra(Intent.EXTRA_SUBJECT, "Обратная связь пользователя");
                 it.setType("message/rfc822");
                 startActivity(Intent.createChooser(it, "Выберите почтовый клиент"));
-            }
-        });
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
             }
         });
     }

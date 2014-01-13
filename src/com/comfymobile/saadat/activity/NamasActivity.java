@@ -81,13 +81,6 @@ public class NamasActivity extends SherlockActivity {
             }
         });*/
 
-        back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         dateView = (TextView) findViewById(R.id.date);
         dateView.setText("Сегодня: "+date);
 
