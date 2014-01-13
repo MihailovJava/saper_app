@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.PrayTime;
 import com.comfymobile.saadat.database.LocalDatabase;
@@ -17,7 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class NamasActivity extends Activity {
+public class NamasActivity extends SherlockActivity {
 
     Button back;
     Context context;
@@ -43,7 +46,8 @@ public class NamasActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.namas);
         context = this;
         date = new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime());

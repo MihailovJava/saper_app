@@ -44,4 +44,8 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="MainTheme" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ab_back</item>
+    </style>
+
 </resources>
