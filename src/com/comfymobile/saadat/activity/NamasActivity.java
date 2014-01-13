@@ -1,14 +1,14 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.PrayTime;
@@ -134,6 +134,17 @@ public class NamasActivity extends SherlockActivity {
             utc = citySource.getInt(citySource.getColumnIndex("tzone"));
             lat = Double.valueOf(citySource.getString(citySource.getColumnIndex("x")));
             lon = Double.valueOf(citySource.getString(citySource.getColumnIndex("y")));
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
