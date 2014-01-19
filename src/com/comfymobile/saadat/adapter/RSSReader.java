@@ -116,7 +116,7 @@ public class RSSReader extends AsyncTask<String[],Void,Void> {
                             Date nDate;
                             try {
                                 nDate = formatter.parse(ipubDate);
-                                SimpleDateFormat newFormat = new SimpleDateFormat("dd MMM yyyy, kk:mm",Locale.getDefault());
+                                SimpleDateFormat newFormat = new SimpleDateFormat("dd MMM",Locale.getDefault());
                                 ipubDate = newFormat.format(nDate);
                             } catch (ParseException e) {
 
