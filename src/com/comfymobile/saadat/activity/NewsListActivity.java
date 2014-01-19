@@ -1,12 +1,10 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -20,25 +18,25 @@ import com.comfymobile.saadat.database.LocalDatabase;
  */
 public class NewsListActivity extends SherlockActivity {
 
-    Cursor listSource;
+    Cursor cursor;
     Context context;
-    Button back;
-    int id_s;
-    String name;
-    String caption;
-
-    TextView name_source;
-    TextView caption_source;
+    int sourceID;
+    TextView sourceTitleView;
+    TextView sourceDescriptionView;
+    String sourceTitle;
+    boolean isNews;
+    String sourceDescription;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.news_list);
         context = this;
-        id_s = getIntent().getIntExtra("id",0);
-        name = getIntent().getStringExtra("name");
-        caption = getIntent().getStringExtra("caption");
+        sourceID = getIntent().getIntExtra("sourceId",0);
+        sourceTitle = getIntent().getStringExtra("sourceTitle");
+        sourceDescription = getIntent().getStringExtra("sourceDescription");
+        isNews = getIntent().getBooleanExtra("news",true);
+        if (isNews) setContentView(R.layout.news_list); else setContentView(R.layout.news);
         initUI();
     }
 
@@ -54,33 +52,59 @@ public class NewsListActivity extends SherlockActivity {
     }
 
     void initUI(){
-        name_source = (TextView) findViewById(R.id.source);
-        caption_source = (TextView) findViewById(R.id.caption);
-        name_source.setText(name);
-        caption_source.setText(caption);
         SimpleCursorAdapter listAdapter;
         ListView list = (ListView) findViewById(R.id.listView);
 
-         listSource = LocalDatabase.getInstance(this).getNews(-1, id_s);
-         listAdapter = new SimpleCursorAdapter(this,
-                R.layout.news_item,
-                listSource,
-                new String[] {"title","news_text","_id"},
-                new int[] { R.id.title, R.id.text});
-         list.setAdapter(listAdapter);
+        if (isNews){
+
+            sourceTitleView = (TextView) findViewById(R.id.source);
+            sourceTitleView.setText(sourceTitle);
+            sourceDescriptionView = (TextView) findViewById(R.id.caption);
+            sourceDescriptionView.setText(sourceDescription);
+
+            cursor = LocalDatabase.getInstance(this).getNews(-1, sourceID);
+            listAdapter = new SimpleCursorAdapter(this,
+                   R.layout.news_item,
+                    cursor,
+                   new String[] {"title","news_text","last_mod","_id"},
+                   new int[] { R.id.title, R.id.description,R.id.date});
+            list.setAdapter(listAdapter);
+        } else {
+            cursor = LocalDatabase.getInstance(this).getEvents(-1);
+            listAdapter = new SimpleCursorAdapter(this,
+                    R.layout.event_item,
+                    cursor,
+                    new String[] {"title","name","time","_id"},
+                    new int[] { R.id.title, R.id.city, R.id.date});
+            list.setAdapter(listAdapter);
+        }
+
 
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int newsPosition = i;
-                listSource.moveToPosition(newsPosition);
-                int newsID = listSource.getInt(listSource.getColumnIndex("_id"));
-                Intent intent = new Intent(context, EventActivity.class);
-                intent.putExtra("id", newsID);
-                intent.putExtra("id_s",id_s);
-                context.startActivity(intent);
+                if (isNews){
+                    int newsPosition = i;
+                    cursor.moveToPosition(newsPosition);
+                    int newsID = cursor.getInt(cursor.getColumnIndex("_id"));
+
+                    Intent intent = new Intent(context, DetalNewsActivity.class);
+                    intent.putExtra("id", newsID);
+                    intent.putExtra("sourceId",sourceID);
+                    intent.putExtra("news",isNews);
+                    context.startActivity(intent);
+                }else{
+                    int newsPosition = i;
+                    cursor.moveToPosition(newsPosition);
+                    int newsID = cursor.getInt(cursor.getColumnIndex("_id"));
+                    Intent intent = new Intent(context, DetalNewsActivity.class);
+                    intent.putExtra("id", newsID);
+                    intent.putExtra("news",isNews);
+                    context.startActivity(intent);
+                }
 
             }
         });
+
     }
 }

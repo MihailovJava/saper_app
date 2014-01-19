@@ -1,12 +1,10 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
@@ -110,7 +108,7 @@ public class SearchActivity extends SherlockActivity {
         @Override
         public void onClick(View view) {
             try{
-                Intent intent = new Intent(context, ListActivity.class);
+                Intent intent = new Intent(context, OrganizationListActivity.class);
                 intent.putExtra("cityID", getCityID());
                 intent.putExtra("categoryID", getCategoryID());
                 context.startActivity(intent);

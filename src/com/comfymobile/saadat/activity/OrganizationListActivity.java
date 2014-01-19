@@ -1,12 +1,10 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -19,7 +17,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 
 
-public class ListActivity extends SherlockActivity {
+public class OrganizationListActivity extends SherlockActivity {
 
     int currentCity;
     int currentCategory;
@@ -66,7 +64,7 @@ public class ListActivity extends SherlockActivity {
                 int orgPosition = i;
                 listSource.moveToPosition(orgPosition);
                 int orgID = listSource.getInt(listSource.getColumnIndex("_id"));
-                Intent intent = new Intent(context, DetalActivity.class);
+                Intent intent = new Intent(context, DetalOrganizationActivity.class);
                 intent.putExtra("id", orgID);
 
                 String orgName = listSource.getString(LocalDatabase.ORG_NAME_IND);

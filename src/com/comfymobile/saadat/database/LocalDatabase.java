@@ -87,9 +87,9 @@ public class LocalDatabase{
         database.execSQL(query, new String[]{String.valueOf(id_category),name,last_mod});
     }
 
-    public void updateNews(int news_id,String title, String text, String last_mod, int id_source){
-        String query = "insert or replace into news ( _id , title , news_text, last_mod, id_source) values (?,?,?,?,?)";
-        database.execSQL(query,new  String[]{String.valueOf(news_id),title,text,last_mod,String.valueOf(id_source)});
+    public void updateNews(String title, String text, String last_mod, int id_source){
+        String query = "insert or replace into news (  title , news_text, last_mod, id_source) values (?,?,?,?)";
+        database.execSQL(query,new  String[]{title,text,last_mod,String.valueOf(id_source)});
     }
 
     public void updateNewsSource(int id_source,String name, String source_text, String last_mod){
@@ -237,21 +237,37 @@ public class LocalDatabase{
         return cursor;
     }
 
+    /**
+     * Добавить источник
+     * @param id номер источника
+     * @param title название
+     * @param description описание
+     * @param link ссылка
+     */
+    public void addSource(int id, String title, String description, String link){
+        String query = "insert into sources (_id,title,description,link) values (?,?,?,?)";
+        database.execSQL(query,new String[]{String.valueOf(id),title,description,link});
+    }
+
+
+
+
+
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATA_BASE_NAME = "base_of_org";
-    public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization(  "+
+    public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization (  "+
             " _id integer primary key, name text not null,description text, "+
             " id_city integer, address text, t_number text, site text, id_category integer,"+
             " last_mod text , email text );";
-    public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city(_id primary key, name text not null, "+
+    public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city (_id primary key, name text not null, "+
             "last_mod text, x text, y text, tzone integer); ";
 
     public static final String ON_DATA_BASE_CREATE_CATEGORY = " CREATE TABLE category(_id primary key, name text " +
             "not null, last_mod text);";
 
-    public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id primary key, title text" +
+    public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id INTEGER PRIMARY KEY AUTOINCREMENT, title text" +
             ", news_text text, id_source text, last_mod text);";
 
     public static final String ON_DATA_BASE_CREATE_EVENTS = " CREATE TABLE events (_id primary key, title text, " +
@@ -262,6 +278,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String ON_DATA_BASE_CREATE_NEWSSOURCE = " CREATE TABLE newssource(_id primary key, name text " +
             "not null, source_text text, last_mod text);";
+
 
     public DatabaseHelper(Context context){
         super(context,DATA_BASE_NAME,null,1);

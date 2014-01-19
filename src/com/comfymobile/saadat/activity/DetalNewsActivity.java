@@ -19,7 +19,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
  * Date: 01.05.13
  * Time: 22:07
  */
-public class EventActivity extends SherlockActivity {
+public class DetalNewsActivity extends SherlockActivity {
 
     TextView text;
     Button back;
@@ -35,7 +35,7 @@ public class EventActivity extends SherlockActivity {
         setContentView(R.layout.event);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
-        id_s = intent.getIntExtra("id_s",0);
+        id_s = intent.getIntExtra("sourceId",0);
         isNews = intent.getBooleanExtra("news",true);
         initUI();
     }

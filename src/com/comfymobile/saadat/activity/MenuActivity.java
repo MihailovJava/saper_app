@@ -36,8 +36,7 @@ public class MenuActivity extends Activity {
         news_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,NewsActivity.class);
-                intent.putExtra("news",true);
+                Intent intent = new Intent(context,SourceListActivity.class);
                 context.startActivity(intent);
             }
         });
@@ -53,7 +52,7 @@ public class MenuActivity extends Activity {
         afisha_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,NewsActivity.class);
+                Intent intent = new Intent(context,NewsListActivity.class);
                 intent.putExtra("news",false);
                 context.startActivity(intent);
             }

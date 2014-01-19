@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -104,10 +105,8 @@ public class LoadingActivity extends Activity {
         JSONArray org;
         JSONArray cit;
         JSONArray cat;
-        JSONArray news;
         JSONArray events;
         JSONArray namas;
-        JSONArray news_source;
 
 
         Context context;
@@ -135,15 +134,13 @@ public class LoadingActivity extends Activity {
                 cit = getData(CITY);
                 publishProgress(LOAD_CATS);
                 cat = getData(CAT);
-                publishProgress(LOAD_NEWS);
-                news = getData(NEWS);
+
                 publishProgress(LOAD_EVENTS);
                 events = getData(EVENTS);
                 publishProgress(LOAD_NAMAS);
                 namas = getData(NAMAS);
-                publishProgress(LOAD_NEWS_SOURCE);
-                news_source = getData(NEWS_SOURCE);
-                publishProgress(LOAD_DONE);
+
+
 
                 if (org != null){ database.clearOrganization();
                 //update organization
@@ -182,16 +179,7 @@ public class LoadingActivity extends Activity {
                     database.updateCategory(id_category,name,last_mod);
                 }}
 
-                if (news != null){ database.clearNews();
-                //update news
-                for (int i=0; i < news.length(); i++){
-                    int news_id = news.getJSONObject(i).getInt("id_news");
-                    String title = news.getJSONObject(i).getString("title");
-                    String text = news.getJSONObject(i).getString("text");
-                    int id_source = news.getJSONObject(i).getInt("id_source");
-                    String last_mod = news.getJSONObject(i).getString("last_mod");
-                    database.updateNews(news_id,title,text,last_mod,id_source);
-                }}
+
                 if (events != null){ database.clearEvents();
                 //update events
                 for (int i = 0 ; i < events.length(); i++){
@@ -219,16 +207,6 @@ public class LoadingActivity extends Activity {
                     database.updateNamas(namas_id,date,fajr,sunrise,dhuhr,asr,maghrib,isha,city_id);
                 }}
 
-                if (news_source != null){ database.clearNewsSource();
-                //update news_source
-                for (int i=0; i < news_source.length(); i++){
-                    int id_source = news_source.getJSONObject(i).getInt("id_source");
-                    String name = news_source.getJSONObject(i).getString("name");
-                    String text = news_source.getJSONObject(i).getString("text");
-                    String last_mod = news_source.getJSONObject(i).getString("last_mod");
-                    database.updateNewsSource(id_source,name,text,last_mod);
-                }}
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("SynchronizeTask", "no internet access");
@@ -239,9 +217,14 @@ public class LoadingActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Intent intent = new Intent(context, MenuActivity.class);
-            context.startActivity(intent);
-            LoadingActivity.activity.finish();
+
+            publishProgress(LOAD_NEWS);
+            new RSSReader(context).execute(new String[]{
+                    "http://www.islamrf.ru/rss/",
+                    "http://islam-today.ru/rss/",
+                    "http://www.muslimeco.ru/rss.php"
+            });
+            publishProgress(LOAD_DONE);
         }
 
         private static final int LOAD_START = 0;

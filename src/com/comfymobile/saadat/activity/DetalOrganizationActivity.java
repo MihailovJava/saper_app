@@ -15,7 +15,7 @@ import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 
 
-public class DetalActivity extends SherlockActivity {
+public class DetalOrganizationActivity extends SherlockActivity {
 
     TextView text;
     TextView category;
