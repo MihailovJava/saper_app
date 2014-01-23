@@ -1,15 +1,13 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -22,9 +20,7 @@ import java.io.IOException;
  * Time: 22:47
  */
 public class RadioActivity extends SherlockActivity {
-        private Button playbutton;
-        private Button backbutton;
-
+        private ImageView playButton;
 
         private MediaPlayer mediaPlayer;
         private Player player;
@@ -46,7 +42,7 @@ public class RadioActivity extends SherlockActivity {
         @Override
         protected void onResume(){
             super.onResume();
-            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
+            playButton.setImageResource(R.drawable.btn_play);
             if (player == null){
                 player = new Player();
                 player.execute(RADIO_URL);
@@ -61,17 +57,17 @@ public class RadioActivity extends SherlockActivity {
                 player.execute(RADIO_URL);
             }
 
-            playbutton = (Button) findViewById(R.id.playbutton);
-            playbutton.setOnClickListener(new View.OnClickListener() {
+            playButton = (ImageView) findViewById(R.id.playbutton);
+            playButton.setOnClickListener(new View.OnClickListener() {
 
 
                 @Override
                 public void onClick(View v) {
                        if (!mediaPlayer.isPlaying()){
                              mediaPlayer.start();
-                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_pause));
+                             playButton.setImageResource(R.drawable.btn_pause);
                        }else {
-                             playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
+                             playButton.setImageResource(R.drawable.btn_play);
                              mediaPlayer.pause();
                         }
                 }
@@ -113,7 +109,7 @@ public class RadioActivity extends SherlockActivity {
                         public void onCompletion(MediaPlayer mp) {
                             // TODO Auto-generated method stub
 
-                            playbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_play));
+                            playButton.setImageResource(R.drawable.btn_play);
                             mediaPlayer.stop();
                             mediaPlayer.reset();
                         }

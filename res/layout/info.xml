@@ -28,7 +28,7 @@
                 android:gravity="center_vertical|center_horizontal" android:layout_margin="8dp"
                 android:textSize="20dp"/>
         <Button
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Наш сайт"
                 android:id="@+id/site"
@@ -36,15 +36,17 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp" android:paddingRight="30dp" android:paddingLeft="30dp"
                 android:layout_centerHorizontal="true" android:layout_above="@+id/email"
-                android:layout_gravity="center_horizontal" android:layout_margin="8dp"/>
+                android:layout_gravity="center_horizontal" android:layout_margin="8dp"
+                android:textColor="#ff33b5e5"/>
         <Button
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="E-mail"
                 android:id="@+id/email" android:layout_centerHorizontal="true" android:layout_above="@+id/back_button"
                 style="@style/ButtonStyle"
                 android:paddingLeft="30dp" android:paddingTop="5dp" android:paddingRight="30dp"
-                android:paddingBottom="5dp" android:layout_gravity="center_horizontal" android:layout_margin="8dp"/>
+                android:paddingBottom="5dp" android:layout_gravity="center_horizontal" android:layout_margin="8dp"
+                android:textColor="#ff33b5e5"/>
     </LinearLayout>
     <TextView
             android:layout_width="wrap_content"

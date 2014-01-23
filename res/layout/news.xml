@@ -4,11 +4,11 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@drawable/bg">
+        >
 
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView" android:layout_above="@+id/back_button" android:layout_alignParentTop="true"
-            android:smoothScrollbar="true" android:layout_margin="10dp"/>
+            android:smoothScrollbar="true" android:layout_margin="16dp"/>
 </RelativeLayout>

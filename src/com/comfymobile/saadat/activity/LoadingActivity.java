@@ -2,7 +2,6 @@ package com.comfymobile.saadat.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -137,8 +136,8 @@ public class LoadingActivity extends Activity {
 
                 publishProgress(LOAD_EVENTS);
                 events = getData(EVENTS);
-                publishProgress(LOAD_NAMAS);
-                namas = getData(NAMAS);
+                //publishProgress(LOAD_NAMAS);
+                //namas = getData(NAMAS);
 
 
 

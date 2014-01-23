@@ -4,25 +4,25 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@drawable/bg">
+        >
 
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="95dp"
             android:id="@+id/listView"
             android:smoothScrollbar="true"
-            android:layout_below="@+id/caption" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" android:layout_alignParentBottom="true"/>
+            android:layout_below="@+id/caption"
+            android:layout_alignParentBottom="true" android:layout_margin="16dp"/>
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="title"
               android:id="@+id/source" android:layout_gravity="left|center_vertical"
               style="@style/SpinerSelectTextStyle"
               android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-              android:layout_marginLeft="16dp" android:layout_marginTop="8dp" android:layout_marginRight="16dp"
+              android:layout_marginLeft="16dp" android:layout_marginTop="16dp" android:layout_marginRight="16dp"
               android:layout_marginBottom="4dp"/>
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="text"
               android:maxLines="3" android:id="@+id/caption" android:layout_gravity="left|center_vertical"
               style="@style/TextStyle"
               android:layout_alignLeft="@+id/source" android:layout_below="@+id/source"
-              android:textSize="16dp" android:layout_marginTop="4dp"
-              android:layout_marginRight="16dp" android:layout_marginBottom="8dp"/>
+              android:textSize="16dp"
+              android:layout_marginRight="16dp"/>
 </RelativeLayout>

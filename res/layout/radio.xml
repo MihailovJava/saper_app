@@ -27,13 +27,12 @@
             android:gravity="center_vertical|center_horizontal"
             style="@style/TextStyle"
             android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:layout_margin="8dp"/>
-    <Button
+    <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_play"
             android:id="@+id/playbutton"
             android:layout_below="@+id/textView" android:layout_centerHorizontal="true" android:layout_margin="8dp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp" android:src="@drawable/btn_play"/>
     <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

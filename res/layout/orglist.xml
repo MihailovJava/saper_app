@@ -10,5 +10,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView" android:layout_alignParentTop="true"
-            android:smoothScrollbar="true" android:layout_margin="10dp"/>
+            android:smoothScrollbar="true" android:layout_margin="16dp" android:clickable="false"
+            />
 </RelativeLayout>
