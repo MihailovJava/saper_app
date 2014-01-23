@@ -6,19 +6,6 @@
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/bg">
 
-    <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="150dp" android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" android:layout_alignParentRight="true"
-
-            android:layout_margin="10dp" android:layout_alignParentTop="true" android:layout_above="@+id/back_button"
-            android:id="@+id/relativeLayout">
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView" android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"  android:layout_marginTop="20dp"/>
-    </RelativeLayout>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,11 +20,5 @@
             android:id="@+id/playbutton"
             android:layout_below="@+id/textView" android:layout_centerHorizontal="true" android:layout_margin="8dp"
             android:layout_marginTop="16dp" android:src="@drawable/btn_play"/>
-    <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-
-            android:layout_above="@+id/textView" android:layout_margin="8dp">
-    </RelativeLayout>
 
 </RelativeLayout>

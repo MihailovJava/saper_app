@@ -3,12 +3,7 @@ package com.comfymobile.saadat.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import com.comfymobile.saadat.activity.MenuActivity;
 import com.comfymobile.saadat.database.LocalDatabase;
 import org.w3c.dom.Document;
@@ -19,7 +14,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -36,7 +30,7 @@ import java.util.Locale;
  * Date: 12.07.13
  * Time: 21:18
  */
-public class RSSReader extends AsyncTask<String[],Void,Void> {
+public class RSSReader extends AsyncTask<String,Void,Void> {
 
     public static final String TAG_CHANNEL = "channel";
     public static final String TAG_ITEM = "item";
@@ -62,15 +56,18 @@ public class RSSReader extends AsyncTask<String[],Void,Void> {
     }
 
     @Override
-    protected Void doInBackground(String[]... params) {
+    protected Void doInBackground(String... params) {
         try {
-            database.clearNewsSource();
-            database.clearNews();
-
-            for (int j = 0 ; j < params[0].length ; j++){
-                URL url = new URL(params[0][j]);
+            boolean isFirstConnection = true;
+            for (int j = 0 ; j < params.length ; j++){
+                URL url = new URL(params[j]);
                 HttpURLConnection connect = (HttpURLConnection) url.openConnection();
                 if (connect.getResponseCode() == HttpURLConnection.HTTP_OK){
+                    if (isFirstConnection){
+                        database.clearNewsSource();
+                        database.clearNews();
+                        isFirstConnection = false;
+                    }
                     InputStream is = connect.getInputStream();
                     DocumentBuilderFactory dbf = DocumentBuilderFactory
                             .newInstance();
@@ -121,7 +118,8 @@ public class RSSReader extends AsyncTask<String[],Void,Void> {
                             } catch (ParseException e) {
 
                             }
-                            database.updateNews(ititle,idescription,ipubDate,j);
+
+                            database.updateNews(ititle, idescription.replaceAll("\\<[^>]*>",""), ipubDate, j);
 
                         }
                     }
