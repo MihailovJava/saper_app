@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -24,8 +26,8 @@ public class RadioActivity extends SherlockActivity {
 
         private MediaPlayer mediaPlayer;
         private Player player;
-
-        public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
+        PhoneStateListener phoneStateListener;
+    public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +38,36 @@ public class RadioActivity extends SherlockActivity {
             setContentView(R.layout.radio);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            phoneStateListener = new PhoneStateListener() {
+                @Override
+                public void onCallStateChanged(int state, String incomingNumber) {
+                    if (state == TelephonyManager.CALL_STATE_RINGING) {
+                        mediaPlayer.pause();
+                    } else if(state == TelephonyManager.CALL_STATE_IDLE) {
+                        //mediaPlayer.start();
+                    } else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
+                        mediaPlayer.pause();
+                    }
+                    super.onCallStateChanged(state, incomingNumber);
+                }
+            };
+            TelephonyManager mgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            if(mgr != null) {
+                mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+            }
             initUI();
         }
 
-        @Override
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TelephonyManager mgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        if(mgr != null) {
+            mgr.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+        }
+    }
+
+    @Override
         protected void onResume(){
             super.onResume();
             playButton.setImageResource(R.drawable.btn_play);

@@ -2,8 +2,13 @@ package com.comfymobile.saadat.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
@@ -30,6 +35,8 @@ public class LoadingActivity extends Activity {
      */
     TextView loadText;
     public static Activity activity;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +93,16 @@ public class LoadingActivity extends Activity {
         return  null;
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+    }
+
     private static JSONArray getData(String key)throws Exception{
         try {
             JSONArray jsonArray = new JSONArray(getRequestString(key));
@@ -96,7 +113,19 @@ public class LoadingActivity extends Activity {
     }
 
     public void synchronizeDataBase(Context context){
-        new SynchronizeTask(context).execute();
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        int lastupdate = preferences.getInt("update",0);
+        int today = (int) System.currentTimeMillis() / 1000 / 60 / 60 / 24;
+        if (lastupdate != today && isOnline()){
+            new SynchronizeTask(context).execute();
+            editor.putInt("update",today);
+            editor.commit();
+        }else{
+            Intent intent = new Intent(context, MenuActivity.class);
+            context.startActivity(intent);
+            LoadingActivity.activity.finish();
+        }
     }
 
     class SynchronizeTask extends AsyncTask<Void, Integer, Void> {
@@ -105,7 +134,6 @@ public class LoadingActivity extends Activity {
         JSONArray cit;
         JSONArray cat;
         JSONArray events;
-        JSONArray namas;
 
 
         Context context;
@@ -136,9 +164,6 @@ public class LoadingActivity extends Activity {
 
                 publishProgress(LOAD_EVENTS);
                 events = getData(EVENTS);
-                //publishProgress(LOAD_NAMAS);
-                //namas = getData(NAMAS);
-
 
 
                 if (org != null){ database.clearOrganization();
@@ -191,21 +216,6 @@ public class LoadingActivity extends Activity {
                     String address = events.getJSONObject(i).getString("address");
                     database.updateEvents(events_id,title,text,last_mod,time,city,address);
                 }}
-                if (namas != null){ database.clearNamas();
-                //update namas
-                for (int i = 0 ; i < namas.length(); i++){
-                    int namas_id = namas.getJSONObject(i).getInt("id_namaz");
-                    String date = namas.getJSONObject(i).getString("date");
-                    String fajr = namas.getJSONObject(i).getString("n1");
-                    String sunrise = namas.getJSONObject(i).getString("n2");
-                    String dhuhr = namas.getJSONObject(i).getString("n3");
-                    String asr = namas.getJSONObject(i).getString("n4");
-                    String maghrib = namas.getJSONObject(i).getString("n5");
-                    String isha = namas.getJSONObject(i).getString("n6");
-                    int city_id = namas.getJSONObject(i).getInt("id_city");
-                    database.updateNamas(namas_id,date,fajr,sunrise,dhuhr,asr,maghrib,isha,city_id);
-                }}
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("SynchronizeTask", "no internet access");
