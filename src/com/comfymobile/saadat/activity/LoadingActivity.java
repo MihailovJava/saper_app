@@ -217,13 +217,14 @@ public class LoadingActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            publishProgress(LOAD_NEWS);
+
             new RSSReader(context).execute(new String[]{
                     "http://www.islamrf.ru/rss/",
                     "http://islam-today.ru/rss/",
                     "http://www.muslimeco.ru/rss.php"
             });
-            publishProgress(LOAD_DONE);
+            publishProgress(LOAD_NEWS);
+
         }
 
         private static final int LOAD_START = 0;
