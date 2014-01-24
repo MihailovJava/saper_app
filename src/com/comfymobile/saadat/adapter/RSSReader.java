@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.TextView;
+import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.activity.MenuActivity;
 import com.comfymobile.saadat.database.LocalDatabase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -141,6 +143,9 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
     protected void onPostExecute(Void result) {
         Intent intent = new Intent(context, MenuActivity.class);
         context.startActivity(intent);
+        View layout = View.inflate(context,R.layout.loading,null);
+        TextView loadText = (TextView) layout.findViewById(R.id.loadText);
+        loadText.setText("Загрузка - Завершено");
         ((Activity) context).finish();
     }
 }
