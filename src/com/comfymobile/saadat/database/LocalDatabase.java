@@ -281,8 +281,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context){
-        super(context,DATA_BASE_NAME,null,1);
+        super(context,DATA_BASE_NAME,null,2);
+        this.context = context;
     }
+    Context context;
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -297,6 +299,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+        if (i != i2){
+            sqLiteDatabase.execSQL("DROP TABLE newssource");
+            sqLiteDatabase.execSQL("DROP TABLE organization");
+            sqLiteDatabase.execSQL("DROP TABLE city");
+            sqLiteDatabase.execSQL("DROP TABLE category");
+            sqLiteDatabase.execSQL("DROP TABLE news");
+            sqLiteDatabase.execSQL("DROP TABLE events");
+            sqLiteDatabase.execSQL("DROP TABLE namas");
+            //context.openOrCreateDatabase(DATA_BASE_NAME,Context.MODE_PRIVATE,null);
+        }
         onCreate(sqLiteDatabase);
     }
 }
