@@ -1,13 +1,19 @@
 package com.comfymobile.saadat.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.database.LocalDatabase;
 
 /**
  * User: Nixy
@@ -92,6 +98,39 @@ public class MenuActivity extends Activity {
         context = this;
         setContentView(R.layout.menu);
         initUI();
+        if (!isOrganizations()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Требуется обновление, включите интернет соединение")
+                    .setNegativeButton("Выйти", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SharedPreferences preferences;
+                            SharedPreferences.Editor editor;
+                            preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            editor = preferences.edit();
+                            editor.putInt("update",0);
+                            editor.commit();
+                            Intent intent = new Intent(context, LoadingActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+    private boolean isOrganizations(){
+        Cursor organizations = LocalDatabase.getInstance(this).getListSource(-1,-1);
+        if (organizations.getCount() > 0)
+            return true;
+        else
+            return false;
     }
 }
 

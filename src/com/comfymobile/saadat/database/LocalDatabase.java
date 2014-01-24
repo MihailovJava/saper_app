@@ -281,7 +281,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context){
-        super(context,DATA_BASE_NAME,null,2);
+        super(context,DATA_BASE_NAME,null,3);
         this.context = context;
     }
     Context context;
