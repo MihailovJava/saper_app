@@ -1,12 +1,9 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Html;
-import android.view.View;
-import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -17,7 +14,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
 
 public class DetalOrganizationActivity extends SherlockActivity {
 
-    TextView text;
+    WebView text;
     TextView category;
     Button back;
     Cursor sourceOrganization;
@@ -60,11 +57,12 @@ public class DetalOrganizationActivity extends SherlockActivity {
         info.append("<a href=\"mailto:"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email"))+"\">"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.email"))+"</a> ");
         info.append("<br><b>Сайт:</b> ");
         info.append("<a href=\""+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site"))+"\">"+sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.site"))+"</a>");
-        info.append("<br><b>Дополнительная информация:</b><br>");
+        info.append("<br><b><p align=\"justify\">Дополнительная информация:</b><br>");
         info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.description")));
+        info.append("</p>");
 
-        text = (TextView) findViewById(R.id.text);
-        text.setText(Html.fromHtml(info.toString()));
+        text = (WebView) findViewById(R.id.text);
+        text.loadData(info.toString(), "text/html", "utf-8");
 
         category = (TextView) findViewById(R.id.category);
         category.setText("Категория: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));

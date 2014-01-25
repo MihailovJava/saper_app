@@ -6,22 +6,17 @@
                 android:layout_height="fill_parent" android:gravity="center_vertical" android:baselineAligned="false"
         >
 
-     <ScrollView
+    <WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollView"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true" android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true" android:layout_margin="16dp">
-        <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Text"
-                    android:id="@+id/text"
-                    style="@style/TextStyle"/>
-        </TableLayout>
-    </ScrollView>
+            android:id="@+id/text" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginTop="8dp"
+            android:layout_above="@+id/full"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Читать полностью"
+            android:id="@+id/full" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true" android:layout_margin="8dp"/>
 </RelativeLayout>

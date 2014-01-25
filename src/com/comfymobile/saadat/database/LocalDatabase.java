@@ -62,11 +62,6 @@ public class LocalDatabase{
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_EVENTS);
     }
 
-    public void clearNamas(){
-        database.execSQL("DROP TABLE namas");
-        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NAMAS);
-    }
-
     public void updateOrganization(int id, String name, String description, int id_city,
                                         String address, String t_number, String site,
                                         int id_category,String last_mod,String email){
@@ -87,9 +82,9 @@ public class LocalDatabase{
         database.execSQL(query, new String[]{String.valueOf(id_category),name,last_mod});
     }
 
-    public void updateNews(String title, String text, String last_mod, int id_source){
-        String query = "insert or replace into news (  title , news_text, last_mod, id_source) values (?,?,?,?)";
-        database.execSQL(query,new  String[]{title,text,last_mod,String.valueOf(id_source)});
+    public void updateNews(String title, String text, String last_mod, int id_source, String url){
+        String query = "insert or replace into news (  title , news_text, last_mod, id_source, url) values (?,?,?,?,?)";
+        database.execSQL(query,new  String[]{title,text,last_mod,String.valueOf(id_source),url});
     }
 
     public void updateNewsSource(int id_source,String name, String source_text, String last_mod){
@@ -100,13 +95,6 @@ public class LocalDatabase{
     public void updateEvents(int events_id,String title, String text,String last_mod,String time, String city, String address){
         String query = "insert or replace into events ( _id , title , events_text, last_mod, time, city, address) values (?,?,?,?,?,?,?)";
         database.execSQL(query,new  String[]{String.valueOf(events_id),title,text,last_mod, time, city, address});
-    }
-
-    public void updateNamas(int id,String date,String fajr,String sunrise,String dhuhr,String asr
-                            , String maghrib, String isha,int city_id){
-        String query = "insert or replace into namas ( _id, date, fajr, sunrise," +
-                                                    " dhuhr, asr, maghrib, isha, city_id) values (?,?,?,?,?,?,?,?,?)";
-        database.execSQL(query,new  String[]{String.valueOf(id),date,fajr,sunrise,dhuhr,asr,maghrib,isha,String.valueOf(city_id)});
     }
 
     public Cursor getListSource(int city,int category){
@@ -188,7 +176,7 @@ public class LocalDatabase{
 
     public Cursor getNews(int id, int id_s){
         String args[] = null;
-        String query = "SELECT title , news_text, _id, last_mod, id_source FROM news WHERE id_source = "+String.valueOf(id_s);
+        String query = "SELECT title , news_text, _id, last_mod, id_source, url FROM news WHERE id_source = "+String.valueOf(id_s);
         if (id > 0){
             query += " AND _id = ?";
             args = new String[]{String.valueOf(id)};
@@ -217,19 +205,6 @@ public class LocalDatabase{
             query += " AND T1._id = ?";
             args = new String[]{String.valueOf(id)};
         }
-        Cursor cursor = database.rawQuery(query,args);
-        if (cursor != null){
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
-
-    public Cursor getNamas(int city_id, String date){
-        String args[] = null;
-        String query = "SELECT _id, date, fajr, sunrise," +
-                " dhuhr, asr, maghrib, isha, city_id FROM namas";
-        query += " WHERE city_id = ? AND date = ?";
-        args = new String[]{String.valueOf(city_id),date};
         Cursor cursor = database.rawQuery(query,args);
         if (cursor != null){
             cursor.moveToFirst();
@@ -268,20 +243,17 @@ class DatabaseHelper extends SQLiteOpenHelper {
             "not null, last_mod text);";
 
     public static final String ON_DATA_BASE_CREATE_NEWS = " CREATE TABLE news (_id INTEGER PRIMARY KEY AUTOINCREMENT, title text" +
-            ", news_text text, id_source text, last_mod text);";
+            ", news_text text, id_source text, last_mod text, url text);";
 
     public static final String ON_DATA_BASE_CREATE_EVENTS = " CREATE TABLE events (_id primary key, title text, " +
             "events_text text, last_mod text, time text, city text, address text);";
-
-    public static final String ON_DATA_BASE_CREATE_NAMAS = " CREATE TABLE namas (_id primary key," +
-            " date text, fajr text, sunrise text, dhuhr text, asr text, maghrib text, isha  text, city_id text);";
 
     public static final String ON_DATA_BASE_CREATE_NEWSSOURCE = " CREATE TABLE newssource(_id primary key, name text " +
             "not null, source_text text, last_mod text);";
 
 
     public DatabaseHelper(Context context){
-        super(context,DATA_BASE_NAME,null,3);
+        super(context,DATA_BASE_NAME,null,4);
         this.context = context;
     }
     Context context;
@@ -294,7 +266,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWSSOURCE);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
-        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
     }
 
     @Override
@@ -306,7 +277,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("DROP TABLE category");
             sqLiteDatabase.execSQL("DROP TABLE news");
             sqLiteDatabase.execSQL("DROP TABLE events");
-            sqLiteDatabase.execSQL("DROP TABLE namas");
             //context.openOrCreateDatabase(DATA_BASE_NAME,Context.MODE_PRIVATE,null);
         }
         onCreate(sqLiteDatabase);

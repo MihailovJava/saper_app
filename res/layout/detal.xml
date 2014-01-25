@@ -4,7 +4,7 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent" android:baselineAligned="false"
-              android:background="@drawable/bg">
+        >
 
     <TextView
             android:layout_width="fill_parent"
@@ -13,24 +13,12 @@
             android:id="@+id/category"
 
             style="@style/TextStyle"
-            android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_margin="16dp"/>
-    <ScrollView
+            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp" android:layout_marginTop="16dp" android:layout_marginRight="16dp"/>
+    <WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollView"
-            android:layout_alignParentLeft="true" android:layout_alignParentRight="true"
-            android:layout_below="@+id/category" android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" android:layout_marginBottom="8dp">
-        <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Text"
-                    android:id="@+id/text"
-                    style="@style/TextStyle" android:layout_below="@+id/category" android:layout_alignLeft="@+id/scrollView"
-                    />
-        </TableLayout>
-    </ScrollView>
+            android:id="@+id/text" android:layout_below="@+id/category"
+            android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true" android:layout_margin="8dp"/>
 </RelativeLayout>

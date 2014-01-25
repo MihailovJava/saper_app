@@ -234,7 +234,6 @@ public class LoadingActivity extends Activity {
                     "http://www.muslimeco.ru/rss.php"
             });
             publishProgress(LOAD_NEWS);
-
         }
 
         private static final int LOAD_START = 0;

@@ -1,14 +1,12 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
-import android.view.Window;
+import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -21,8 +19,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
  */
 public class DetalNewsActivity extends SherlockActivity {
 
-    TextView text;
-    Button back;
+    WebView text;
     Cursor sourceEvent;
     int currentID;
     int id_s;
@@ -59,25 +56,42 @@ public class DetalNewsActivity extends SherlockActivity {
          sourceEvent = LocalDatabase.getInstance(this).getEvents(currentID);
 
         StringBuilder info = new StringBuilder();
+        String link = null;
+        info.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"></head><body>");
         info.append("<b><h4>");
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
         info.append("</b></h4>");
         if (isNews){
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
-            info.append("<br>");
+            info.append("<br><p align=\"justify\">");
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
+            info.append("</p>");
+            link = sourceEvent.getString(sourceEvent.getColumnIndex("url"));
         }else{
             info.append("<em>");
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("time")));
             info.append("<br><br>Адрес: ");
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("address")));
-            info.append("</em><br><br>");
+            info.append("</em><br><br><p align=\"justify\">");
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("events_text")));
-
+            info.append("</p>");
         }
-        text = (TextView) findViewById(R.id.text);
-        text.setText(Html.fromHtml(info.toString()));
-
+        info.append("</body></html>");
+        text = (WebView) findViewById(R.id.text);
+        text.loadData(info.toString(), "text/html", "utf-8");
+        Button full = (Button) findViewById(R.id.full);
+        if (link != null){
+            final String finalLink = link;
+            full.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalLink));
+                    startActivity(browserIntent);
+                }
+            });
+        }else{
+            full.setVisibility(View.GONE);
+        }
 
     }
 

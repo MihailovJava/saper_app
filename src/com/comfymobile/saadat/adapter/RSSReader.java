@@ -44,6 +44,7 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
     public static final String ITEM_TITLE = "title";
     public static final String ITEM_DESC = "description";
     public static final String ITEM_DATE = "pubDate";
+    public static final String ITEM_URL = "link";
 
     LocalDatabase database;
     Context context;
@@ -105,11 +106,13 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
                             if (iDescription == null)
                                 iDescription = (Element) item.getElementsByTagName(ITEM_TXT).item(0);
                             Element iDate = (Element) item.getElementsByTagName(ITEM_DATE).item(0);
+                            Element iLink = (Element) item.getElementsByTagName(ITEM_URL).item(0);
 
 
                             String ititle = iTitle.getFirstChild().getNodeValue();
                             String idescription = iDescription.getFirstChild().getNodeValue();
                             String ipubDate = iDate.getFirstChild().getNodeValue();
+                            String ilink = iLink.getFirstChild().getNodeValue();
 
                             DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
                             Date nDate;
@@ -121,7 +124,7 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
 
                             }
 
-                            database.updateNews(ititle, idescription.replaceAll("\\<[^>]*>",""), ipubDate, j);
+                            database.updateNews(ititle, idescription.replaceAll("\\<[^>]*>",""), ipubDate, j,ilink);
 
                         }
                     }
