@@ -57,7 +57,6 @@ public class DetalNewsActivity extends SherlockActivity {
 
         StringBuilder info = new StringBuilder();
         String link = null;
-        info.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"></head><body>");
         info.append("<b><h4>");
         info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
         info.append("</b></h4>");
@@ -76,7 +75,6 @@ public class DetalNewsActivity extends SherlockActivity {
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("events_text")));
             info.append("</p>");
         }
-        info.append("</body></html>");
         text = (WebView) findViewById(R.id.text);
         text.loadDataWithBaseURL(null,info.toString(), "text/html", "utf-8",null);
         Button full = (Button) findViewById(R.id.full);

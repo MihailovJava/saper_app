@@ -62,7 +62,7 @@ public class DetalOrganizationActivity extends SherlockActivity {
         info.append("</p>");
 
         text = (WebView) findViewById(R.id.text);
-        text.loadData(info.toString(), "text/html", "utf-8");
+        text.loadDataWithBaseURL(null,info.toString(), "text/html", "utf-8",null);
 
         category = (TextView) findViewById(R.id.category);
         category.setText("Категория: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
