@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.PrayTime;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -139,5 +140,17 @@ public class NamasActivity extends SherlockActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

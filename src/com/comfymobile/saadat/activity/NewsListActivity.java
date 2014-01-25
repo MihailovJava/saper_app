@@ -10,6 +10,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 /**
  * User: Nixy
@@ -93,6 +95,11 @@ public class NewsListActivity extends SherlockActivity {
                     intent.putExtra("sourceId",sourceID);
                     intent.putExtra("news",isNews);
                     context.startActivity(intent);
+                    String newsName = cursor.getString(LocalDatabase.NEWS_NAME_IND);
+                    String whatThis = " Новость ";
+                    EasyTracker.getInstance(context).send(MapBuilder
+                            .createEvent("ui_action", "newsSelect", whatThis + " = " + newsName, null)
+                            .build());
                 }else{
                     int newsPosition = i;
                     cursor.moveToPosition(newsPosition);
@@ -101,10 +108,27 @@ public class NewsListActivity extends SherlockActivity {
                     intent.putExtra("id", newsID);
                     intent.putExtra("news",isNews);
                     context.startActivity(intent);
+                    String newsName = cursor.getString(LocalDatabase.NEWS_NAME_IND);
+                    String whatThis = " Событие ";
+                    EasyTracker.getInstance(context).send(MapBuilder
+                            .createEvent("ui_action", "newsSelect", whatThis + " = " + newsName, null)
+                            .build());
                 }
 
             }
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

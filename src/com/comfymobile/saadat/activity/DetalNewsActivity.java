@@ -11,6 +11,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
 
 /**
  * User: Nixy
@@ -76,7 +77,7 @@ public class DetalNewsActivity extends SherlockActivity {
             info.append("</p>");
         }
         text = (WebView) findViewById(R.id.text);
-        text.loadDataWithBaseURL(null,info.toString(), "text/html", "utf-8",null);
+        text.loadDataWithBaseURL(null, info.toString(), "text/html", "utf-8", null);
         Button full = (Button) findViewById(R.id.full);
         if (link != null){
             final String finalLink = link;
@@ -91,6 +92,18 @@ public class DetalNewsActivity extends SherlockActivity {
             full.setVisibility(View.GONE);
         }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 
 }

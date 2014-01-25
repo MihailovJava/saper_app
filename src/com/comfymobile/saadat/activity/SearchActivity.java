@@ -13,6 +13,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 
 public class SearchActivity extends SherlockActivity {
@@ -76,6 +78,18 @@ public class SearchActivity extends SherlockActivity {
         updateCategories();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
+
     void updateCategories(){
         categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID());
         SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
@@ -111,6 +125,11 @@ public class SearchActivity extends SherlockActivity {
                 Intent intent = new Intent(context, OrganizationListActivity.class);
                 intent.putExtra("cityID", getCityID());
                 intent.putExtra("categoryID", getCategoryID());
+                String categoryName = categorySource.getString(LocalDatabase.CATEGORY_NAME_IND);
+                String cityName = citySource.getString(LocalDatabase.CITY_NAME_IND);
+                EasyTracker.getInstance(context).send(MapBuilder
+                        .createEvent("ui_action", "categorySelect", "Категория = " + categoryName + " Город = " + cityName, null)
+                        .build());
                 context.startActivity(intent);
             }catch (Exception e){
 

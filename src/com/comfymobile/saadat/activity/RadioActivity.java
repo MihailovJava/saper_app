@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import java.io.IOException;
 
@@ -57,6 +58,18 @@ public class RadioActivity extends SherlockActivity {
             }
             initUI();
         }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
 
     @Override
     protected void onDestroy() {

@@ -14,6 +14,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
 
 
 public class InfoActivity extends SherlockActivity {
@@ -75,5 +76,17 @@ public class InfoActivity extends SherlockActivity {
                 startActivity(Intent.createChooser(it, "Выберите почтовый клиент"));
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }

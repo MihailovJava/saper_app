@@ -10,6 +10,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.google.analytics.tracking.android.EasyTracker;
 
 
 public class DetalOrganizationActivity extends SherlockActivity {
@@ -62,10 +63,22 @@ public class DetalOrganizationActivity extends SherlockActivity {
         info.append("</p>");
 
         text = (WebView) findViewById(R.id.text);
-        text.loadDataWithBaseURL(null,info.toString(), "text/html", "utf-8",null);
+        text.loadDataWithBaseURL(null, info.toString(), "text/html", "utf-8", null);
 
         category = (TextView) findViewById(R.id.category);
         category.setText("Категория: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
 }
