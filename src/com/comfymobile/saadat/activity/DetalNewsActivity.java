@@ -78,7 +78,7 @@ public class DetalNewsActivity extends SherlockActivity {
         }
         info.append("</body></html>");
         text = (WebView) findViewById(R.id.text);
-        text.loadData(info.toString(), "text/html", "utf-8");
+        text.loadDataWithBaseURL(null,info.toString(), "text/html", "utf-8",null);
         Button full = (Button) findViewById(R.id.full);
         if (link != null){
             final String finalLink = link;
