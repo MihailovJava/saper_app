@@ -42,7 +42,8 @@
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout1"
                       android:layout_marginTop="4dp">
-            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Sunrise"
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:text="Sunrise"
                       android:layout_weight="1" android:id="@+id/textView3"
                       android:autoText="false" style="@style/TextStyle"/>
             <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -57,7 +58,8 @@
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout2"
                       android:layout_marginTop="4dp">
-            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Dhuhr"
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:text="Dhuhr"
                       android:layout_weight="1" android:id="@+id/textView5"
                       android:autoText="false" style="@style/TextStyle"/>
             <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -72,7 +74,8 @@
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout3"
                       android:layout_marginTop="4dp">
-            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Asr"
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:text="Asr"
                       android:layout_weight="1" android:id="@+id/textView7"
                       android:autoText="false" style="@style/TextStyle"/>
             <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -87,7 +90,8 @@
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout4"
                       android:layout_marginTop="4dp">
-            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Maghrib"
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:text="Maghrib"
                       android:layout_weight="1" android:id="@+id/textView9"
                       android:autoText="false" style="@style/TextStyle"/>
             <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -102,7 +106,8 @@
         <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
                       android:layout_height="wrap_content" android:id="@+id/linearLayout5"
                       android:layout_marginTop="4dp">
-            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Isha"
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:text="Isha"
                       android:layout_weight="1" android:id="@+id/textView11"
                       android:autoText="false" style="@style/TextStyle"/>
             <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content"

@@ -75,6 +75,10 @@
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activity.SettingsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="portrait"
+        ></activity>
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
@@ -94,6 +98,9 @@
                 <category android:name="com.comfymobile.saadat" />
             </intent-filter>
         </receiver>
+        <service android:name=".service.SaadatService" />
+        <receiver android:name=".service.SaadatReceiver"
+                  android:permission="android.intent.action.BOOT_COMPLETED"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

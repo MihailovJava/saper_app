@@ -1,6 +1,6 @@
 package com.comfymobile.saadat.activity;
 
-import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,8 +12,12 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
 
 /**
@@ -21,7 +25,7 @@ import com.google.analytics.tracking.android.EasyTracker;
  * Date: 29.04.13
  * Time: 21:26
  */
-public class MenuActivity extends Activity {
+public class MenuActivity extends SherlockActivity {
 
     private Button news_button;
     private Button namaz_button;
@@ -88,7 +92,20 @@ public class MenuActivity extends Activity {
                 context.startActivity(intent);
             }
         });
+        if (!isMyServiceRunning())
+            context.getApplicationContext().startService(new Intent(context.getApplicationContext(), SaadatService.class));
     }
+
+    boolean isMyServiceRunning() {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (SaadatService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void onStart() {
@@ -106,7 +123,6 @@ public class MenuActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         context = this;
         setContentView(R.layout.menu);
         initUI();
@@ -143,6 +159,14 @@ public class MenuActivity extends Activity {
             return true;
         else
             return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem prefItem = menu.add("Настройки");
+        prefItem.setIntent(new Intent(context,SettingsActivity.class));
+        prefItem.setIcon(R.drawable.ab_settings);
+        return super.onCreateOptionsMenu(menu);
     }
 }
 

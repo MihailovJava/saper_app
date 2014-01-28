@@ -1,6 +1,7 @@
 package com.comfymobile.saadat.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -25,29 +27,27 @@ import java.io.IOException;
 public class RadioActivity extends SherlockActivity {
         private ImageView playButton;
 
-        private MediaPlayer mediaPlayer;
-        private Player player;
+        Player player;
         PhoneStateListener phoneStateListener;
-    public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
+        public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setContentView(R.layout.radio);
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+            player = Player.getInstance(this);
             phoneStateListener = new PhoneStateListener() {
                 @Override
                 public void onCallStateChanged(int state, String incomingNumber) {
                     if (state == TelephonyManager.CALL_STATE_RINGING) {
-                        mediaPlayer.pause();
+                        player.getMediaPlayer().pause();
                     } else if(state == TelephonyManager.CALL_STATE_IDLE) {
                         //mediaPlayer.start();
                     } else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
-                        mediaPlayer.pause();
+                        player.getMediaPlayer().pause();
                     }
                     super.onCallStateChanged(state, incomingNumber);
                 }
@@ -81,22 +81,22 @@ public class RadioActivity extends SherlockActivity {
     }
 
     @Override
-        protected void onResume(){
-            super.onResume();
-            playButton.setImageResource(R.drawable.btn_play);
-            if (player == null){
-                player = new Player();
-                player.execute(RADIO_URL);
-            }
-            if (mediaPlayer.isPlaying())
-                mediaPlayer.stop();
-        }
+    protected void onPause() {
+        super.onPause();
+         player.cancel(true);
+    }
 
-        private void initUI(){
-            if (player == null){
-                player = new Player();
-                player.execute(RADIO_URL);
-            }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player.getMediaPlayer().isPlaying()){
+            playButton.setImageResource(R.drawable.btn_pause);
+        }else {
+            playButton.setImageResource(R.drawable.btn_play);
+        }
+    }
+
+    private void initUI(){
 
             playButton = (ImageView) findViewById(R.id.playbutton);
             playButton.setOnClickListener(new View.OnClickListener() {
@@ -104,16 +104,20 @@ public class RadioActivity extends SherlockActivity {
 
                 @Override
                 public void onClick(View v) {
-                       if (!mediaPlayer.isPlaying()){
-                             mediaPlayer.start();
-                             playButton.setImageResource(R.drawable.btn_pause);
+                       if (!player.getMediaPlayer().isPlaying()){
+                           player.getMediaPlayer().start();
+                           playButton.setImageResource(R.drawable.btn_pause);
                        }else {
-                             playButton.setImageResource(R.drawable.btn_play);
-                             mediaPlayer.pause();
+                           playButton.setImageResource(R.drawable.btn_play);
+                           player.getMediaPlayer().pause();
                         }
                 }
             });
 
+            player.setPlayButton(playButton);
+            if (!player.getPrepared() && player.getStatus() != AsyncTask.Status.RUNNING){
+                player.execute(RADIO_URL);
+            }
         }
 
     @Override
@@ -135,13 +139,50 @@ public class RadioActivity extends SherlockActivity {
          *
          */
 
-        class Player extends AsyncTask<String, Void, Boolean> {
+        static class Player extends AsyncTask<String, Void, Boolean> {
             private ProgressDialog progress;
+
+            private static Player me;
+            private static boolean prepared = false;
+            private MediaPlayer mediaPlayer;
+            ImageView playButton;
+
+
+            public MediaPlayer getMediaPlayer() {
+                return mediaPlayer;
+            }
+
+            public void setPlayButton(ImageView playButton) {
+                this.playButton = playButton;
+            }
+
+            public static boolean getPrepared(){
+                return prepared;
+            }
+
+            private Player(Context context) {
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                progress = new ProgressDialog(context);
+            }
+
+            public static Player getInstance(Context context){
+                if (me == null){
+                    me = new Player(context);
+                }
+                if ( me != null){
+                    if (me.isCancelled() == true && !me.prepared){
+                        me = new Player(context);
+                    }
+                }
+                return me;
+            }
+
 
             @Override
             protected Boolean doInBackground(String... params) {
                 // TODO Auto-generated method stub
-                Boolean prepared;
+
                 try {
                     mediaPlayer.setDataSource(params[0]);
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -179,10 +220,6 @@ public class RadioActivity extends SherlockActivity {
 
             }
 
-            public Player() {
-                progress = new ProgressDialog(RadioActivity.this);
-            }
-
             @Override
             protected void onPreExecute() {
                 // TODO Auto-generated method stub
@@ -193,13 +230,6 @@ public class RadioActivity extends SherlockActivity {
             }
         }
 
-        @Override
-        protected void onPause() {
-            // TODO Auto-generated method stub
-            super.onPause();
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
-            }
-        }
+
 
 }

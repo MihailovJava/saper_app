@@ -4,10 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -28,39 +25,57 @@ public class NamasActivity extends SherlockActivity {
     String date;
 
     Spinner city;
-
+    LocalDatabase database;
     Cursor citySource;
-
+    Cursor namas;
     TextView dateView;
 
-    TextView n1;
-    TextView n2;
-    TextView n3;
-    TextView n4;
-    TextView n5;
-    TextView n6;
+    CheckBox[] flags;
+    TextView[] n;
 
-    int utc = 4;
-    double lat = 55.751667;
-    double lon = 37.617778;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        database = LocalDatabase.getInstance(context);
         setContentView(R.layout.namas);
         context = this;
         date = new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime());
         initUI();
     }
     void initUI(){
-        n1 = (TextView) findViewById(R.id.n1);
-        n2 = (TextView) findViewById(R.id.n2);
-        n3 = (TextView) findViewById(R.id.n3);
-        n4 = (TextView) findViewById(R.id.n4);
-        n5 = (TextView) findViewById(R.id.n5);
-        n6 = (TextView) findViewById(R.id.n6);
+        n = new TextView[]{
+            (TextView) findViewById(R.id.n1),
+            (TextView) findViewById(R.id.n2),
+            (TextView) findViewById(R.id.n3),
+            (TextView) findViewById(R.id.n4),
+            (TextView) findViewById(R.id.n5),
+            (TextView) findViewById(R.id.n6)
+        };
+
+        flags = new CheckBox[]{
+                (CheckBox) findViewById(R.id.alarm_fajr),
+                (CheckBox) findViewById(R.id.alarm_sunrise),
+                (CheckBox) findViewById(R.id.alarm_duhr),
+                (CheckBox) findViewById(R.id.alarm_asr),
+                (CheckBox) findViewById(R.id.alarm_maghrib),
+                (CheckBox) findViewById(R.id.alarm_isha)
+        };
+
+        for (int i = 0; i < flags.length; i++){
+            flags[i].setTag(i);
+            flags[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int i = (Integer) buttonView.getTag();
+                    database.updateNamasFlag(i + 1, isChecked ? 1 : 0);
+                }
+            });
+            namas = database.getNamas(i+1)  ;
+            n[i].setText(PrayTime.getNamasTimeFromMillis(namas.getString(namas.getColumnIndex("time"))));
+            flags[i].setChecked(namas.getInt(namas.getColumnIndex("flag")) == 0 ? false : true);
+        }
         city = (Spinner) findViewById(R.id.spinner);
         citySource = LocalDatabase.getInstance(this).getCitySource();
         SimpleCursorAdapter cityAdapter = new SimpleCursorAdapter(this,
@@ -69,67 +84,15 @@ public class NamasActivity extends SherlockActivity {
                 new String[] {"name","_id"},
                 new int[] { R.id.name});
         cityAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-       // city.setAdapter(cityAdapter);
-     /*   city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                updateTimes();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //Code here
-            }
-        });*/
 
         dateView = (TextView) findViewById(R.id.date);
-        dateView.setText("Сегодня: "+date);
-
-        updateTimes();
+        dateView.setText("Сегодня: " + date);
     }
 
 
 
-    void updateTimes(){
 
-        getCityID();
 
-        PrayTime prayers = new PrayTime();
-
-        prayers.setTimeFormat(prayers.Time24);
-
-        prayers.setCalcMethod(prayers.Karachi);
-
-        prayers.setAsrJuristic(prayers.Shafii);
-        prayers.setAdjustHighLats(prayers.AngleBased);
-        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
-        prayers.tune(offsets);
-
-        Date now = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(now);
-
-        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
-                lat, lon, utc);
-
-        n1.setText(prayerTimes.get(0));
-        n2.setText(prayerTimes.get(1));
-        n3.setText(prayerTimes.get(2));
-        n4.setText(prayerTimes.get(3));
-        n5.setText(prayerTimes.get(5));
-        n6.setText(prayerTimes.get(6));
-    }
-
-    void getCityID(){
-        //int cityPosition = city.getSelectedItemPosition();
-        int cityPosition = 0;
-        if (cityPosition != -1){
-            citySource.moveToPosition(cityPosition);
-            utc = citySource.getInt(citySource.getColumnIndex("tzone"));
-            lat = Double.valueOf(citySource.getString(citySource.getColumnIndex("x")));
-            lon = Double.valueOf(citySource.getString(citySource.getColumnIndex("y")));
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
