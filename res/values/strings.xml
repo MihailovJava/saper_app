@@ -15,6 +15,5 @@
     <string name="btn_info">Инфо</string>
     <string name="btn_catalog">Места</string>
     <string name="pref_city_title">Выберите город</string>
-    <string name="pref_city_summary">Город в котором находитесь</string>
     <string name="pref_notify">Город успешно изменен на</string>
 </resources>

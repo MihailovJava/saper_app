@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -33,6 +34,7 @@ public class MenuActivity extends SherlockActivity {
     private Button radio_button;
     private Button catalog_button;
     private Button info_button;
+    private ImageView settings;
 
     private Context context;
 
@@ -43,6 +45,7 @@ public class MenuActivity extends SherlockActivity {
         radio_button = (Button) findViewById(R.id.radio_button);
         catalog_button = (Button) findViewById(R.id.list_button);
         info_button =   (Button) findViewById(R.id.info_button);
+        settings =   (ImageView) findViewById(R.id.settings);
 
         news_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +95,15 @@ public class MenuActivity extends SherlockActivity {
                 context.startActivity(intent);
             }
         });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,SettingsActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
         if (!isMyServiceRunning())
             context.getApplicationContext().startService(new Intent(context.getApplicationContext(), SaadatService.class));
     }
@@ -124,6 +136,7 @@ public class MenuActivity extends SherlockActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
         initUI();
         if (!isOrganizations()){
@@ -161,13 +174,6 @@ public class MenuActivity extends SherlockActivity {
             return false;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem prefItem = menu.add("Настройки");
-        prefItem.setIntent(new Intent(context,SettingsActivity.class));
-        prefItem.setIcon(R.drawable.ab_settings);
-        return super.onCreateOptionsMenu(menu);
-    }
 }
 
 
