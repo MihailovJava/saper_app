@@ -1,22 +1,24 @@
 package com.comfymobile.saadat.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceScreen;
+import android.preference.*;
+import android.view.Menu;
 import android.widget.Toast;
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.service.SaadatService;
 
 import java.util.ArrayList;
 
 /**
  * Created by Nixy on 28.01.14.
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends SherlockPreferenceActivity   {
 
     Context context;
 
@@ -26,7 +28,7 @@ public class SettingsActivity extends PreferenceActivity {
         final LocalDatabase database = LocalDatabase.getInstance(this);
         Cursor city = database.getCitySource();
         context = this;
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String[] sCity = new String[city.getCount()];
         final String[] id = new String[city.getCount()];
         for (int i = 0 ; !city.isAfterLast(); i++){
@@ -34,12 +36,21 @@ public class SettingsActivity extends PreferenceActivity {
             id[i] = String.valueOf(city.getInt(city.getColumnIndex("_id")));
             city.moveToNext();
         }
-        ListPreference cityList = new ListPreference(this);
+        final ListPreference cityList = new ListPreference(this);
         cityList.setKey("city_id");
         cityList.setEntries(sCity);
         cityList.setEntryValues(id);
         cityList.setTitle(getString(R.string.pref_city_title));
-        cityList.setSummary(getString(R.string.pref_city_summary));
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor edit = preferences.edit();
+        int cityId = Integer.valueOf(preferences.getString("city_id", "-1"));
+        if (cityId < 0){
+            edit.putString("city_id", SaadatService.MOSCOW_ID);
+            edit.commit();
+            cityId = Integer.valueOf(SaadatService.MOSCOW_ID);
+        }
+        city = database.getCitySource(cityId);
+        cityList.setSummary(city.getString(city.getColumnIndex("name")));
         cityList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -49,6 +60,7 @@ public class SettingsActivity extends PreferenceActivity {
                         getString(R.string.pref_notify)+" " +city.getString(city.getColumnIndex("name")),
                         Toast.LENGTH_SHORT);
                 notify.show();
+                cityList.setSummary(city.getString(city.getColumnIndex("name")));
                 return true;
             }
         });
@@ -59,5 +71,14 @@ public class SettingsActivity extends PreferenceActivity {
         setPreferenceScreen(root);
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
