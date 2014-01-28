@@ -4,6 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.comfymobile.saadat.adapter.PrayTime;
+import com.comfymobile.saadat.service.SaadatService;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * User: Nixy
@@ -26,7 +32,11 @@ public class LocalDatabase{
         database = helper.getWritableDatabase();
     }
 
-    public static LocalDatabase getInstance(Context context) {
+    public boolean isLocked(){
+        return database.isDbLockedByOtherThreads();
+    }
+
+    public  static LocalDatabase getInstance(Context context) {
         if (localDatabaseInstance == null){
             localDatabaseInstance = new LocalDatabase(context);
         }
@@ -62,6 +72,11 @@ public class LocalDatabase{
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_EVENTS);
     }
 
+    public void clearNamas(){
+        database.execSQL("Drop table namas");
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NAMAS);
+    }
+
     public void updateOrganization(int id, String name, String description, int id_city,
                                         String address, String t_number, String site,
                                         int id_category,String last_mod,String email){
@@ -95,6 +110,26 @@ public class LocalDatabase{
     public void updateEvents(int events_id,String title, String text,String last_mod,String time, String city, String address){
         String query = "insert or replace into events ( _id , title , events_text, last_mod, time, city, address) values (?,?,?,?,?,?,?)";
         database.execSQL(query,new  String[]{String.valueOf(events_id),title,text,last_mod, time, city, address});
+    }
+
+    public void updateNamasTime(int id, String time){
+        String query = " update namas set time = ? WHERE _id = ?";
+        database.execSQL(query,new  String[]{time,String.valueOf(id)});
+    }
+
+    public void dropNamasMiss(){
+        String query = " update namas set miss = 0";
+        database.execSQL(query);
+    }
+
+    public void updateNamasMiss(int id, int miss){
+        String query = " update namas set miss = ? WHERE _id = ?";
+        database.execSQL(query,new  String[]{String.valueOf(miss),String.valueOf(id)});
+    }
+
+    public void updateNamasFlag(int id, int flag){
+        String query = " update namas set flag = ? WHERE _id = ?";
+        database.execSQL(query,new  String[]{String.valueOf(flag),String.valueOf(id)});
     }
 
     public Cursor getListSource(int city,int category){
@@ -148,6 +183,17 @@ public class LocalDatabase{
                   cursor.moveToFirst();
               }
           return cursor;
+    }
+
+
+
+    public Cursor getCity(int id){
+        String query = "SELECT _id , name, x , y, tzone FROM city WHERE _id = ?";
+        Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
     public Cursor getDetal(int id){
@@ -212,21 +258,19 @@ public class LocalDatabase{
         return cursor;
     }
 
-    /**
-     * Добавить источник
-     * @param id номер источника
-     * @param title название
-     * @param description описание
-     * @param link ссылка
-     */
-    public void addSource(int id, String title, String description, String link){
-        String query = "insert into sources (_id,title,description,link) values (?,?,?,?)";
-        database.execSQL(query,new String[]{String.valueOf(id),title,description,link});
+    public Cursor getNamas(int id){
+        String args[] = null;
+        String query = "select _id, name, time, flag, miss from namas";
+        if (id != -1){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
-
-
-
-
 
 }
 
@@ -252,8 +296,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
             "not null, source_text text, last_mod text);";
 
 
+    public static final String ON_DATA_BASE_CREATE_NAMAS = " CREATE TABLE namas (_id integer primary key autoincrement," +
+            " name text, time text, flag integer,miss integer);";
+
     public DatabaseHelper(Context context){
-        super(context,DATA_BASE_NAME,null,4);
+        super(context,DATA_BASE_NAME,null,5);
         this.context = context;
     }
     Context context;
@@ -266,6 +313,41 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWSSOURCE);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
+        fillNamasTable(sqLiteDatabase);
+    }
+
+    void fillNamasTable(SQLiteDatabase sqLiteDatabase){
+        int utc = 4;
+        double lat = 55.751667;
+        double lon = 37.617778;
+
+        PrayTime prayers = new PrayTime();
+
+        prayers.setTimeFormat(prayers.Time24);
+
+        prayers.setCalcMethod(prayers.Karachi);
+
+        prayers.setAsrJuristic(prayers.Shafii);
+        prayers.setAdjustHighLats(prayers.AngleBased);
+        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
+        prayers.tune(offsets);
+
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        String[] praysNames = new String[]{"Fajr","Sunrise","Dhuhr","Asr","Maghrib","Isha"};
+        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
+                lat, lon, utc);
+        for (int i = 0,j = 0; i < 6; i ++){
+            if (i == 4) j++;
+            insertPray(praysNames[i],PrayTime.getNamasTimeInMillis(prayerTimes.get(j++)),sqLiteDatabase);
+        }
+    }
+
+    void insertPray(String name,String time,SQLiteDatabase sqLiteDatabase){
+        String query = " insert into namas (name , time , flag , miss ) values ( ?, ?, ?, ?) ";
+        sqLiteDatabase.execSQL(query,new String[]{name,time,String.valueOf(0),String.valueOf(0)});
     }
 
     @Override

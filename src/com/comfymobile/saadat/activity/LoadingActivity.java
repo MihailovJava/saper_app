@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -38,13 +39,18 @@ public class LoadingActivity extends Activity {
     public static Activity activity;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = this;
         setContentView(R.layout.loading);
+        context = this;
     }
+
+
 
     @Override
     public void onResume(){
@@ -129,7 +135,7 @@ public class LoadingActivity extends Activity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         int lastupdate = preferences.getInt("update",0);
-        int today = (int) System.currentTimeMillis() / 1000 / 60 / 60 / 24;
+        int today = (int)( System.currentTimeMillis() / 1000 / 60 / 60 / 24);
         if (lastupdate != today && isOnline()){
             new SynchronizeTask(context).execute();
             editor.putInt("update",today);

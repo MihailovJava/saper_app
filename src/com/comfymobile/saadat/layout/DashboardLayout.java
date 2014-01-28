@@ -1,4 +1,4 @@
-package com.comfymobile.saadat.activity.layout;
+package com.comfymobile.saadat.layout;
 
 /**
  * User: Nixy

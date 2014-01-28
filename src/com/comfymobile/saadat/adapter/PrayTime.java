@@ -954,4 +954,42 @@ public class PrayTime {
     public ArrayList<String> getTimeNames() {
         return timeNames;
     }
+
+    public static String getNamasTimeInMillis(String namasTime){
+        String[] time = namasTime.split(":");
+        int hours = Integer.valueOf(time[0]);
+        int minutes = Integer.valueOf(time[1]);
+        Calendar calendar = Calendar.getInstance();
+        long test = calendar.getTimeInMillis();
+        calendar.set(Calendar.HOUR_OF_DAY,hours);
+        calendar.set(Calendar.MINUTE,minutes);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+
+        String timeInMillis = String.valueOf(calendar.getTimeInMillis());
+
+        return timeInMillis;
+    }
+
+    public static String getNamasTimeFromMillis(String namasTimeInMillis){
+        Long timeInMillis = Long.valueOf(namasTimeInMillis);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        String sHour = hour < 10 ? "0" : ""; sHour += String.valueOf(hour);
+        String sMinute = minute < 10 ? "0" : ""; sMinute += String.valueOf(minute);
+        return sHour + ":" + sMinute;
+    }
+
+    public static String getNamasTimeFromMillis(long namasTimeInMillis){
+        Long timeInMillis = namasTimeInMillis;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        String sHour = hour < 10 ? "0" : "" + String.valueOf(hour);
+        String sMinute = minute < 10 ? "0" : "" + String.valueOf(minute);
+        return sHour + ":" + sMinute;
+    }
 }
