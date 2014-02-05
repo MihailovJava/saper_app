@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.*;
 import android.view.Menu;
 import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -28,7 +29,6 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         final LocalDatabase database = LocalDatabase.getInstance(this);
         Cursor city = database.getCitySource();
         context = this;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String[] sCity = new String[city.getCount()];
         final String[] id = new String[city.getCount()];
         for (int i = 0 ; !city.isAfterLast(); i++){
@@ -69,6 +69,11 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
         root.addPreference(cityList);
         setPreferenceScreen(root);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(R.string.ab_settings_title);
     }
 
     @Override

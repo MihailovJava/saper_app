@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -27,8 +28,12 @@ public class InfoActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.info);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(R.string.ab_info_title);
 
         initUI();
     }

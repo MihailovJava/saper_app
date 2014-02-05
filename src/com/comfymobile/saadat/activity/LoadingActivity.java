@@ -12,10 +12,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
-import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,7 +32,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 
-public class LoadingActivity extends Activity {
+public class LoadingActivity extends SherlockActivity{
     /**
      * Called when the activity is first created.
      */
@@ -44,10 +45,13 @@ public class LoadingActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = this;
         setContentView(R.layout.loading);
         context = this;
+
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle("");
+        ab.setDisplayShowHomeEnabled(false);
     }
 
 
@@ -247,7 +251,7 @@ public class LoadingActivity extends Activity {
             super.onPostExecute(result);
 
 
-            new RSSReader(context).execute(new String[]{
+            new RSSReader(context,true).execute(new String[]{
                     "http://www.islamrf.ru/rss/",
                     "http://islam-today.ru/rss/",
                     "http://www.muslimeco.ru/rss.php"

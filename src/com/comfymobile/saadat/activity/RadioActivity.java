@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -35,7 +36,12 @@ public class RadioActivity extends SherlockActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            ActionBar ab = getSupportActionBar();
+            ab.setHomeButtonEnabled(true);
+            ab.setLogo(R.drawable.ab_back);
+            ab.setTitle(R.string.ab_radio_title);
+
             setContentView(R.layout.radio);
 
             player = Player.getInstance(this);

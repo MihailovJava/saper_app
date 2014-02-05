@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -29,7 +30,12 @@ public class DetalNewsActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle("");
+
         setContentView(R.layout.event);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);

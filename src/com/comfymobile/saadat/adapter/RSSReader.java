@@ -1,6 +1,7 @@
 package com.comfymobile.saadat.adapter;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -48,14 +49,23 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
 
     LocalDatabase database;
     Context context;
-    public RSSReader(Context context){
+    boolean fromLoading;
+    ProgressDialog dialog;
+
+    public RSSReader(Context context,boolean fromLoading){
         this.context = context;
+        this.fromLoading = fromLoading;
         database = LocalDatabase.getInstance(context);
     }
 
     @Override
     protected void onPreExecute() {
-
+        if (!fromLoading){
+            dialog = ProgressDialog.show(context,
+                    context.getString(R.string.rss_dialog_title),
+                    context.getString(R.string.rss_dialog_message));
+            dialog.setCanceledOnTouchOutside(false);
+        }
     }
 
     @Override
@@ -144,11 +154,17 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        Intent intent = new Intent(context, MenuActivity.class);
-        context.startActivity(intent);
-        View layout = View.inflate(context,R.layout.loading,null);
-        TextView loadText = (TextView) layout.findViewById(R.id.loadText);
-        loadText.setText("Загрузка - Завершено");
-        ((Activity) context).finish();
+        if (fromLoading){
+            Intent intent = new Intent(context, MenuActivity.class);
+            context.startActivity(intent);
+            View layout = View.inflate(context,R.layout.loading,null);
+            TextView loadText = (TextView) layout.findViewById(R.id.loadText);
+            loadText.setText("Загрузка - Завершено");
+            ((Activity) context).finish();
+        }else {
+            if (dialog != null){
+                dialog.dismiss();
+            }
+        }
     }
 }

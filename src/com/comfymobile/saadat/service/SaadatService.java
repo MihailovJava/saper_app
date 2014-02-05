@@ -153,7 +153,7 @@ public class SaadatService extends Service {
 
             for (int i = 0,j = 0; i < 6; i ++){
                 if (i == 4) j++;
-                database.updateNamasTime(i,PrayTime.getNamasTimeInMillis(prayerTimes.get(j++)));
+                database.updateNamasTime(i+1 ,PrayTime.getNamasTimeInMillis(prayerTimes.get(j++)));
             }
             database.dropNamasMiss();
 

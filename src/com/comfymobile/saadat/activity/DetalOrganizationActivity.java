@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -24,7 +25,7 @@ public class DetalOrganizationActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.detal);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
@@ -48,7 +49,8 @@ public class DetalOrganizationActivity extends SherlockActivity {
 
         StringBuilder info = new StringBuilder();
         info.append("<b>");
-        info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("org_name")));
+        String orgName = sourceOrganization.getString(sourceOrganization.getColumnIndex("org_name"));
+        info.append(orgName);
         info.append("</b><br>");
         info.append("<b>Адрес:</b> ");
         info.append(sourceOrganization.getString(sourceOrganization.getColumnIndex("organization.address")));
@@ -68,6 +70,10 @@ public class DetalOrganizationActivity extends SherlockActivity {
         category = (TextView) findViewById(R.id.category);
         category.setText("Категория: "+sourceOrganization.getString(sourceOrganization.getColumnIndex("cat_name")));
 
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(orgName);
     }
 
     @Override
