@@ -55,6 +55,14 @@ public class SearchActivity extends SherlockActivity {
                 context.startActivity(intent);
             }
         });
+        search.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(context,MapActivity.class);
+                context.startActivity(intent);
+                return true;
+            }
+        });
 
         cityCursor = LocalDatabase.getInstance(context).getCitySource(getCityID());
         city = (TextView) findViewById(R.id.city_text);
@@ -104,7 +112,7 @@ public class SearchActivity extends SherlockActivity {
 
     int getCityID(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int cityId = Integer.valueOf(preferences.getString("city_id", "-1"));
+        int cityId = Integer.valueOf(preferences.getString("city_id", "12"));
         return cityId;
     }
 

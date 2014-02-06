@@ -27,4 +27,5 @@
     <string name="ab_settings_title">Настройки</string>
     <string name="ab_radio_title">Радио</string>
     <string name="ab_events_title">События</string>
+    <string name="ab_map_item">Карта</string>
 </resources>

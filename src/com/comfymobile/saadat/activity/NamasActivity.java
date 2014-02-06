@@ -84,7 +84,7 @@ public class NamasActivity extends SherlockActivity {
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int cityId = Integer.valueOf(preferences.getString("city_id", "-1"));
+        int cityId = Integer.valueOf(preferences.getString("city_id", "12"));
         Cursor city = database.getCitySource(cityId);
         String name = city.getString(city.getColumnIndex("name"));
         dateView = (TextView) findViewById(R.id.date);

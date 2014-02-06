@@ -32,7 +32,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 
-public class LoadingActivity extends SherlockActivity{
+public class LoadingActivity extends Activity{
     /**
      * Called when the activity is first created.
      */
@@ -45,13 +45,12 @@ public class LoadingActivity extends SherlockActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         activity = this;
         setContentView(R.layout.loading);
         context = this;
 
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle("");
-        ab.setDisplayShowHomeEnabled(false);
+
     }
 
 

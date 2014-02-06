@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -20,6 +23,9 @@ import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * User: Nixy
@@ -39,6 +45,7 @@ public class MenuActivity extends SherlockActivity {
     private Context context;
 
     private void initUI(){
+
         news_button = (Button) findViewById(R.id.news_button);
         namaz_button = (Button) findViewById(R.id.namaz_button);
         afisha_button = (Button) findViewById(R.id.afisha_button);
@@ -139,31 +146,52 @@ public class MenuActivity extends SherlockActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
         initUI();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (!isOrganizations()){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Требуется обновление, включите интернет соединение")
-                    .setNegativeButton("Выйти", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                        }
-                    })
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences preferences;
-                            SharedPreferences.Editor editor;
-                            preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                            editor = preferences.edit();
-                            editor.putInt("update",0);
-                            editor.commit();
-                            Intent intent = new Intent(context, LoadingActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
+            if (!isOnline()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Требуется обновление, включите интернет соединение")
+                        .setNegativeButton("Выйти", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        })
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SharedPreferences preferences;
+                                SharedPreferences.Editor editor;
+                                preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                                editor = preferences.edit();
+                                editor.putInt("update", 0);
+                                editor.commit();
+                                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            } else  {
+                Intent intent = new Intent(context,LoadingActivity.class);
+                startActivity(intent);
+            }
         }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isOrganizations(){
