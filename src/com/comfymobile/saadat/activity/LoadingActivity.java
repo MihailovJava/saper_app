@@ -49,15 +49,6 @@ public class LoadingActivity extends Activity{
         activity = this;
         setContentView(R.layout.loading);
         context = this;
-
-
-    }
-
-
-
-    @Override
-    public void onResume(){
-        super.onResume();
         synchronizeDataBase(this);
         loadText = (TextView) findViewById(R.id.loadText);
     }
@@ -77,13 +68,11 @@ public class LoadingActivity extends Activity{
     @Override
     public void onBackPressed() {
     }
-    public static final String ORG = "organization";
+    public static final String ORG = "orgs";
     public static final String CITY = "city";
     public static final String CAT = "category";
-    public static final String NEWS = "news";
     public static final String EVENTS = "afisha";
-    public static final String NAMAS = "namaz";
-    public static final String NEWS_SOURCE = "news_source";
+
 
     public static final String PROTOCOL = "http://";
     public static final String DOMEN = "saadatru.166.com1.ru";
@@ -183,7 +172,6 @@ public class LoadingActivity extends Activity{
                 cit = getData(CITY);
                 publishProgress(LOAD_CATS);
                 cat = getData(CAT);
-
                 publishProgress(LOAD_EVENTS);
                 events = getData(EVENTS);
 
@@ -201,7 +189,10 @@ public class LoadingActivity extends Activity{
                     int id_category = org.getJSONObject(i).getInt("id_category");
                     String last_mod = org.getJSONObject(i).getString("last_mod");
                     String email = org.getJSONObject(i).getString("email");
-                    database.updateOrganization(id,name,description,id_city,address,t_number,site,id_category,last_mod,email);
+                    String lat = org.getJSONObject(i).getString("lat");
+                    String lng = org.getJSONObject(i).getString("lng");
+                    database.updateOrganization(id,name,description,id_city,address,
+                            t_number,site,id_category,last_mod,email,lat,lng);
                 }}
 
                 if (cit != null){ database.clearCity();
@@ -264,8 +255,6 @@ public class LoadingActivity extends Activity{
         private static final int LOAD_CATS = 3;
         private static final int LOAD_NEWS = 4;
         private static final int LOAD_EVENTS = 5;
-        private static final int LOAD_NAMAS = 6;
-        private static final int LOAD_NEWS_SOURCE = 7;
         private static final int LOAD_DONE = 100;
 
         @Override
@@ -301,14 +290,7 @@ public class LoadingActivity extends Activity{
                     message = "афиша...";
                     break;
                 }
-                case LOAD_NAMAS:{
-                    message = "время...";
-                    break;
-                }
-                case LOAD_NEWS_SOURCE:{
-                    message = "источники...";
-                    break;
-                }
+
             }
             loadText.setText("Загрузка - "+message.toString());
         }

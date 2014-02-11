@@ -28,4 +28,5 @@
     <string name="ab_radio_title">Радио</string>
     <string name="ab_events_title">События</string>
     <string name="ab_map_item">Карта</string>
+    <string name="org_not_found">Точных данных нет</string>
 </resources>

@@ -65,12 +65,15 @@ public class DetalNewsActivity extends SherlockActivity {
         StringBuilder info = new StringBuilder();
         String link = null;
         info.append("<b><h4>");
-        info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
+        String title =  sourceEvent.getString(sourceEvent.getColumnIndex("title"));
+        info.append(title);
         info.append("</b></h4>");
         if (isNews){
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
             info.append("<br><p align=\"justify\">");
-            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
+            String text = sourceEvent.getString(sourceEvent.getColumnIndex("news_text"));
+            info.append(text);
+            LocalDatabase.getInstance(this).updateNewsState(title,text);
             info.append("</p>");
             link = sourceEvent.getString(sourceEvent.getColumnIndex("url"));
         }else{

@@ -55,14 +55,7 @@ public class SearchActivity extends SherlockActivity {
                 context.startActivity(intent);
             }
         });
-        search.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent intent = new Intent(context,MapActivity.class);
-                context.startActivity(intent);
-                return true;
-            }
-        });
+
 
         cityCursor = LocalDatabase.getInstance(context).getCitySource(getCityID());
         city = (TextView) findViewById(R.id.city_text);

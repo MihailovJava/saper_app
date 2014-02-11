@@ -77,15 +77,21 @@ public class LocalDatabase{
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NAMAS);
     }
 
+    public void clearNewsState(){
+        database.execSQL("Drop table newsstate");
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS_STATE);
+    }
+
     public void updateOrganization(int id, String name, String description, int id_city,
                                         String address, String t_number, String site,
-                                        int id_category,String last_mod,String email){
+                                        int id_category,String last_mod,String email,
+                                        String lat, String lng){
         String query = "insert or replace into organization " +
-                "(_id, name, description, id_city, address, t_number, site, id_category, last_mod, email)" +
-                " values (?,?,?,?,?,?,?,?,?,?)";
+                "(_id, name, description, id_city, address, t_number, site, id_category, last_mod, email, lat, lng)" +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
         database.execSQL(query,new String[]{String.valueOf(id),name,description,String.valueOf(id_city),
-                address,t_number,site,String.valueOf(id_category),last_mod,email});
+                address,t_number,site,String.valueOf(id_category),last_mod,email,lat,lng});
     }
 
     public void updateCity(int id_city, String name, String last_mod, String x, String y, int tzone){
@@ -131,6 +137,13 @@ public class LocalDatabase{
         String query = " update namas set flag = ? WHERE _id = ?";
         database.execSQL(query,new  String[]{String.valueOf(flag),String.valueOf(id)});
     }
+
+    public void updateNewsState(String title,String text){
+        String query = "insert or replace into newsstate ( news_text , title ) values (?,?)";
+        database.execSQL(query,new String[]{text,title});
+    }
+
+
 
     public Cursor getListSource(int city,int category){
         String args = new String();
@@ -207,6 +220,8 @@ public class LocalDatabase{
                 "T1.id_city, " +
                 "T1.last_mod, " +
                 "T1.email, " +
+                "T1.lat," +
+                "T1.lng," +
                 "T2.name as cat_name, " +
                 "T2._id " +
                 "FROM organization as T1 " +
@@ -272,6 +287,15 @@ public class LocalDatabase{
         return cursor;
     }
 
+    public Cursor getNewsStateByText(String title,String text){
+        String query = "select _id from newsstate WHERE news_text = ? and title = ?";
+        Cursor cursor = database.rawQuery(query,new String[]{text,title});
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        return  cursor;
+    }
+
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
@@ -279,7 +303,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization (  "+
             " _id integer primary key, name text not null,description text, "+
             " id_city integer, address text, t_number text, site text, id_category integer,"+
-            " last_mod text , email text );";
+            " last_mod text , email text, lat text, lng text );";
     public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city (_id primary key, name text not null, "+
             "last_mod text, x text, y text, tzone integer); ";
 
@@ -295,12 +319,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ON_DATA_BASE_CREATE_NEWSSOURCE = " CREATE TABLE newssource(_id primary key, name text " +
             "not null, source_text text, last_mod text);";
 
-
     public static final String ON_DATA_BASE_CREATE_NAMAS = " CREATE TABLE namas (_id integer primary key autoincrement," +
             " name text, time text, flag integer,miss integer);";
 
+    public static final String ON_DATA_BASE_CREATE_NEWS_STATE = " create table newsstate ( _id integer primary key autoincrement," +
+            " title text, news_text text);";
+
+    private static final int DATA_BASE_VERSION = 6;
+
     public DatabaseHelper(Context context){
-        super(context,DATA_BASE_NAME,null,5);
+        super(context,DATA_BASE_NAME,null,DATA_BASE_VERSION);
         this.context = context;
     }
     Context context;
@@ -314,6 +342,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWSSOURCE);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_EVENTS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NAMAS);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_NEWS_STATE);
         fillNamasTable(sqLiteDatabase);
     }
 
@@ -353,12 +382,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
         if (i != i2){
-            sqLiteDatabase.execSQL("DROP TABLE newssource");
-            sqLiteDatabase.execSQL("DROP TABLE organization");
-            sqLiteDatabase.execSQL("DROP TABLE city");
-            sqLiteDatabase.execSQL("DROP TABLE category");
-            sqLiteDatabase.execSQL("DROP TABLE news");
-            sqLiteDatabase.execSQL("DROP TABLE events");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS newssource");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS organization");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS city");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS category");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS news");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS events");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS namas");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS newsstate");
             //context.openOrCreateDatabase(DATA_BASE_NAME,Context.MODE_PRIVATE,null);
         }
         onCreate(sqLiteDatabase);

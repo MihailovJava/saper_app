@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.adapter.NewsAdapter;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -52,10 +53,13 @@ public class NewsListActivity extends SherlockActivity {
         else
          ab.setTitle(R.string.ab_events_title);
 
-        initUI();
     }
 
-
+    @Override
+    protected void onResume() {
+        initUI();
+        super.onResume();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
@@ -69,7 +73,7 @@ public class NewsListActivity extends SherlockActivity {
     }
 
     void initUI(){
-        SimpleCursorAdapter listAdapter;
+        CursorAdapter listAdapter;
         ListView list = (ListView) findViewById(R.id.listView);
 
         if (isNews){
@@ -80,11 +84,7 @@ public class NewsListActivity extends SherlockActivity {
             sourceDescriptionView.setText(sourceDescription);
 
             cursor = LocalDatabase.getInstance(this).getNews(-1, sourceID);
-            listAdapter = new SimpleCursorAdapter(this,
-                   R.layout.news_item,
-                    cursor,
-                   new String[] {"title","news_text","last_mod","_id"},
-                   new int[] { R.id.title, R.id.description,R.id.date});
+            listAdapter = new NewsAdapter(this,cursor);
             list.setAdapter(listAdapter);
         } else {
             cursor = LocalDatabase.getInstance(this).getEvents(-1);

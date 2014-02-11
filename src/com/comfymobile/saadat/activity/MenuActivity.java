@@ -178,6 +178,12 @@ public class MenuActivity extends SherlockActivity {
                 AlertDialog alert = builder.create();
                 alert.show();
             } else  {
+                SharedPreferences preferences;
+                SharedPreferences.Editor editor;
+                preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                editor = preferences.edit();
+                editor.putInt("update", 0);
+                editor.commit();
                 Intent intent = new Intent(context,LoadingActivity.class);
                 startActivity(intent);
             }
