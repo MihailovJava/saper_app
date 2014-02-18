@@ -21,7 +21,7 @@
                 android:id="@+id/news_button"
                 style="@style/DashboardButton"
                 android:background="@drawable/menu_news"
-            />
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:id="@+id/afisha_button"
                 style="@style/DashboardButton"
                 android:background="@drawable/menu_afisha"
-                />
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 android:id="@+id/list_button"
                 style="@style/DashboardButton"
                 android:background="@drawable/menu_catalog"
-                />
+                android:layout_height="wrap_content" android:layout_width="wrap_content"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:id="@+id/namaz_button"
                 style="@style/DashboardButton"
                 android:background="@drawable/menu_namaz"
-                />
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                 android:id="@+id/radio_button"
                 style="@style/DashboardButton"
                 android:background="@drawable/menu_radio"
-                />
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:id="@+id/info_button"
                 style="@style/DashboardButton"
                 android:background="@drawable/menu_info"
-                />
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

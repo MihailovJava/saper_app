@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -29,7 +30,12 @@ public class DetalNewsActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle("");
+
         setContentView(R.layout.event);
         Intent intent = getIntent();
         currentID = intent.getIntExtra("id",-1);
@@ -59,12 +65,15 @@ public class DetalNewsActivity extends SherlockActivity {
         StringBuilder info = new StringBuilder();
         String link = null;
         info.append("<b><h4>");
-        info.append(sourceEvent.getString(sourceEvent.getColumnIndex("title")));
+        String title =  sourceEvent.getString(sourceEvent.getColumnIndex("title"));
+        info.append(title);
         info.append("</b></h4>");
         if (isNews){
             info.append(sourceEvent.getString(sourceEvent.getColumnIndex("last_mod")));
             info.append("<br><p align=\"justify\">");
-            info.append(sourceEvent.getString(sourceEvent.getColumnIndex("news_text")));
+            String text = sourceEvent.getString(sourceEvent.getColumnIndex("news_text"));
+            info.append(text);
+            LocalDatabase.getInstance(this).updateNewsState(title,text);
             info.append("</p>");
             link = sourceEvent.getString(sourceEvent.getColumnIndex("url"));
         }else{

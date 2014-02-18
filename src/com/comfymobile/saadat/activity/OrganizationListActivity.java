@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -23,18 +24,26 @@ public class OrganizationListActivity extends SherlockActivity {
     int currentCategory;
     Cursor listSource;
     Context context;
-    Button back;
+    String categoryName;
     Cursor citySource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.orglist);
-        context = this;
+
         Intent intent = getIntent();
         currentCity = intent.getIntExtra("cityID",-1);
+        categoryName = intent.getStringExtra("categoryName");
         currentCategory = intent.getIntExtra("categoryID",-1);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(categoryName);
+
+        setContentView(R.layout.orglist);
+        context = this;
+
         initUI();
     }
 

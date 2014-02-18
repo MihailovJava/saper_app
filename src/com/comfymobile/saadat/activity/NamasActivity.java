@@ -1,10 +1,13 @@
 package com.comfymobile.saadat.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.*;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -20,13 +23,10 @@ import java.util.Date;
 
 public class NamasActivity extends SherlockActivity {
 
-    Button back;
+
     Context context;
     String date;
-
-    Spinner city;
     LocalDatabase database;
-    Cursor citySource;
     Cursor namas;
     TextView dateView;
 
@@ -37,11 +37,17 @@ public class NamasActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         database = LocalDatabase.getInstance(context);
         setContentView(R.layout.namas);
         context = this;
         date = new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime());
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(R.string.ab_namas_title);
+
         initUI();
     }
     void initUI(){
@@ -76,17 +82,13 @@ public class NamasActivity extends SherlockActivity {
             n[i].setText(PrayTime.getNamasTimeFromMillis(namas.getString(namas.getColumnIndex("time"))));
             flags[i].setChecked(namas.getInt(namas.getColumnIndex("flag")) == 0 ? false : true);
         }
-        city = (Spinner) findViewById(R.id.spinner);
-        citySource = LocalDatabase.getInstance(this).getCitySource();
-        SimpleCursorAdapter cityAdapter = new SimpleCursorAdapter(this,
-                R.layout.spinner_item,
-                citySource,
-                new String[] {"name","_id"},
-                new int[] { R.id.name});
-        cityAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int cityId = Integer.valueOf(preferences.getString("city_id", "12"));
+        Cursor city = database.getCitySource(cityId);
+        String name = city.getString(city.getColumnIndex("name"));
         dateView = (TextView) findViewById(R.id.date);
-        dateView.setText("Сегодня: " + date);
+        dateView.setText(name + "\nСегодня: " + date );
     }
 
 

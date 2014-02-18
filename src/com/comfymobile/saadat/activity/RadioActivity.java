@@ -1,16 +1,25 @@
 package com.comfymobile.saadat.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
@@ -25,7 +34,7 @@ import java.io.IOException;
  */
 public class RadioActivity extends SherlockActivity {
         private ImageView playButton;
-
+        Context context;
         Player player;
         PhoneStateListener phoneStateListener;
         public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
@@ -34,10 +43,17 @@ public class RadioActivity extends SherlockActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            context = this;
+
+            ActionBar ab = getSupportActionBar();
+            ab.setHomeButtonEnabled(true);
+            ab.setLogo(R.drawable.ab_back);
+            ab.setTitle(R.string.ab_radio_title);
+
             setContentView(R.layout.radio);
 
-            player = Player.getInstance(this);
+
             phoneStateListener = new PhoneStateListener() {
                 @Override
                 public void onCallStateChanged(int state, String incomingNumber) {
@@ -82,12 +98,55 @@ public class RadioActivity extends SherlockActivity {
     @Override
     protected void onPause() {
         super.onPause();
-         player.cancel(true);
+        if (player.getStatus() == AsyncTask.Status.RUNNING)
+             player.cancel(true);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        player = Player.getInstance(context);
+        player.setPlayButton(playButton);
+        if (!isOnline()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Требуется интернет соединение")
+                    .setNegativeButton("Выйти", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SharedPreferences preferences;
+                            SharedPreferences.Editor editor;
+                            preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            editor = preferences.edit();
+                            editor.putInt("update", 0);
+                            editor.commit();
+                            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            if (!player.getPrepared() && player.getStatus() != AsyncTask.Status.RUNNING ){
+                player.execute(RADIO_URL);
+            }
+        }
+
         if (player.getMediaPlayer().isPlaying()){
             playButton.setImageResource(R.drawable.btn_pause);
         }else {
@@ -99,8 +158,6 @@ public class RadioActivity extends SherlockActivity {
 
             playButton = (ImageView) findViewById(R.id.playbutton);
             playButton.setOnClickListener(new View.OnClickListener() {
-
-
                 @Override
                 public void onClick(View v) {
                        if (!player.getMediaPlayer().isPlaying()){
@@ -113,10 +170,6 @@ public class RadioActivity extends SherlockActivity {
                 }
             });
 
-            player.setPlayButton(playButton);
-            if (!player.getPrepared() && player.getStatus() != AsyncTask.Status.RUNNING){
-                player.execute(RADIO_URL);
-            }
         }
 
     @Override
@@ -142,7 +195,8 @@ public class RadioActivity extends SherlockActivity {
             private ProgressDialog progress;
 
             private static Player me;
-            private static boolean prepared = false;
+            private boolean prepared = false;
+            private boolean finished = false;
             private MediaPlayer mediaPlayer;
             ImageView playButton;
 
@@ -155,7 +209,7 @@ public class RadioActivity extends SherlockActivity {
                 this.playButton = playButton;
             }
 
-            public static boolean getPrepared(){
+            public boolean getPrepared(){
                 return prepared;
             }
 
@@ -172,8 +226,14 @@ public class RadioActivity extends SherlockActivity {
                 if ( me != null){
                     if ((me.getStatus() == Status.FINISHED || me.isCancelled() == true) && !me.prepared){
                         me = new Player(context);
+                        return me;
+                    }
+                    if (me.finished){
+                        me = new Player(context);
+                        return me;
                     }
                 }
+
                 return me;
             }
 
@@ -190,9 +250,10 @@ public class RadioActivity extends SherlockActivity {
                         public void onCompletion(MediaPlayer mp) {
                             // TODO Auto-generated method stub
 
-                            playButton.setImageResource(R.drawable.btn_play);
                             mediaPlayer.stop();
                             mediaPlayer.reset();
+                            finished = true;
+
                         }
                     });
                     mediaPlayer.prepare();

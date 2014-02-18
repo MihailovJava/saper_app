@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
 
 /**
@@ -28,10 +32,23 @@ public class SourceListActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.news);
         context = this;
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(R.string.ab_news_title);
+
         initUI();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.news_list_ab,menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -40,6 +57,12 @@ public class SourceListActivity extends SherlockActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.ab_sync_button:
+                new RSSReader(context,false).execute(new String[]{
+                        "http://www.islamrf.ru/rss/",
+                        "http://islam-today.ru/rss/",
+                        "http://www.muslimeco.ru/rss.php"
+                });
             default:
                 return super.onOptionsItemSelected(item);
         }

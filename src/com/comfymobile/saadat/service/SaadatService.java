@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.IBinder;
 import android.preference.Preference;
@@ -27,6 +29,9 @@ public class SaadatService extends Service {
     Cursor pray;
     Cursor city;
     public static final String MOSCOW_ID = "12";
+    public static final double MOSCOW_LAT = 55 + 45./60;
+    public static final double MOSCOW_LON = 37 + 37./60;
+    public static final int MOSCOW_UTC = 4;
 
 
     @Override
@@ -44,6 +49,7 @@ public class SaadatService extends Service {
                 if(! database.isLocked() ){
                     checkAlarm();
                     updateNamas();
+                    updateNewsState();
                 }
             }
         },0,1000);
@@ -111,27 +117,37 @@ public class SaadatService extends Service {
         return false;
     }
 
+
     void updateNamas(){
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int saveDay = preferences.getInt("namasupdate", 0);
+        int newsStateDayCount = preferences.getInt("state_count",0);
         int saveCity = preferences.getInt("namas_city",0);
         int today = (int) (System.currentTimeMillis() / 1000 / 60 / 60 / 24);
         int city_id = Integer.valueOf(preferences.getString("city_id",MOSCOW_ID));
 
-        if ( saveDay != today ||  saveCity != city_id){
+        if ( saveDay != today ||  saveCity != city_id ){
 
             SharedPreferences.Editor editor = preferences.edit();
             editor.putInt("namasupdate",today);
             editor.commit();
             editor.putInt("namas_city",city_id);
             editor.commit();
+            editor.putInt("state_count",newsStateDayCount+1);
+            editor.commit();
 
             city = database.getCity(city_id);
 
-            double lat = Double.valueOf(city.getString(city.getColumnIndex("y")));
-            double lon = Double.valueOf(city.getString(city.getColumnIndex("x")));
-            int utc = Integer.valueOf(city.getString(city.getColumnIndex("tzone")));
+            double lat = MOSCOW_LAT;
+            double lon = MOSCOW_LON;
+            int utc = MOSCOW_UTC;
+
+            if (city != null && city.getCount() != 0){
+                 lat = getCityLat(city_id,context);
+                 lon = getCityLng(city_id, context);
+                 utc = Integer.valueOf(city.getString(city.getColumnIndex("tzone")));
+            }
 
             PrayTime prayers = new PrayTime();
 
@@ -153,16 +169,53 @@ public class SaadatService extends Service {
 
             for (int i = 0,j = 0; i < 6; i ++){
                 if (i == 4) j++;
-                database.updateNamasTime(i,PrayTime.getNamasTimeInMillis(prayerTimes.get(j++)));
+                database.updateNamasTime(i+1 ,PrayTime.getNamasTimeInMillis(prayerTimes.get(j++)));
             }
             database.dropNamasMiss();
 
         }
     }
 
+    public static double getCityLat(int id,Context context){
+        Cursor city = LocalDatabase.getInstance(context).getCity(id);
+        double lat = Double.valueOf(city.getString(city.getColumnIndex("x")));
+        int lat_degree = (int) lat;
+        double lat_minute = (lat - lat_degree)*100./60;
+        return  lat_degree + lat_minute;
+    }
+
+    public static double getCityLng(int id,Context context){
+        Cursor city = LocalDatabase.getInstance(context).getCity(id);
+        double lng = Double.valueOf(city.getString(city.getColumnIndex("y")));
+        int lng_degree = (int) lng;
+        double lng_minute = (lng - lng_degree)*100./60;
+        return  lng_degree + lng_minute;
+    }
+
+
+    private void updateNewsState() {
+        if (isTimeToUpdate()){
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("state_count",0);
+            editor.commit();
+
+            database.clearNewsState();
+        }
+    }
+
+    private boolean isTimeToUpdate() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int newsStateDayCount = preferences.getInt("state_count",0);
+
+        return newsStateDayCount >= 7;
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
 
 }

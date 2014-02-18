@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/ab_sync_button"
+          android:icon="@drawable/ab_sync"
+          android:showAsAction="always"
+          android:title="@string/ab_sync"></item>
+</menu>

@@ -4,11 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.*;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.adapter.NewsAdapter;
+import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -32,14 +38,27 @@ public class NewsListActivity extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = this;
         sourceID = getIntent().getIntExtra("sourceId",0);
         sourceTitle = getIntent().getStringExtra("sourceTitle");
         sourceDescription = getIntent().getStringExtra("sourceDescription");
         isNews = getIntent().getBooleanExtra("news",true);
         if (isNews) setContentView(R.layout.news_list); else setContentView(R.layout.news);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        if (isNews)
+         ab.setTitle(sourceTitle);
+        else
+         ab.setTitle(R.string.ab_events_title);
+
+    }
+
+    @Override
+    protected void onResume() {
         initUI();
+        super.onResume();
     }
 
     @Override
@@ -54,7 +73,7 @@ public class NewsListActivity extends SherlockActivity {
     }
 
     void initUI(){
-        SimpleCursorAdapter listAdapter;
+        CursorAdapter listAdapter;
         ListView list = (ListView) findViewById(R.id.listView);
 
         if (isNews){
@@ -65,11 +84,7 @@ public class NewsListActivity extends SherlockActivity {
             sourceDescriptionView.setText(sourceDescription);
 
             cursor = LocalDatabase.getInstance(this).getNews(-1, sourceID);
-            listAdapter = new SimpleCursorAdapter(this,
-                   R.layout.news_item,
-                    cursor,
-                   new String[] {"title","news_text","last_mod","_id"},
-                   new int[] { R.id.title, R.id.description,R.id.date});
+            listAdapter = new NewsAdapter(this,cursor);
             list.setAdapter(listAdapter);
         } else {
             cursor = LocalDatabase.getInstance(this).getEvents(-1);

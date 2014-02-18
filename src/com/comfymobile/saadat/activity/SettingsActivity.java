@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.preference.*;
 import android.view.Menu;
 import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.comfymobile.saadat.service.SaadatService;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import java.util.ArrayList;
 
@@ -28,7 +31,6 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         final LocalDatabase database = LocalDatabase.getInstance(this);
         Cursor city = database.getCitySource();
         context = this;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String[] sCity = new String[city.getCount()];
         final String[] id = new String[city.getCount()];
         for (int i = 0 ; !city.isAfterLast(); i++){
@@ -60,6 +62,11 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                         getString(R.string.pref_notify)+" " +city.getString(city.getColumnIndex("name")),
                         Toast.LENGTH_SHORT);
                 notify.show();
+                EasyTracker.getInstance(context).send(MapBuilder
+                        .createEvent("ui_action", "city changed"
+                                , getString(R.string.pref_notify)+" " + city.getString(city.getColumnIndex("name"))
+                                , null)
+                        .build());
                 cityList.setSummary(city.getString(city.getColumnIndex("name")));
                 return true;
             }
@@ -69,6 +76,11 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
         root.addPreference(cityList);
         setPreferenceScreen(root);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setHomeButtonEnabled(true);
+        ab.setLogo(R.drawable.ab_back);
+        ab.setTitle(R.string.ab_settings_title);
     }
 
     @Override
@@ -81,4 +93,17 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
+
 }

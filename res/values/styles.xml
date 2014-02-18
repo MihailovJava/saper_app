@@ -38,8 +38,5 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="MainTheme" parent="Theme.Sherlock.Light">
-        <item name="homeAsUpIndicator">@drawable/ab_back</item>
-    </style>
 
 </resources>

@@ -125,5 +125,6 @@
             android:layout_height="wrap_content"
             android:text="Сегодня: 1 дек 1970"
             android:id="@+id/date" android:layout_centerHorizontal="true" android:layout_below="@+id/imageView"
-            android:textStyle="bold" android:textColor="#002e0e" android:textSize="15dp" android:layout_marginTop="4dp"/>
+            android:textStyle="bold" android:textColor="#002e0e" android:textSize="15dp" android:layout_marginTop="4dp"
+            android:gravity="center"/>
 </RelativeLayout>
