@@ -10,7 +10,6 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -171,7 +170,7 @@ public class RadioActivity extends SherlockActivity {
                     me = new Player(context);
                 }
                 if ( me != null){
-                    if (me.isCancelled() == true && !me.prepared){
+                    if ((me.getStatus() == Status.FINISHED || me.isCancelled() == true) && !me.prepared){
                         me = new Player(context);
                     }
                 }
