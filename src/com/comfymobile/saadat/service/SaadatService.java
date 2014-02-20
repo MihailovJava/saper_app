@@ -80,12 +80,19 @@ public class SaadatService extends Service {
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setSound(soundURI)
                         .setContentText(text)
-                        .setContentTitle("Alarm")
+                        .setAutoCancel(true)
+                        .setContentTitle(text)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
                 Context c = getApplicationContext();
-                PendingIntent actionPendingIntent = PendingIntent.getActivity(c, 0, new Intent(c, NamasActivity.class), 0);
+                PendingIntent actionPendingIntent = PendingIntent.getActivity(
+                        c,
+                        0,
+                        new Intent(c, NamasActivity.class),
+                        0
+                );
                 builder.setContentIntent(actionPendingIntent);
-                nm.notify(1000, builder.getNotification());
+
+                nm.notify(1990, builder.getNotification());
             }
 
             pray.moveToNext();
@@ -98,19 +105,19 @@ public class SaadatService extends Service {
             return false;                   // таймер запущен
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int offset = preferences.getInt("alarm_offset",2000);      // две секунды
+        int offset = Integer.valueOf(preferences.getString("alarm_offset","2000"));      // две секунды
         long diff = namasTime - currentTime + 1000;                  // время до молитвы поправка на милисекунды
 
         if (diff < 0){                                       // молитва прошла
             database.updateNamasMiss(id, 1);                 // пропустили
             return false;
         }
-        if (diff <= offset){                              // до молитвы меньше времени чем зарезервировано
+        if (Math.abs(diff) <= offset && isMiss != 1){                              // до молитвы меньше времени чем зарезервировано
             database.updateNamasMiss(id, 1);
             return true;
         }
 
-        if (isMiss == 1){
+        if (Math.abs(diff) > offset && isMiss == 1){
             database.updateNamasMiss(id, 0);        // если дошли досюда то до молитвы еще есть время
                                                     // а стоит флаг пропуска
         }

@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapActivity extends SherlockFragmentActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +73,6 @@ public class MapActivity extends SherlockFragmentActivity {
                 .icon(getIcon(id_cat)));
     }
 
-    private BitmapDescriptor getIcon(int type) {
-        switch (type){
-            case -1: return BitmapDescriptorFactory.fromResource(R.drawable.ab_add);
-            default: return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
@@ -100,5 +96,43 @@ public class MapActivity extends SherlockFragmentActivity {
         super.onStop();
         EasyTracker.getInstance(this).activityStop(this);  // Add this method.
     }
+
+    public static final int CAFE = 1;
+    public static final int BANK = 3;
+    public static final int CSHOP = 4;
+    public static final int ISHOP = 5;
+    public static final int FSHOP = 6;
+    public static final int NEWS = 7;
+    public static final int FOOD = 8;
+    public static final int MOSQUE = 9;
+    public static final int PRAY = 10;
+    public static final int STUDY = 11;
+    public static final int CHARITY = 12;
+    public static final int TRIP = 13;
+    public static final int HADJ = 14;
+    public static final int SHOP = 15;
+    public static final int ORG = 16;
+
+    private BitmapDescriptor getIcon(int type) {
+        switch (type){
+            case CAFE: return BitmapDescriptorFactory.fromResource(R.drawable.markers_04);
+            case BANK: return BitmapDescriptorFactory.fromResource(R.drawable.markers_06);
+            case CSHOP: return BitmapDescriptorFactory.fromResource(R.drawable.markers_05);
+            case ISHOP: return BitmapDescriptorFactory.fromResource(R.drawable.markers_03);
+            case FSHOP: return BitmapDescriptorFactory.fromResource(R.drawable.markers_05);
+            case NEWS: return BitmapDescriptorFactory.fromResource(R.drawable.markers_03);
+            case FOOD: return BitmapDescriptorFactory.fromResource(R.drawable.markers_04);
+            case MOSQUE: return BitmapDescriptorFactory.fromResource(R.drawable.markers_02);
+            case PRAY: return BitmapDescriptorFactory.fromResource(R.drawable.markers_02);
+            case STUDY: return BitmapDescriptorFactory.fromResource(R.drawable.markers_07);
+            case CHARITY: return BitmapDescriptorFactory.fromResource(R.drawable.markers_07);
+            case TRIP: return BitmapDescriptorFactory.fromResource(R.drawable.markers_08);
+            case HADJ: return BitmapDescriptorFactory.fromResource(R.drawable.markers_08);
+            case SHOP: return BitmapDescriptorFactory.fromResource(R.drawable.markers_05);
+            case ORG: return BitmapDescriptorFactory.fromResource(R.drawable.markers_06);
+            default: return BitmapDescriptorFactory.fromResource(R.drawable.markers_01);
+        }
+    }
+
 
 }

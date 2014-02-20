@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.*;
 import android.view.Menu;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -25,10 +26,31 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
 
     Context context;
 
+    String[] offsetString;
+
+    String[] offsetVal = new String[]{
+            String.valueOf(10*60*1000),
+            String.valueOf(5*60*1000),
+            String.valueOf(1*60*1000),
+            String.valueOf(2*1000),
+    };
+    int[] offsetValint = new int[]{
+            (10*60*1000),
+            (5*60*1000),
+            (1*60*1000),
+            (2*1000),
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LocalDatabase database = LocalDatabase.getInstance(this);
+        offsetString = new String[]{
+                getString(R.string.ten_minutes_offset),
+                getString(R.string.five_minutes_offset),
+                getString(R.string.one_minutes_offset),
+                getString(R.string.in_time_offset),
+        };
         Cursor city = database.getCitySource();
         context = this;
         String[] sCity = new String[city.getCount()];
@@ -72,9 +94,41 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
             }
         });
 
+        final ListPreference offsetList = new ListPreference(this);
+        offsetList.setKey("alarm_offset");
+        offsetList.setEntries(offsetString);
+        offsetList.setEntryValues(offsetVal);
+        offsetList.setTitle(getString(R.string.offset_title));
+        String prefoff = preferences.getString("alarm_offset","2000");
+        int prefoffint = Integer.valueOf(prefoff);
+        for(int i = 0; i < offsetValint.length; i++){
+            if (offsetValint[i] == prefoffint )
+                offsetList.setSummary(offsetString[i]);
+        }
+
+        offsetList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                int id = 0;
+                for (int i = 0 ; i < offsetVal.length; i++){
+                    if (offsetVal[i].compareTo(String.valueOf(newValue))== 0){
+                        id = i;
+                    }
+                }
+
+                Toast notify = Toast.makeText(context,
+                        getString(R.string.pref_notify_offset)+" " +offsetString[id],
+                        Toast.LENGTH_SHORT);
+                notify.show();
+                offsetList.setSummary(String.valueOf(offsetString[id]));
+                return true;
+            }
+        });
+
 
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
         root.addPreference(cityList);
+        root.addPreference(offsetList);
         setPreferenceScreen(root);
 
         ActionBar ab = getSupportActionBar();
