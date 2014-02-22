@@ -31,8 +31,7 @@ public class InfoActivity extends SherlockActivity {
         setContentView(R.layout.info);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.ab_info_title);
 
         initUI();

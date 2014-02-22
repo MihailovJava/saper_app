@@ -37,8 +37,7 @@ public class MapActivity extends SherlockFragmentActivity {
         setContentView(R.layout.map);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.ab_map_item);
         // Get a handle to the Map Fragment
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.map);

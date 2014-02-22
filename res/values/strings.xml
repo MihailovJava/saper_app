@@ -32,7 +32,7 @@
     <string name="ten_minutes_offset">10 минут</string>
     <string name="five_minutes_offset">5 минут</string>
     <string name="one_minutes_offset">1 минуту</string>
-    <string name="in_time_offset">во время</string>
+    <string name="in_time_offset">0 минут</string>
     <string name="offset_title">Оповещать за</string>
     <string name="pref_notify_offset">Оповещать за</string>
 </resources>

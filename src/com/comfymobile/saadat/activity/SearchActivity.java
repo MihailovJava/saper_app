@@ -19,10 +19,9 @@ import com.google.analytics.tracking.android.MapBuilder;
 
 public class SearchActivity extends SherlockActivity {
 
-    Button search;
+
     Context context;
-    Spinner category;
-    TextView city;
+    ListView category;
     Cursor cityCursor;
     Cursor categorySource;
 
@@ -30,36 +29,20 @@ public class SearchActivity extends SherlockActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
-        ab.setTitle(R.string.ab_locations_title);
-
         setContentView(R.layout.search);
         context = this;
 
-        search = (Button) findViewById(R.id.button);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, OrganizationListActivity.class);
-                intent.putExtra("cityID", getCityID());
-                intent.putExtra("categoryID", getCategoryID());
-                String categoryName = categorySource.getString(LocalDatabase.CATEGORY_NAME_IND);
-                String cityName = cityCursor.getString(LocalDatabase.CITY_NAME_IND);
-                EasyTracker.getInstance(context).send(MapBuilder
-                        .createEvent("ui_action", "categorySelect", "Категория = " + categoryName + " Город = " + cityName, null)
-                        .build());
 
-                intent.putExtra("categoryName",categoryName);
-                context.startActivity(intent);
-            }
-        });
 
 
         cityCursor = LocalDatabase.getInstance(context).getCitySource(getCityID());
-        city = (TextView) findViewById(R.id.city_text);
-        city.setText(cityCursor.getString(cityCursor.getColumnIndex("name")));
+        String cityName = cityCursor.getString(cityCursor.getColumnIndex("name"));
+
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle(getString(R.string.ab_locations_title) + " " + cityName );
+
         initUI();
     }
 
@@ -76,7 +59,7 @@ public class SearchActivity extends SherlockActivity {
 
     void initUI(){
 
-        category = (Spinner) findViewById(R.id.spinner1);
+        category = (ListView) findViewById(R.id.listView);
         updateCategories();
     }
 
@@ -95,12 +78,29 @@ public class SearchActivity extends SherlockActivity {
     void updateCategories(){
         categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID());
         SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
-                R.layout.spinner_item,
+                R.layout.org_list_item,
                 categorySource,
                 new String[] {"name","_id"},
                 new int[] { R.id.name });
-        categoryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         category.setAdapter(categoryAdapter);
+        category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, OrganizationListActivity.class);
+                intent.putExtra("cityID", getCityID());
+                categorySource.moveToPosition(position);
+                int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
+                intent.putExtra("categoryID", categoryID);
+                String categoryName = categorySource.getString(LocalDatabase.CATEGORY_NAME_IND);
+                String cityName = cityCursor.getString(LocalDatabase.CITY_NAME_IND);
+                EasyTracker.getInstance(context).send(MapBuilder
+                        .createEvent("ui_action", "categorySelect", "Категория = " + categoryName + " Город = " + cityName, null)
+                        .build());
+
+                intent.putExtra("categoryName",categoryName);
+                context.startActivity(intent);
+            }
+        });
     }
 
     int getCityID(){
@@ -109,11 +109,6 @@ public class SearchActivity extends SherlockActivity {
         return cityId;
     }
 
-    int getCategoryID(){
-        int categoryPosition = category.getSelectedItemPosition();
-        categorySource.moveToPosition(categoryPosition);
-        int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
-        return categoryID;
-    }
+
 
 }

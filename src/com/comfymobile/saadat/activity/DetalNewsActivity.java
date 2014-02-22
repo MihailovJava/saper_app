@@ -32,8 +32,7 @@ public class DetalNewsActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle("");
 
         setContentView(R.layout.event);

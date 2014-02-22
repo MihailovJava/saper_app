@@ -37,8 +37,7 @@ public class SourceListActivity extends SherlockActivity {
         context = this;
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.ab_news_title);
 
         initUI();

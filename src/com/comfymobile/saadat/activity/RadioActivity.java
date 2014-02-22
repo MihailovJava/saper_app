@@ -47,8 +47,7 @@ public class RadioActivity extends SherlockActivity {
             context = this;
 
             ActionBar ab = getSupportActionBar();
-            ab.setHomeButtonEnabled(true);
-            ab.setLogo(R.drawable.ab_back);
+            ab.setDisplayHomeAsUpEnabled(true);
             ab.setTitle(R.string.ab_radio_title);
 
             setContentView(R.layout.radio);

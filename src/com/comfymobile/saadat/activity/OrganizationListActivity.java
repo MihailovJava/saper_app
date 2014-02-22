@@ -37,8 +37,7 @@ public class OrganizationListActivity extends SherlockActivity {
         currentCategory = intent.getIntExtra("categoryID",-1);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(categoryName);
 
         setContentView(R.layout.orglist);
