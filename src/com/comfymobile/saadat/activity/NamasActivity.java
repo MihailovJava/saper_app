@@ -44,8 +44,7 @@ public class NamasActivity extends SherlockActivity {
         date = new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime());
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.ab_namas_title);
 
         initUI();

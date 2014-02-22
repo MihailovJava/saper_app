@@ -120,8 +120,7 @@ public class DetalOrganizationActivity extends SherlockActivity {
         category.setText("Категория: "+orgCatName);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(orgName);
     }
 

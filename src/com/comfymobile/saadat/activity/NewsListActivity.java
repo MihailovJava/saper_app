@@ -46,8 +46,7 @@ public class NewsListActivity extends SherlockActivity {
         if (isNews) setContentView(R.layout.news_list); else setContentView(R.layout.news);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         if (isNews)
          ab.setTitle(sourceTitle);
         else

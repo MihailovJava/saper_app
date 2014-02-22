@@ -3,7 +3,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" android:background="@drawable/bg">
-
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -40,13 +39,20 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
             android:src="@drawable/title_logo" android:layout_marginTop="16dp"/>
-    <Button
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/search_button" android:id="@+id/button" android:layout_gravity="center"
-            android:paddingTop="10dp" android:paddingBottom="10dp"
-            style="@style/ButtonStyle"
-            android:paddingRight="20dp" android:paddingLeft="20dp"
-            android:layout_below="@+id/linearLayout" android:layout_alignParentLeft="false"
-            android:layout_centerHorizontal="true" android:layout_margin="8dp"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_cat"
+        style="@style/SpinerSelectTextStyle"
+        android:id="@+id/textView1"
+        android:layout_below="@+id/imageView"
+        android:paddingLeft="10dp" android:paddingTop="5dp" android:layout_margin="8dp"
+        android:gravity="center"/>
+    <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView" android:layout_below="@+id/textView1"  android:layout_centerHorizontal="true"
+            android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"/>
 
 </RelativeLayout>

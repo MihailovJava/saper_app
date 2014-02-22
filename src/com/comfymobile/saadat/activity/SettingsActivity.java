@@ -132,8 +132,7 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         setPreferenceScreen(root);
 
         ActionBar ab = getSupportActionBar();
-        ab.setHomeButtonEnabled(true);
-        ab.setLogo(R.drawable.ab_back);
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.ab_settings_title);
     }
 
