@@ -151,13 +151,13 @@ public class LocalDatabase{
     }
 
     public void updateRadio(int id_radio, String link, String country){
-        String query = "insert or replace into category (_id, link, country) values (?,?,?)";
+        String query = "insert or replace into radio (_id, link, country) values (?,?,?)";
         database.execSQL(query, new String[]{String.valueOf(id_radio),link,country});
     }
 
-    public void updateCountry(int country_id, String country, String name) {
+    public void updateCountry(int id ,String country, String name) {
         String query = "insert or replace into country (_id, country, name) values (?,?,?)";
-        database.execSQL(query, new String[]{String.valueOf(country_id),country,name});
+        database.execSQL(query, new String[]{String.valueOf(id),country,name});
     }
 
 
@@ -389,8 +389,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ON_DATA_BASE_CREATE_RADIO = " create table radio (_id integer primary key, link text," +
             " country text);";
 
-    public static final String ON_DATA_BASE_CREATE_COUNTRY = " create table country (_id integer primary key, country text," +
-            " name text";
+    public static final String ON_DATA_BASE_CREATE_COUNTRY = " create table country (_id integer primary key , country text ," +
+            " name text);";
 
     private static final int DATA_BASE_VERSION = 7;
 

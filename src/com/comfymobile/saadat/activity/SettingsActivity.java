@@ -71,6 +71,7 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
         root.addPreference(cityList);
         root.addPreference(offsetList);
+        root.addPreference(countryList);
         setPreferenceScreen(root);
 
         ActionBar ab = getSupportActionBar();
@@ -210,17 +211,17 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                 conf.locale = new Locale(id.toLowerCase());
                 res.updateConfiguration(conf, dm);
 
-                Cursor city = database.getCountryName(id);
+                Cursor country = database.getCountryName(id);
                 Toast notify = Toast.makeText(context,
-                        getString(R.string.pref_notify_country)+" " +city.getString(city.getColumnIndex("name")),
+                        getString(R.string.pref_notify_country)+" " +country.getString(country.getColumnIndex("name")),
                         Toast.LENGTH_SHORT);
                 notify.show();
                 EasyTracker.getInstance(context).send(MapBuilder
                         .createEvent("ui_action", "city changed"
-                                , getString(R.string.pref_notify_country)+" " + city.getString(city.getColumnIndex("name"))
+                                , getString(R.string.pref_notify_country)+" " + country.getString(country.getColumnIndex("name"))
                                 , null)
                         .build());
-                cityList.setSummary(city.getString(city.getColumnIndex("name")));
+                countryList.setSummary(country.getString(country.getColumnIndex("name")));
                 return true;
             }
         });

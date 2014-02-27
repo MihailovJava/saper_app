@@ -11,11 +11,24 @@
             android:layout_height="wrap_content"
             android:id="@+id/playbutton"
             android:layout_centerHorizontal="true" android:layout_margin="8dp"
-            android:layout_marginTop="16dp" android:src="@drawable/btn_play" android:layout_centerVertical="true"/>
+            android:layout_marginTop="16dp" android:src="@drawable/btn_play" android:layout_centerVertical="true"
+            android:padding="8dp"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView" android:layout_above="@+id/playbutton" android:layout_centerHorizontal="true"
             android:src="@drawable/miradio"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/next"
+            android:layout_toRightOf="@+id/playbutton" android:layout_marginLeft="32dp"
+            android:src="@drawable/btn_next" android:layout_centerVertical="true" android:padding="8dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/prev"
+            android:layout_toLeftOf="@+id/playbutton" android:layout_marginRight="32dp"
+            android:src="@drawable/btn_prev" android:layout_centerVertical="true" android:padding="8dp"/>
 
 </RelativeLayout>

@@ -250,7 +250,7 @@ public class LoadingActivity extends Activity{
 
                 if (radio != null){
                     for (int i = 0; i < radio.length(); i++){
-                        int radio_id = radio.getJSONObject(i).getInt("id_rss");
+                        int radio_id = radio.getJSONObject(i).getInt("id_radio");
                         String link = radio.getJSONObject(i).getString("link");
                         String country = radio.getJSONObject(i).getString("country");
                         database.updateRadio(radio_id,link,country);
@@ -259,10 +259,10 @@ public class LoadingActivity extends Activity{
 
                 if (country != null){
                     for (int i = 0; i < country.length(); i++){
-                        int country_id = country.getJSONObject(i).getInt("id_country");
-                        String country = radio.getJSONObject(i).getString("country");
-                        String name = radio.getJSONObject(i).getString("name");
-                        database.updateCountry(country_id, country, name);
+                        int id = country.getJSONObject(i).getInt("id_country");
+                        String countryS = country.getJSONObject(i).getString("country");
+                        String name = country.getJSONObject(i).getString("name");
+                        database.updateCountry(id,countryS, name);
                     }
                 }
 
@@ -280,8 +280,9 @@ public class LoadingActivity extends Activity{
             String country_id = preferences.getString("country_id","ru");
             Cursor rss = database.getRSS(country_id);
             String[] rssLink = new String[rss.getCount()];
-            for (int i = 0; !rss.isAfterLast(); i++){
+            for (int i = 0; i < rss.getCount() ; i++){
                 rssLink[i] = rss.getString(rss.getColumnIndex("link"));
+                rss.moveToNext();
             }
             new RSSReader(context,true).execute(rssLink);
             publishProgress(LOAD_NEWS);
