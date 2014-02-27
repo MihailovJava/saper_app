@@ -116,10 +116,13 @@
         <service android:name=".service.SaadatService" />
         <receiver android:name=".service.SaadatReceiver"
                   android:permission="android.intent.action.BOOT_COMPLETED"/>
-
+        <!--
+                  debug key  AIzaSyB4b06rasobmWsR2zdy3DawMMXekUq3VyI
+                  realese key AIzaSyBDCJb9uLjyRNAgOHt2xOS5q_b85qr3Hq8
+        -->
         <meta-data
                 android:name="com.google.android.maps.v2.API_KEY"
-                android:value="AIzaSyBDCJb9uLjyRNAgOHt2xOS5q_b85qr3Hq8">
+                android:value="AIzaSyB4b06rasobmWsR2zdy3DawMMXekUq3VyI">
         </meta-data>
         <meta-data
                 android:name="com.google.android.gms.version"

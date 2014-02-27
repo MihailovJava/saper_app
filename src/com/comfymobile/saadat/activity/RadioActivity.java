@@ -127,12 +127,7 @@ public class RadioActivity extends SherlockActivity {
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences preferences;
-                            SharedPreferences.Editor editor;
-                            preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                            editor = preferences.edit();
-                            editor.putInt("update", 0);
-                            editor.commit();
+
                             Intent intent = new Intent(Settings.ACTION_SETTINGS);
                             startActivity(intent);
                             dialog.dismiss();

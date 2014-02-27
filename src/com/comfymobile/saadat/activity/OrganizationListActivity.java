@@ -1,17 +1,19 @@
 package com.comfymobile.saadat.activity;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -26,6 +28,7 @@ public class OrganizationListActivity extends SherlockActivity {
     Context context;
     String categoryName;
     Cursor citySource;
+    ListView list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,44 @@ public class OrganizationListActivity extends SherlockActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.org_list_ab,menu);
+
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        if (null != searchView ){
+
+            ImageView imageView = (ImageView) searchView.findViewById(R.id.abs__search_mag_icon);
+            imageView.setImageResource(R.drawable.ab_search);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener()
+        {
+            public boolean onQueryTextChange(String newText)
+            {
+                // this is your adapter that will be filtered
+               //.getFilter().filter(newText);
+
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query)
+            {
+                // this is your adapter that will be filtered
+              //  adapter.getFilter().filter(query);
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -58,7 +99,7 @@ public class OrganizationListActivity extends SherlockActivity {
     }
 
     void initUI(){
-        ListView list = (ListView) findViewById(R.id.listView);
+        list = (ListView) findViewById(R.id.listView);
         listSource = LocalDatabase.getInstance(this).getListSource(currentCity,currentCategory);
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(this,
                 R.layout.list_item,

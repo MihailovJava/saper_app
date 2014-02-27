@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Saadat</string>
-    <string name="search_button">ПОИСК</string>
-    <string name="back_button">Назад</string>
-    <string name="choose_city">Выбрать город</string>
-    <string name="choose_cat">Выбрать категорию</string>
-    <string name="menu_button">Меню</string><string name="Loading_logo">Саадат\nМусульманский гид</string><string name="miradio">Сейчас в эфире:\nЗагрузка метаданных будет\nпроизводится при расширении плеера</string>
-</resources>
