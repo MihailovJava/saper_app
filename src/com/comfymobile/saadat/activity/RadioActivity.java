@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.PhoneStateListener;
@@ -23,6 +25,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import java.io.IOException;
@@ -34,10 +37,16 @@ import java.io.IOException;
  */
 public class RadioActivity extends SherlockActivity {
         private ImageView playButton;
+        private ImageView prevButton;
+        private ImageView nextButton;
         Context context;
         Player player;
         PhoneStateListener phoneStateListener;
+        SharedPreferences preference;
+        SharedPreferences.Editor editor;
         public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
+
+        String[] radioLink;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +60,15 @@ public class RadioActivity extends SherlockActivity {
             ab.setTitle(R.string.ab_radio_title);
 
             setContentView(R.layout.radio);
-
+            preference = PreferenceManager.getDefaultSharedPreferences(context);
+            editor = preference.edit();
+            String country_id = preference.getString("country_id", "ru");
+            Cursor radio = LocalDatabase.getInstance(context).getRadio(country_id);
+            radioLink = new String[radio.getCount()];
+            for (int i = 0; i < radio.getCount(); i++){
+                radioLink[i] = radio.getString(radio.getColumnIndex("link"));
+                radio.moveToNext();
+            }
 
             phoneStateListener = new PhoneStateListener() {
                 @Override
@@ -72,6 +89,8 @@ public class RadioActivity extends SherlockActivity {
             }
             initUI();
         }
+
+
 
     @Override
     public void onStart() {
@@ -99,6 +118,10 @@ public class RadioActivity extends SherlockActivity {
         super.onPause();
         if (player.getStatus() == AsyncTask.Status.RUNNING)
              player.cancel(true);
+        if (!player.getMediaPlayer().isPlaying()){
+            player.getMediaPlayer().release();
+            player.prepared = false;
+        }
     }
 
     public boolean isOnline() {
@@ -127,12 +150,7 @@ public class RadioActivity extends SherlockActivity {
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences preferences;
-                            SharedPreferences.Editor editor;
-                            preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                            editor = preferences.edit();
-                            editor.putInt("update", 0);
-                            editor.commit();
+
                             Intent intent = new Intent(Settings.ACTION_SETTINGS);
                             startActivity(intent);
                             dialog.dismiss();
@@ -142,7 +160,7 @@ public class RadioActivity extends SherlockActivity {
             alert.show();
         } else {
             if (!player.getPrepared() && player.getStatus() != AsyncTask.Status.RUNNING ){
-                player.execute(RADIO_URL);
+                player.execute(radioLink);
             }
         }
 
@@ -154,22 +172,52 @@ public class RadioActivity extends SherlockActivity {
     }
 
     private void initUI(){
-
-            playButton = (ImageView) findViewById(R.id.playbutton);
-            playButton.setOnClickListener(new View.OnClickListener() {
+        playButton = (ImageView) findViewById(R.id.playbutton);
+        playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                       if (!player.getMediaPlayer().isPlaying()){
-                           player.getMediaPlayer().start();
-                           playButton.setImageResource(R.drawable.btn_pause);
-                       }else {
-                           playButton.setImageResource(R.drawable.btn_play);
-                           player.getMediaPlayer().pause();
-                        }
-                }
+                   if (!player.getMediaPlayer().isPlaying()){
+                       player.getMediaPlayer().start();
+                       playButton.setImageResource(R.drawable.btn_pause);
+                   }else {
+                       playButton.setImageResource(R.drawable.btn_play);
+                       player.getMediaPlayer().pause();
+                    }
+            }
             });
 
-        }
+        prevButton = (ImageView) findViewById(R.id.prev);
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int cur = preference.getInt("radio_link",0);
+                cur = cur - 1 < 0 ? radioLink.length-1 : cur -1;
+                editor.putInt("radio_link",cur);
+                editor.commit();
+                Player.getInstance(context).getMediaPlayer().reset();
+                Player.getInstance(context).finished = true;
+                player = Player.getInstance(context);
+                player.execute(radioLink);
+            }
+        });
+
+        nextButton = (ImageView) findViewById(R.id.next);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int cur = preference.getInt("radio_link",0);
+                cur = cur + 1 > radioLink.length-1 ? 0 : cur + 1;
+                editor.putInt("radio_link",cur);
+                editor.commit();
+                Player.getInstance(context).getMediaPlayer().reset();
+                Player.getInstance(context).finished = true;
+                player = Player.getInstance(context);
+                player.execute(radioLink);
+            }
+        });
+
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
@@ -198,7 +246,7 @@ public class RadioActivity extends SherlockActivity {
             private boolean finished = false;
             private MediaPlayer mediaPlayer;
             ImageView playButton;
-
+            static SharedPreferences pref;
 
             public MediaPlayer getMediaPlayer() {
                 return mediaPlayer;
@@ -218,9 +266,12 @@ public class RadioActivity extends SherlockActivity {
                 progress = new ProgressDialog(context);
             }
 
+
+
             public static Player getInstance(Context context){
                 if (me == null){
                     me = new Player(context);
+                    pref =  PreferenceManager.getDefaultSharedPreferences(context);
                 }
                 if ( me != null){
                     if ((me.getStatus() == Status.FINISHED || me.isCancelled() == true) && !me.prepared){
@@ -228,7 +279,9 @@ public class RadioActivity extends SherlockActivity {
                         return me;
                     }
                     if (me.finished){
-                        me = new Player(context);
+                        Player tmp = new Player(context);
+                        tmp.setPlayButton(me.playButton);
+                        me = tmp;
                         return me;
                     }
                 }
@@ -242,7 +295,7 @@ public class RadioActivity extends SherlockActivity {
                 // TODO Auto-generated method stub
 
                 try {
-                    mediaPlayer.setDataSource(params[0]);
+                    mediaPlayer.setDataSource(params[getCurrentLink(params.length)]);
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                         @Override
@@ -252,7 +305,7 @@ public class RadioActivity extends SherlockActivity {
                             mediaPlayer.stop();
                             mediaPlayer.reset();
                             finished = true;
-
+                            playButton.setImageResource(R.drawable.btn_play);
                         }
                     });
                     mediaPlayer.prepare();
@@ -269,14 +322,24 @@ public class RadioActivity extends SherlockActivity {
                 return prepared;
             }
 
+            private int getCurrentLink(int length) {
+                int cur = pref.getInt("radio_link",0);
+                cur = cur  > length-1 ? 0 : cur ;
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("radio_link",cur);
+                editor.commit();
+                return cur;
+            }
+
+
             @Override
             protected void onPostExecute(Boolean result) {
-
+                playButton.setImageResource(R.drawable.btn_play);
                 super.onPostExecute(result);
                 if (progress.isShowing()) {
                     progress.cancel();
                 }
-
+                cancel(true);
             }
 
             @Override

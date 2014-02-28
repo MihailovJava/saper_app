@@ -41,7 +41,7 @@ public class SearchActivity extends SherlockActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(getString(R.string.ab_locations_title) + " " + cityName );
+        ab.setTitle(getString(R.string.ab_locations_title) + "-" + cityName );
 
         initUI();
     }

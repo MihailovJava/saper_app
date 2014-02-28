@@ -3,8 +3,10 @@ package com.comfymobile.saadat.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
@@ -57,11 +59,14 @@ public class SourceListActivity extends SherlockActivity {
                 finish();
                 return true;
             case R.id.ab_sync_button:
-                new RSSReader(context,false).execute(new String[]{
-                        "http://www.islamrf.ru/rss/",
-                        "http://islam-today.ru/rss/",
-                        "http://www.muslimeco.ru/rss.php"
-                });
+                String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "ru");
+                Cursor rss = LocalDatabase.getInstance(context).getRSS(country_id);
+                String[] rssLink = new String[rss.getCount()];
+                for (int i = 0; i < rss.getCount(); i++){
+                    rssLink[i] = rss.getString(rss.getColumnIndex("link"));
+                    rss.moveToNext();
+                }
+                new RSSReader(context,true).execute(rssLink);
             default:
                 return super.onOptionsItemSelected(item);
         }
