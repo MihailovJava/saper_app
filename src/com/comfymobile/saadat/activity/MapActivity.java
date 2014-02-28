@@ -112,7 +112,7 @@ public class MapActivity extends SherlockFragmentActivity {
     public static final int SHOP = 15;
     public static final int ORG = 16;
 
-    private BitmapDescriptor getIcon(int type) {
+    public static BitmapDescriptor getIcon(int type) {
         switch (type){
             case CAFE: return BitmapDescriptorFactory.fromResource(R.drawable.markers_04);
             case BANK: return BitmapDescriptorFactory.fromResource(R.drawable.markers_06);

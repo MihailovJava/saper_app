@@ -66,7 +66,7 @@ public class DetalOrganizationActivity extends SherlockActivity {
         }
     }
 
-    Double getLatFromString(String lat){
+    public static Double getLatFromString(String lat){
         if (lat != null && !lat.equals("null")){
             lat = lat.replaceAll("[^\\p{ASCII}]", "");
             return Double.valueOf(lat);
@@ -74,7 +74,7 @@ public class DetalOrganizationActivity extends SherlockActivity {
         return null;
     }
 
-    Double getLngFromString(String lng){
+    public static Double getLngFromString(String lng){
         if (lng != null && !lng.equals("null")){
             lng = lng.replaceAll("[^\\p{ASCII}]", "");
             return Double.valueOf(lng);
