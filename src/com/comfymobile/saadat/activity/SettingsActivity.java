@@ -111,8 +111,11 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         String prefoff = preferences.getString("alarm_offset","2000");
         int prefoffint = Integer.valueOf(prefoff);
         for(int i = 0; i < offsetValint.length; i++){
-            if (offsetValint[i] == prefoffint )
+            if (offsetValint[i] == prefoffint ){
                 offsetList.setSummary(offsetString[i]);
+                edit.putString("alarm_offset", prefoff);
+                edit.commit();
+            }
         }
 
         offsetList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -196,8 +199,12 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         countryList.setEntryValues(id);
         countryList.setTitle(R.string.pref_country_title);
 
-        String prefCountry = preferences.getString("country_id","ru");
-        country = database.getCountryName(prefCountry);
+        Locale locale = Locale.getDefault();
+        String l = locale.getLanguage();
+        String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
+        edit.putString("country_id", country_id);
+        edit.commit();
+        country = database.getCountryName(country_id);
         countryList.setSummary(country.getString(country.getColumnIndex("name")));
         countryList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override

@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.Locale;
 
 
 public class LoadingActivity extends Activity{
@@ -276,8 +277,9 @@ public class LoadingActivity extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-
-            String country_id = preferences.getString("country_id","ru");
+            Locale locale = Locale.getDefault();
+            String l = locale.getLanguage();
+            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
             Cursor rss = database.getRSS(country_id);
             String[] rssLink = new String[rss.getCount()];
             for (int i = 0; i < rss.getCount() ; i++){

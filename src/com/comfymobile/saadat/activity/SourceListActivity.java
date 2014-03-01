@@ -19,6 +19,8 @@ import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
 
+import java.util.Locale;
+
 /**
  * User: Nixy
  * Date: 30.04.13
@@ -59,14 +61,16 @@ public class SourceListActivity extends SherlockActivity {
                 finish();
                 return true;
             case R.id.ab_sync_button:
-                String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "ru");
+                Locale locale = Locale.getDefault();
+                String l = locale.getLanguage();
+                String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
                 Cursor rss = LocalDatabase.getInstance(context).getRSS(country_id);
                 String[] rssLink = new String[rss.getCount()];
                 for (int i = 0; i < rss.getCount(); i++){
                     rssLink[i] = rss.getString(rss.getColumnIndex("link"));
                     rss.moveToNext();
                 }
-                new RSSReader(context,true).execute(rssLink);
+                new RSSReader(context,false).execute(rssLink);
             default:
                 return super.onOptionsItemSelected(item);
         }

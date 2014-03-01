@@ -29,6 +29,7 @@ import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * User: Nixy
@@ -62,7 +63,9 @@ public class RadioActivity extends SherlockActivity {
             setContentView(R.layout.radio);
             preference = PreferenceManager.getDefaultSharedPreferences(context);
             editor = preference.edit();
-            String country_id = preference.getString("country_id", "ru");
+            Locale locale = Locale.getDefault();
+            String l = locale.getLanguage();
+            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
             Cursor radio = LocalDatabase.getInstance(context).getRadio(country_id);
             radioLink = new String[radio.getCount()];
             for (int i = 0; i < radio.getCount(); i++){
