@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
@@ -16,6 +17,7 @@ import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.NewsAdapter;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 
@@ -86,7 +88,8 @@ public class NewsListActivity extends SherlockActivity {
             listAdapter = new NewsAdapter(this,cursor);
             list.setAdapter(listAdapter);
         } else {
-            cursor = LocalDatabase.getInstance(this).getEvents(-1);
+            int cityId = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("city_id", SaadatService.MOSCOW_ID));
+            cursor = LocalDatabase.getInstance(this).getEvents(cityId);
             listAdapter = new SimpleCursorAdapter(this,
                     R.layout.event_item,
                     cursor,
