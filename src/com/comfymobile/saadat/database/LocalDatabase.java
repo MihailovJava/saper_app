@@ -282,7 +282,7 @@ public class LocalDatabase{
                        "T1._id " +
                        "FROM events as T1, city as T2 WHERE T1.city = T2._id";
         if (id > 0){
-            query += " AND T1._id = ?";
+            query += " AND T2._id = ?";
             args = new String[]{String.valueOf(id)};
         }
         Cursor cursor = database.rawQuery(query,args);

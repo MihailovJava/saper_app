@@ -30,7 +30,7 @@ public class SourceListActivity extends SherlockActivity {
 
     Cursor listSource;
     Context context;
-
+    ListView list;
 
 
     @Override
@@ -71,6 +71,7 @@ public class SourceListActivity extends SherlockActivity {
                     rss.moveToNext();
                 }
                 new RSSReader(context,false).execute(rssLink);
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -79,7 +80,7 @@ public class SourceListActivity extends SherlockActivity {
     void initUI(){
 
         SimpleCursorAdapter listAdapter;
-        ListView list = (ListView) findViewById(R.id.listView);
+         list = (ListView) findViewById(R.id.listView);
 
          listSource = LocalDatabase.getInstance(this).getNewsSource();
          listAdapter = new SimpleCursorAdapter(this,
