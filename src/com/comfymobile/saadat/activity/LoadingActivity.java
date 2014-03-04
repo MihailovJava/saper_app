@@ -13,8 +13,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
@@ -214,7 +212,8 @@ public class LoadingActivity extends Activity{
                     String x = cit.getJSONObject(i).getString("X");
                     String y = cit.getJSONObject(i).getString("Y");
                     int tzone = cit.getJSONObject(i).getInt("tzone");
-                    database.updateCity(id_city,name,last_mod,x,y,tzone);
+                    int country_id = cit.getJSONObject(i).getInt("country_id");
+                    database.updateCity(id_city,name,last_mod,x,y,tzone,country_id);
                 }}
 
                 if (cat != null){ database.clearCategory();

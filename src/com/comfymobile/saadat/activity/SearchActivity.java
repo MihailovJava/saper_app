@@ -1,5 +1,6 @@
 package com.comfymobile.saadat.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,9 +8,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
@@ -32,12 +37,8 @@ public class SearchActivity extends SherlockActivity {
         setContentView(R.layout.search);
         context = this;
 
-
-
-
         cityCursor = LocalDatabase.getInstance(context).getCitySource(getCityID());
         String cityName = cityCursor.getString(cityCursor.getColumnIndex("name"));
-
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -52,9 +53,22 @@ public class SearchActivity extends SherlockActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.ab_search_add:
+                showAddDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showAddDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View dialog = getLayoutInflater().inflate(R.layout.add_organization, null);
+        builder.setView(dialog);
+        builder.setNegativeButton("Отмена", null);
+        builder.setPositiveButton("Добавить",null);
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     void initUI(){
@@ -107,6 +121,15 @@ public class SearchActivity extends SherlockActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int cityId = Integer.valueOf(preferences.getString("city_id", "12"));
         return cityId;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getSupportMenuInflater();
+        inflater.inflate(R.menu.org_search_ab,menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
 

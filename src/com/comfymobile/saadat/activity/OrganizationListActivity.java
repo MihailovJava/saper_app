@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -127,7 +127,8 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
     }
 
 
-
+    View mapLayout;
+    View listLayout;
     void initUI(){
         pager = (ViewPager) findViewById(R.id.pager);
         ViewPager.SimpleOnPageChangeListener viewPagerListener = new ViewPager.SimpleOnPageChangeListener() {
@@ -143,8 +144,8 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
 
 
         listOfViews = new ArrayList<View>();
-        View mapLayout = View.inflate(context,R.layout.org_map,null);
-        View listLayout = View.inflate(context,R.layout.orglist,null);
+        mapLayout = View.inflate(context,R.layout.org_map,null);
+        listLayout = View.inflate(context,R.layout.orglist,null);
 
         pager.addView(listLayout);
         pager.addView(mapLayout);
@@ -189,6 +190,7 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
         pager.setCurrentItem(tab.getPosition());
         switch (Integer.valueOf(tab.getTag().toString())){
             case LIST:
+                mapLayout.setVisibility(View.GONE);
                 if (itemSarch != null)
                     itemSarch.setVisible(true);
 
@@ -224,6 +226,7 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
 
             break;
             case MAP:
+                mapLayout.setVisibility(View.VISIBLE);
                 if (itemSarch != null){
                     itemSarch.setVisible(false);
                     itemSarch.collapseActionView();

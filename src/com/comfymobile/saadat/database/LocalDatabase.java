@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.comfymobile.saadat.adapter.PrayTime;
-import com.comfymobile.saadat.service.SaadatService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -96,9 +95,9 @@ public class LocalDatabase{
                 address,t_number,site,String.valueOf(id_category),last_mod,email,lat,lng});
     }
 
-    public void updateCity(int id_city, String name, String last_mod, String x, String y, int tzone){
-        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone) values (?,?,?,?,?,?)";
-        database.execSQL(query,new String[]{String.valueOf(id_city),name,last_mod,x,y,String.valueOf(tzone)});
+    public void updateCity(int id_city, String name, String last_mod, String x, String y, int tzone, int country_id){
+        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone) values (?,?,?,?,?,?,?)";
+        database.execSQL(query,new String[]{String.valueOf(id_city),name,last_mod,x,y,String.valueOf(tzone),String.valueOf(country_id)});
     }
     public void updateCategory(int id_category, String name, String last_mod){
         String query = "insert or replace into category (_id, name, last_mod) values (?,?,?)";
@@ -178,7 +177,7 @@ public class LocalDatabase{
     }
 
     public Cursor getCitySource(){
-        String query = "SELECT _id , name, x, y, tzone FROM city";
+        String query = "SELECT _id , name, x, y, tzone, country_id FROM city";
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -207,7 +206,7 @@ public class LocalDatabase{
     }
 
     public Cursor getCitySource(int id){
-          String query = "SELECT _id , name FROM city WHERE _id = ?";
+          String query = "SELECT _id , name, country_id FROM city WHERE _id = ?";
           Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
           if (cursor != null) {
                   cursor.moveToFirst();
@@ -215,10 +214,19 @@ public class LocalDatabase{
           return cursor;
     }
 
+    public Cursor getCitySourceByCountry(int country_id){
+        String query = "SELECT _id , name, x, y, tzone, country_id FROM city WHERE country_id = ?";
+        Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(country_id)});
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
 
 
     public Cursor getCity(int id){
-        String query = "SELECT _id , name, x , y, tzone FROM city WHERE _id = ?";
+        String query = "SELECT _id , name, x , y, tzone, country_id FROM city WHERE _id = ?";
         Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
         if (cursor != null) {
             cursor.moveToFirst();
@@ -363,7 +371,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             " id_city integer, address text, t_number text, site text, id_category integer,"+
             " last_mod text , email text, lat text, lng text );";
     public static final String ON_DATA_BASE_CREATE_CITY = " CREATE TABLE city (_id primary key, name text not null, "+
-            "last_mod text, x text, y text, tzone integer); ";
+            "last_mod text, x text, y text, tzone integer, country_id integer); ";
 
     public static final String ON_DATA_BASE_CREATE_CATEGORY = " CREATE TABLE category(_id primary key, name text " +
             "not null, last_mod text);";
