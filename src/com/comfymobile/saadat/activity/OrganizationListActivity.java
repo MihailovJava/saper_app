@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
     SearchView searchView;
     MenuItem itemSarch;
     List<View>  listOfViews;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -226,6 +228,7 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
                     itemSarch.setVisible(false);
                     itemSarch.collapseActionView();
                 }
+
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.map);
                 GoogleMap map = ((SupportMapFragment) fragment ).getMap();
 
@@ -242,6 +245,7 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
                 listSource = LocalDatabase.getInstance(this).getListSource(currentCity,currentCategory);
                 for (int i = 0 ; i < listSource.getCount(); i++){
                     int id = listSource.getInt(listSource.getColumnIndex("_id"));
+
                     Cursor orgsource = LocalDatabase.getInstance(this).getDetal(id);
                     String orgLat = orgsource.getString(orgsource.getColumnIndex("lat"));
                     String orgLng = orgsource.getString(orgsource.getColumnIndex("lng"));
@@ -258,6 +262,28 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
                                 .icon(MapActivity.getIcon(orgIdCat)));
                     }
                     listSource.moveToNext();
+                    map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                           String id =  marker.getId();
+                           id = id.replace("m","");
+                           int intID = Integer.valueOf(id);
+                           listSource.moveToPosition(intID);
+
+                           int orgID = listSource.getInt(listSource.getColumnIndex("_id"));
+                           Intent intent = new Intent(context, DetalOrganizationActivity.class);
+                           intent.putExtra("id", orgID);
+
+                           String orgName = listSource.getString(LocalDatabase.ORG_NAME_IND);
+                           citySource = LocalDatabase.getInstance(context).getCitySource(currentCity);
+                           String cityName = citySource.getString(LocalDatabase.CITY_NAME_IND);
+                           EasyTracker.getInstance(context).send(MapBuilder
+                                   .createEvent("ui_action", "organizationSelect", "Город = " + cityName + " Организация = " + orgName, null)
+                                   .build());
+
+                           context.startActivity(intent);
+                        }
+                    });
                 }
                 break;
         }

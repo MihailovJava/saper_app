@@ -4,11 +4,18 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.activity.MenuActivity;
+import com.comfymobile.saadat.activity.NewsListActivity;
+import com.comfymobile.saadat.activity.SourceListActivity;
 import com.comfymobile.saadat.database.LocalDatabase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 
 /**
  * Author Grinch
@@ -163,6 +171,9 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
             ((Activity) context).finish();
         }else {
             if (dialog != null){
+                Intent intent = new Intent(context, SourceListActivity.class);
+                context.startActivity(intent);
+                ((Activity) context).finish();
                 dialog.dismiss();
             }
         }
