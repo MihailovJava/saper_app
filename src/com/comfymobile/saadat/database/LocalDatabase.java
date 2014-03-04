@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.comfymobile.saadat.activity.Saadat;
 import com.comfymobile.saadat.adapter.PrayTime;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class LocalDatabase{
     }
 
     public void updateCity(int id_city, String name, String last_mod, String x, String y, int tzone, int country_id){
-        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone) values (?,?,?,?,?,?,?)";
+        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone, country_id) values (?,?,?,?,?,?,?)";
         database.execSQL(query,new String[]{String.valueOf(id_city),name,last_mod,x,y,String.valueOf(tzone),String.valueOf(country_id)});
     }
     public void updateCategory(int id_category, String name, String last_mod){
@@ -176,14 +177,6 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getCitySource(){
-        String query = "SELECT _id , name, x, y, tzone, country_id FROM city";
-        Cursor cursor = database.rawQuery(query,null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
 
     public Cursor getNewsSource(){
         String query = "SELECT _id , name, source_text FROM newssource";
@@ -341,18 +334,29 @@ public class LocalDatabase{
         return  cursor;
     };
 
-    public Cursor getCountryList(){
+    public Cursor getCountryList(int id){
+        String[] args = null;
         String query = "select _id, country, name from country";
-        Cursor cursor = database.rawQuery(query,null);
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
         if (cursor!= null){
             cursor.moveToFirst();
         }
         return cursor;
     }
 
-    public Cursor getCountryName(String country){
-        String query = "select _id,country,name from country where country = ?";
-        Cursor cursor = database.rawQuery(query,new String[]{country});
+    public Cursor getCountryName(int id){
+        String[] args = null;
+        String query = "select _id,country,name from country ";
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+
+        Cursor cursor = database.rawQuery(query,args);
         if (cursor != null){
             cursor.moveToFirst();
         }
@@ -463,6 +467,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RADIO);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
+            sqLiteDatabase.execSQL("DROP TABLE city");
+            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
         }
 
     }

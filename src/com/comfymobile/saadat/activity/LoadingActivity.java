@@ -276,10 +276,9 @@ public class LoadingActivity extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Locale locale = Locale.getDefault();
-            String l = locale.getLanguage();
-            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
-            Cursor rss = database.getRSS(country_id);
+            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+            Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
+            Cursor rss = database.getRSS(country.getString(country.getColumnIndex("country")));
             String[] rssLink = new String[rss.getCount()];
             for (int i = 0; i < rss.getCount() ; i++){
                 rssLink[i] = rss.getString(rss.getColumnIndex("link"));

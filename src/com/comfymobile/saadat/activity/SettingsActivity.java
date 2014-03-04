@@ -48,7 +48,7 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
     ListPreference cityList;
     ListPreference offsetList;
     ListPreference countryList;
-
+    PreferenceScreen root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +64,25 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                 getString(R.string.in_time_offset),
         };
 
+        context = this;
+
         createCityPref();
         createOffsetPref();
         createCountryPref();
 
-        PreferenceScreen root = getPreferenceManager().createPreferenceScreen(this);
-        root.addPreference(cityList);
-        root.addPreference(offsetList);
-        root.addPreference(countryList);
-        setPreferenceScreen(root);
+        root = getPreferenceManager().createPreferenceScreen(this);
+        updateRoot();
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.ab_settings_title);
+    }
+
+    void updateRoot(){
+        root.addPreference(cityList);
+        root.addPreference(offsetList);
+        root.addPreference(countryList);
+        setPreferenceScreen(root);
     }
 
     @Override
@@ -139,7 +145,12 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
     }
 
     void createCityPref(){
-        Cursor city = database.getCitySource();
+
+
+        String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+        Cursor country = database.getCountryList(Integer.valueOf(country_id));
+
+        Cursor city = database.getCitySourceByCountry(country.getInt(country.getColumnIndex("_id")));
         context = this;
         String[] sCity = new String[city.getCount()];
         final String[] id = new String[city.getCount()];
@@ -184,12 +195,18 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
     }
 
     void createCountryPref(){
-        Cursor country = database.getCountryList();
+
+
+        String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+        edit.putString("country_id", country_id);
+        edit.commit();
+
+        Cursor country = database.getCountryList(Integer.valueOf("-1"));
         String[] countryNames = new String[country.getCount()];
         String[] id = new String[country.getCount()];
         for (int i = 0; !country.isAfterLast(); i++){
             countryNames[i] = country.getString(country.getColumnIndex("name"));
-            id[i] = country.getString(country.getColumnIndex("country"));
+            id[i] = country.getString(country.getColumnIndex("_id"));
             country.moveToNext();
         }
 
@@ -199,32 +216,48 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         countryList.setEntryValues(id);
         countryList.setTitle(R.string.pref_country_title);
 
-        Locale locale = Locale.getDefault();
-        String l = locale.getLanguage();
-        String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
-        edit.putString("country_id", country_id);
-        edit.commit();
-        country = database.getCountryName(country_id);
+
+
+        country = database.getCountryName(Integer.valueOf(country_id));
         countryList.setSummary(country.getString(country.getColumnIndex("name")));
         countryList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String id = (String)newValue;
-
+                Integer id = Integer.valueOf((String)newValue);
+                Cursor country = database.getCountryName(id);
+                Cursor city = database.getCitySourceByCountry(country.getInt(country.getColumnIndex("_id")));
+                if (city.getCount() != 0){
+                    Toast notify = Toast.makeText(context,
+                            getString(R.string.pref_notify_city)+" " +city.getString(city.getColumnIndex("name")),
+                            Toast.LENGTH_SHORT);
+                    notify.show();
+                    EasyTracker.getInstance(context).send(MapBuilder
+                            .createEvent("ui_action", "city changed"
+                                    , getString(R.string.pref_notify_city) + " " + city.getString(city.getColumnIndex("name"))
+                                    , null)
+                            .build());
+                    edit.putString("country_id",(String) newValue);
+                    edit.commit();
+                    edit.putString("city_id", city.getString(city.getColumnIndex("_id")));
+                    edit.commit();
+                    root.removeAll();
+                    createCityPref();
+                    updateRoot();
+                }
                 Resources res = context.getResources();
                 // Change locale settings in the app.
                 DisplayMetrics dm = res.getDisplayMetrics();
                 android.content.res.Configuration conf = res.getConfiguration();
-                conf.locale = new Locale(id.toLowerCase());
+                conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
                 res.updateConfiguration(conf, dm);
 
-                Cursor country = database.getCountryName(id);
+
                 Toast notify = Toast.makeText(context,
                         getString(R.string.pref_notify_country)+" " +country.getString(country.getColumnIndex("name")),
                         Toast.LENGTH_SHORT);
                 notify.show();
                 EasyTracker.getInstance(context).send(MapBuilder
-                        .createEvent("ui_action", "city changed"
+                        .createEvent("ui_action", "country changed"
                                 , getString(R.string.pref_notify_country)+" " + country.getString(country.getColumnIndex("name"))
                                 , null)
                         .build());

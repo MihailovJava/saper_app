@@ -63,10 +63,10 @@ public class RadioActivity extends SherlockActivity {
             setContentView(R.layout.radio);
             preference = PreferenceManager.getDefaultSharedPreferences(context);
             editor = preference.edit();
-            Locale locale = Locale.getDefault();
-            String l = locale.getLanguage();
-            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
-            Cursor radio = LocalDatabase.getInstance(context).getRadio(country_id);
+
+            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+            Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
+            Cursor radio = LocalDatabase.getInstance(context).getRadio(country.getString(country.getColumnIndex("country")));
             radioLink = new String[radio.getCount()];
             for (int i = 0; i < radio.getCount(); i++){
                 radioLink[i] = radio.getString(radio.getColumnIndex("link"));
