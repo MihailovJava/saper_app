@@ -79,9 +79,9 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
     }
 
     void updateRoot(){
-        root.addPreference(cityList);
         root.addPreference(offsetList);
         root.addPreference(countryList);
+        root.addPreference(cityList);
         setPreferenceScreen(root);
     }
 
@@ -236,10 +236,10 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                                     , getString(R.string.pref_notify_city) + " " + city.getString(city.getColumnIndex("name"))
                                     , null)
                             .build());
-                    edit.putString("country_id",(String) newValue);
-                    edit.commit();
-                    edit.putString("city_id", city.getString(city.getColumnIndex("_id")));
-                    edit.commit();
+                    edit.putString("country_id",(String) newValue).commit();
+                    edit.putBoolean("rss_hint",false).commit();
+                    edit.putString("city_id", city.getString(city.getColumnIndex("_id"))).commit();
+
                     root.removeAll();
                     createCityPref();
                     updateRoot();
