@@ -96,10 +96,24 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener()
         {
-            public boolean onQueryTextChange(String newText)
-            {
-                // this is your adapter that will be filtered
-                //.getFilter().filter(newText);
+            public boolean onQueryTextChange(String newText){
+                if (newText != null && newText.length() > 2 ){
+                    listSource = LocalDatabase.getInstance(context).getListSourceByQuery(currentCity,currentCategory,newText);
+                    SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(context,
+                            R.layout.list_item,
+                            listSource,
+                            new String[] {"name","address","_id"},
+                            new int[] { R.id.name, R.id.address});
+                    list.setAdapter(listAdapter);
+                } else {
+                    listSource = LocalDatabase.getInstance(context).getListSource(currentCity,currentCategory);
+                    SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(context,
+                            R.layout.list_item,
+                            listSource,
+                            new String[] {"name","address","_id"},
+                            new int[] { R.id.name, R.id.address});
+                    list.setAdapter(listAdapter);
+                }
 
                 return true;
             }
@@ -242,10 +256,11 @@ public class OrganizationListActivity extends SherlockFragmentActivity implement
                 double city_lng = SaadatService.getCityLng(city_id,this);
                 int zoom = 10 ;
                 LatLng city = new LatLng(city_lat, city_lng);
-
+                map.clear();
                 map.setMyLocationEnabled(true);
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(city, zoom));
-                listSource = LocalDatabase.getInstance(this).getListSource(currentCity,currentCategory);
+                listSource.moveToFirst();
+               // listSource = LocalDatabase.getInstance(this).getListSource(currentCity,currentCategory);
                 for (int i = 0 ; i < listSource.getCount(); i++){
                     int id = listSource.getInt(listSource.getColumnIndex("_id"));
 

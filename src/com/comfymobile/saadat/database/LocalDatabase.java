@@ -170,6 +170,7 @@ public class LocalDatabase{
             if (city == -1 && category != -1) args = "WHERE id_category="+String.valueOf(category);
         }
         String query = "SELECT _id, name, address FROM organization "+args;
+
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -283,7 +284,7 @@ public class LocalDatabase{
                        "T1._id " +
                        "FROM events as T1, city as T2 WHERE T1.city = T2._id";
         if (id > 0){
-            query += " AND T2._id = ?";
+            query += " AND T2.country_id = ?";
             args = new String[]{String.valueOf(id)};
         }
         Cursor cursor = database.rawQuery(query,args);
@@ -364,13 +365,31 @@ public class LocalDatabase{
     }
 
 
+    public Cursor getListSourceByQuery(int city, int category, String queryString) {
+        String[] args = new String[]{"%" + queryString + "%","%" + queryString + "%"};
+
+        String query = "SELECT _id, name, address FROM organization ";
+
+        if (city != -1 || category != -1){
+            if (city != -1 && category != -1) query += "WHERE id_city="+String.valueOf(city)+" AND id_category="+String.valueOf(category);
+            if (city != -1 && category == -1) query += "WHERE id_city="+String.valueOf(city);
+            if (city == -1 && category != -1) query += "WHERE id_category="+String.valueOf(category);
+        }
+
+        query += " AND ( name LIKE ? OR address LIKE ?  ) ";
 
 
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATA_BASE_NAME = "base_of_org";
-    public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization (  "+
+    public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE  TABLE organization  (  "+
             " _id integer primary key, name text not null,description text, "+
             " id_city integer, address text, t_number text, site text, id_category integer,"+
             " last_mod text , email text, lat text, lng text );";
@@ -467,8 +486,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RADIO);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
-            sqLiteDatabase.execSQL("DROP TABLE city");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS city");
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
+
         }
 
     }

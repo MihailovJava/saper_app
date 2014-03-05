@@ -88,8 +88,8 @@ public class NewsListActivity extends SherlockActivity {
             listAdapter = new NewsAdapter(this,cursor);
             list.setAdapter(listAdapter);
         } else {
-            int cityId = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("city_id", SaadatService.MOSCOW_ID));
-            cursor = LocalDatabase.getInstance(this).getEvents(cityId);
+            int countryId = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("country_id", "1"));
+            cursor = LocalDatabase.getInstance(this).getEvents(countryId);
             listAdapter = new SimpleCursorAdapter(this,
                     R.layout.event_item,
                     cursor,
