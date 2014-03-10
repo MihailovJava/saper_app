@@ -253,7 +253,9 @@ public class LoadingActivity extends Activity{
                         int radio_id = radio.getJSONObject(i).getInt("id_radio");
                         String link = radio.getJSONObject(i).getString("link");
                         String country = radio.getJSONObject(i).getString("country");
-                        database.updateRadio(radio_id,link,country);
+                        String name = radio.getJSONObject(i).getString("name");
+                        String img = radio.getJSONObject(i).getString("img");
+                        database.updateRadio(radio_id,link,name,img,country);
                     }
                 }
 

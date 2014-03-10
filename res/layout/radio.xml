@@ -6,29 +6,38 @@
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/bg">
 
-    <ImageView
+    <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/playbutton"
-            android:layout_centerHorizontal="true" android:layout_margin="8dp"
-            android:layout_marginTop="16dp" android:src="@drawable/btn_play" android:layout_centerVertical="true"
-            android:padding="8dp"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView" android:layout_above="@+id/playbutton" android:layout_centerHorizontal="true"
-            android:src="@drawable/miradio"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/next"
-            android:layout_toRightOf="@+id/playbutton" android:layout_marginLeft="32dp"
-            android:src="@drawable/btn_next" android:layout_centerVertical="true" android:padding="8dp"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/prev"
-            android:layout_toLeftOf="@+id/playbutton" android:layout_marginRight="32dp"
-            android:src="@drawable/btn_prev" android:layout_centerVertical="true" android:padding="8dp"/>
+            android:id="@+id/listView" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_above="@+id/linearLayout" android:layout_marginBottom="8dp"
+            android:divider="#9ec2a8" android:layout_alignParentTop="true" android:layout_marginTop="16dp"/>
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" android:id="@+id/linearLayout" android:layout_margin="16dp">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:id="@+id/prev"
+                android:layout_toLeftOf="@+id/playbutton"
+                android:layout_weight="1"
+                android:src="@drawable/btn_prev" android:layout_centerVertical="true" android:padding="8dp"/>
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/playbutton"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:src="@drawable/btn_play" android:layout_centerVertical="true"
+                android:padding="8dp"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:id="@+id/next"
+                android:layout_toRightOf="@+id/playbutton"
+                android:layout_weight="1"
+                android:src="@drawable/btn_next" android:layout_centerVertical="true" android:padding="8dp"/>
+    </LinearLayout>
 
 </RelativeLayout>

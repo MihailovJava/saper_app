@@ -21,10 +21,12 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ListView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.adapter.RadioAdapter;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -45,9 +47,9 @@ public class RadioActivity extends SherlockActivity {
         PhoneStateListener phoneStateListener;
         SharedPreferences preference;
         SharedPreferences.Editor editor;
-        public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
-
+        ListView radioList;
         String[] radioLink;
+        Cursor radio;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class RadioActivity extends SherlockActivity {
 
             String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
             Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
-            Cursor radio = LocalDatabase.getInstance(context).getRadio(country.getString(country.getColumnIndex("country")));
+            radio = LocalDatabase.getInstance(context).getRadio(country.getString(country.getColumnIndex("country")));
             radioLink = new String[radio.getCount()];
             for (int i = 0; i < radio.getCount(); i++){
                 radioLink[i] = radio.getString(radio.getColumnIndex("link"));
@@ -172,6 +174,9 @@ public class RadioActivity extends SherlockActivity {
         }else {
             playButton.setImageResource(R.drawable.btn_play);
         }
+
+        radioList.setAdapter(new RadioAdapter(this,radio));
+
     }
 
     private void initUI(){
@@ -201,6 +206,7 @@ public class RadioActivity extends SherlockActivity {
                 Player.getInstance(context).finished = true;
                 player = Player.getInstance(context);
                 player.execute(radioLink);
+                radioList.setAdapter(new RadioAdapter(context,radio));
             }
         });
 
@@ -216,9 +222,11 @@ public class RadioActivity extends SherlockActivity {
                 Player.getInstance(context).finished = true;
                 player = Player.getInstance(context);
                 player.execute(radioLink);
+                radioList.setAdapter(new RadioAdapter(context,radio));
             }
         });
 
+        radioList = (ListView) findViewById(R.id.listView);
 
     }
 
@@ -249,6 +257,7 @@ public class RadioActivity extends SherlockActivity {
             private boolean finished = false;
             private MediaPlayer mediaPlayer;
             ImageView playButton;
+
             static SharedPreferences pref;
 
             public MediaPlayer getMediaPlayer() {

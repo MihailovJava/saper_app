@@ -2,5 +2,7 @@
 <resources>
     <color name="afisha_time_text_color">#b35278</color>
     <color name="gray_line">#ff808080</color>
-    <color name="state_chkd_color">#ffc2c2c2</color>
+    <color name="state_chkd_color">#afc2c2c2</color>
+    <color name="default_color">#0feef0f2</color>
+    <color name="radio_cheked">#7f9eccfa</color>
 </resources>
