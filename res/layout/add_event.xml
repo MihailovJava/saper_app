@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:padding="4dp">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/event_title"
+                    android:id="@+id/textView"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title" android:hint="@string/event_title"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/event_text"
+                      android:id="@+id/textView2"/>
+            <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:inputType="textMultiLine" android:ems="10" android:id="@+id/text"
+                      android:hint="@string/event_text" android:minHeight="75dp" android:gravity="top"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/event_time"
+                      android:id="@+id/textView7"/>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/time"
+                      android:hint="@string/event_time" android:inputType="phone"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/event_city"
+                      android:id="@+id/textView8"/>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/city"
+                      android:hint="@string/event_city" android:inputType="phone"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/org_address"
+                    android:id="@+id/textView3"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/address" android:hint="@string/org_address" android:gravity="top"
+                    android:minHeight="70dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/org_additional"
+                    android:id="@+id/textView6"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/additional" android:hint="@string/org_additional" android:minHeight="75dp"
+                    android:gravity="top"/>
+        </LinearLayout>
+    </ScrollView>

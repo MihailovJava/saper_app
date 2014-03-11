@@ -10,6 +10,8 @@ import android.os.AsyncTask;
  */
 public class RequestSync extends AsyncTask<Void,Void,Void>{
     Context context;
+    public static final int TYPE_ORGANIZATIONS = 0;
+    public static final int TYPE_EVENTS = 1;
     public RequestSync(Context context){
         this.context = context;
     }

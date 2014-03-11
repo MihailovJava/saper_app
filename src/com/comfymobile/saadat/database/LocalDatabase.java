@@ -144,9 +144,9 @@ public class LocalDatabase{
         database.execSQL(query,new String[]{text,title});
     }
 
-    public void addRequestOrg(String json,long modification){
-        String query = "insert into req_org ( json , modification ) values (?,?)";
-        database.execSQL(query,new String[]{json,String.valueOf(modification)});
+    public void addRequest(String json,long modification, int type){
+        String query = "insert into requests ( json , modification, type ) values (?,?,?)";
+        database.execSQL(query,new String[]{json,String.valueOf(modification),String.valueOf(type)});
     }
 
     public void updateRSS(int id_rss, String link, String country){
@@ -364,9 +364,9 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getRequestOrg(int id){
+    public Cursor getRequests(int id){
         String[] args = null;
-        String query = "select _id, json, modification from req_org";
+        String query = "select _id, json, modification, type from requests";
         if (id > 0){
             query += " WHERE _id = ?";
             args = new String[]{String.valueOf(id)};
@@ -451,8 +451,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String ON_DATA_BASE_CREATE_COUNTRY = " create table country (_id integer primary key , country text ," +
             " name text);";
-    public static final String ON_REQUEST_ORGANIZATION = " create table req_org (_id integer primary key autoincrement, json text ," +
-            " modification integer);";
+    public static final String ON_REQUEST = " create table requests (_id integer primary key autoincrement, json text ," +
+            " modification integer, type integer);";
 
 
     public DatabaseHelper(Context context){
@@ -474,7 +474,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RADIO);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
-        sqLiteDatabase.execSQL(ON_REQUEST_ORGANIZATION);
+        sqLiteDatabase.execSQL(ON_REQUEST);
         fillNamasTable(sqLiteDatabase);
     }
 
@@ -511,7 +511,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query,new String[]{name,time,String.valueOf(0),String.valueOf(0)});
     }
 
-    private static final int DATA_BASE_VERSION = 8;
+    private static final int DATA_BASE_VERSION = 9;
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
@@ -524,9 +524,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
-            sqLiteDatabase.execSQL(ON_REQUEST_ORGANIZATION);
-
+            sqLiteDatabase.execSQL(ON_REQUEST);
         }
-
     }
 }

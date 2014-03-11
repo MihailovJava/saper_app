@@ -21,6 +21,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.comfymobile.saadat.json.OrganizationRequest;
+import com.comfymobile.saadat.json.RequestSync;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.gson.Gson;
@@ -89,7 +90,7 @@ public class SearchActivity extends SherlockActivity {
                 request.tn = tn;
                 request.additional = additional;
                 String json = new Gson().toJson(request);
-                LocalDatabase.getInstance(context).addRequestOrg(json,request.date.getTime()/1000);
+                LocalDatabase.getInstance(context).addRequest(json,request.date.getTime()/1000, RequestSync.TYPE_ORGANIZATIONS);
             }
         });
         AlertDialog alert = builder.create();

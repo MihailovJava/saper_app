@@ -38,6 +38,6 @@
     <string name="pref_country_title">Выберите страну</string>
     <string name="pref_notify_country">Страна изменена на</string>
     <string name="listTab">Список</string>
-    <string name="mapTab">На карте</string><string name="org_name">Название организации</string><string name="org_category">Категория</string><string name="org_address">Полный адрес</string><string name="org_tnumber">Телефон</string><string name="org_site">Сайт</string><string name="org_additional">Дополнительная информация</string>
+    <string name="mapTab">На карте</string><string name="org_name">Название организации</string><string name="org_category">Категория</string><string name="org_address">Полный адрес</string><string name="org_tnumber">Телефон</string><string name="org_site">Сайт</string><string name="org_additional">Дополнительная информация</string><string name="event_title">Название мероприятия</string><string name="event_text">Описание события</string><string name="event_time">Дата и время события</string><string name="event_city">Город события</string>
 
 </resources>
