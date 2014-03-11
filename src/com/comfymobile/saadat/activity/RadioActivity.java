@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -18,17 +20,23 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
+import com.comfymobile.saadat.adapter.RadioAdapter;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.analytics.tracking.android.EasyTracker;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 
 /**
@@ -45,9 +53,10 @@ public class RadioActivity extends SherlockActivity {
         PhoneStateListener phoneStateListener;
         SharedPreferences preference;
         SharedPreferences.Editor editor;
-        public static final String RADIO_URL = "http://s02.radio-tochka.com:8630/radio";
-
+        ListView radioList;
         String[] radioLink;
+        Cursor radio;
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +72,12 @@ public class RadioActivity extends SherlockActivity {
             setContentView(R.layout.radio);
             preference = PreferenceManager.getDefaultSharedPreferences(context);
             editor = preference.edit();
-            Locale locale = Locale.getDefault();
-            String l = locale.getLanguage();
-            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
-            Cursor radio = LocalDatabase.getInstance(context).getRadio(country_id);
+
+            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+            Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
+            radio = LocalDatabase.getInstance(context).getRadio(country.getString(country.getColumnIndex("country")));
             radioLink = new String[radio.getCount()];
+
             for (int i = 0; i < radio.getCount(); i++){
                 radioLink[i] = radio.getString(radio.getColumnIndex("link"));
                 radio.moveToNext();
@@ -172,10 +182,14 @@ public class RadioActivity extends SherlockActivity {
         }else {
             playButton.setImageResource(R.drawable.btn_play);
         }
+
+        radioList.setAdapter(new RadioAdapter(this,radio));
+
     }
 
     private void initUI(){
         playButton = (ImageView) findViewById(R.id.playbutton);
+        playButton.setVisibility(View.GONE);
         playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -200,7 +214,10 @@ public class RadioActivity extends SherlockActivity {
                 Player.getInstance(context).getMediaPlayer().reset();
                 Player.getInstance(context).finished = true;
                 player = Player.getInstance(context);
+                playButton.setVisibility(View.GONE);
                 player.execute(radioLink);
+                radioList.setAdapter(new RadioAdapter(context,radio));
+                radioList.setSelection(cur);
             }
         });
 
@@ -214,11 +231,30 @@ public class RadioActivity extends SherlockActivity {
                 editor.commit();
                 Player.getInstance(context).getMediaPlayer().reset();
                 Player.getInstance(context).finished = true;
+                playButton.setVisibility(View.GONE);
                 player = Player.getInstance(context);
                 player.execute(radioLink);
+                radioList.setAdapter(new RadioAdapter(context,radio));
+                radioList.setSelection(cur);
             }
         });
 
+        int cur = PreferenceManager.getDefaultSharedPreferences(context).getInt("radio_link", 0);
+        radioList = (ListView) findViewById(R.id.listView);
+        radioList.setSelection(cur);
+        radioList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editor.putInt("radio_link",position);
+                editor.commit();
+                Player.getInstance(context).getMediaPlayer().reset();
+                Player.getInstance(context).finished = true;
+                playButton.setVisibility(View.GONE);
+                player = Player.getInstance(context);
+                player.execute(radioLink);
+                radioList.setAdapter(new RadioAdapter(context,radio));
+            }
+        });
 
     }
 
@@ -249,6 +285,7 @@ public class RadioActivity extends SherlockActivity {
             private boolean finished = false;
             private MediaPlayer mediaPlayer;
             ImageView playButton;
+
             static SharedPreferences pref;
 
             public MediaPlayer getMediaPlayer() {
@@ -278,11 +315,15 @@ public class RadioActivity extends SherlockActivity {
                 }
                 if ( me != null){
                     if ((me.getStatus() == Status.FINISHED || me.isCancelled() == true) && !me.prepared){
-                        me = new Player(context);
+                        Player tmp = new Player(context);
+                        me.playButton.setVisibility(View.GONE);
+                        tmp.setPlayButton(me.playButton);
+                        me = tmp;
                         return me;
                     }
                     if (me.finished){
                         Player tmp = new Player(context);
+                        me.playButton.setVisibility(View.GONE);
                         tmp.setPlayButton(me.playButton);
                         me = tmp;
                         return me;
@@ -338,6 +379,7 @@ public class RadioActivity extends SherlockActivity {
             @Override
             protected void onPostExecute(Boolean result) {
                 playButton.setImageResource(R.drawable.btn_play);
+                playButton.setVisibility(View.VISIBLE);
                 super.onPostExecute(result);
                 if (progress.isShowing()) {
                     progress.cancel();

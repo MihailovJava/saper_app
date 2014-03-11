@@ -17,11 +17,10 @@ import com.comfymobile.saadat.database.LocalDatabase;
 public class NewsAdapter extends CursorAdapter {
 
     LayoutInflater inflater;
-    Context context;
+
 
     public NewsAdapter(Context context, Cursor c) {
         super(context, c);
-        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -50,7 +49,7 @@ public class NewsAdapter extends CursorAdapter {
             if (state.getCount() > 0)
                  view.setBackgroundColor(context.getResources().getColor(R.color.state_chkd_color));
             else
-                view.setBackgroundColor(context.getResources().getColor(R.color.abs__background_holo_light));
+                view.setBackgroundColor(context.getResources().getColor(R.color.default_color));
         }
     }
 }

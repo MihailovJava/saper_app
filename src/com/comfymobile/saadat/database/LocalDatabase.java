@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.comfymobile.saadat.activity.Saadat;
 import com.comfymobile.saadat.adapter.PrayTime;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class LocalDatabase{
     }
 
     public void updateCity(int id_city, String name, String last_mod, String x, String y, int tzone, int country_id){
-        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone) values (?,?,?,?,?,?,?)";
+        String query = "insert or replace into city (_id, name, last_mod, x, y, tzone, country_id) values (?,?,?,?,?,?,?)";
         database.execSQL(query,new String[]{String.valueOf(id_city),name,last_mod,x,y,String.valueOf(tzone),String.valueOf(country_id)});
     }
     public void updateCategory(int id_category, String name, String last_mod){
@@ -149,9 +150,9 @@ public class LocalDatabase{
         database.execSQL(query, new String[]{String.valueOf(id_rss),link,country});
     }
 
-    public void updateRadio(int id_radio, String link, String country){
-        String query = "insert or replace into radio (_id, link, country) values (?,?,?)";
-        database.execSQL(query, new String[]{String.valueOf(id_radio),link,country});
+    public void updateRadio(int id_radio, String link,String name, String img, String country){
+        String query = "insert or replace into radio (_id, link,name ,img , country) values (?,?,?,?,?)";
+        database.execSQL(query, new String[]{String.valueOf(id_radio),link,name,img,country});
     }
 
     public void updateCountry(int id ,String country, String name) {
@@ -169,6 +170,7 @@ public class LocalDatabase{
             if (city == -1 && category != -1) args = "WHERE id_category="+String.valueOf(category);
         }
         String query = "SELECT _id, name, address FROM organization "+args;
+
         Cursor cursor = database.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -176,14 +178,6 @@ public class LocalDatabase{
         return cursor;
     }
 
-    public Cursor getCitySource(){
-        String query = "SELECT _id , name, x, y, tzone, country_id FROM city";
-        Cursor cursor = database.rawQuery(query,null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
 
     public Cursor getNewsSource(){
         String query = "SELECT _id , name, source_text FROM newssource";
@@ -295,7 +289,7 @@ public class LocalDatabase{
                        "T1._id " +
                        "FROM events as T1, city as T2 WHERE T1.city = T2._id";
         if (id > 0){
-            query += " AND T2._id = ?";
+            query += " AND T2.country_id = ?  ORDER BY time asc";
             args = new String[]{String.valueOf(id)};
         }
         Cursor cursor = database.rawQuery(query,args);
@@ -338,7 +332,7 @@ public class LocalDatabase{
     };
 
     public Cursor getRadio(String country){
-        String query = "select _id, link, country from radio where country = ?";
+        String query = "select _id, link, name , img, country from radio where country = ?";
         Cursor cursor = database.rawQuery(query,new String[]{country});
         if(cursor != null){
             cursor.moveToFirst();
@@ -346,18 +340,29 @@ public class LocalDatabase{
         return  cursor;
     };
 
-    public Cursor getCountryList(){
+    public Cursor getCountryList(int id){
+        String[] args = null;
         String query = "select _id, country, name from country";
-        Cursor cursor = database.rawQuery(query,null);
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
         if (cursor!= null){
             cursor.moveToFirst();
         }
         return cursor;
     }
 
-    public Cursor getCountryName(String country){
-        String query = "select _id,country,name from country where country = ?";
-        Cursor cursor = database.rawQuery(query,new String[]{country});
+    public Cursor getCountryName(int id){
+        String[] args = null;
+        String query = "select _id,country,name from country ";
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+
+        Cursor cursor = database.rawQuery(query,args);
         if (cursor != null){
             cursor.moveToFirst();
         }
@@ -365,13 +370,31 @@ public class LocalDatabase{
     }
 
 
+    public Cursor getListSourceByQuery(int city, int category, String queryString) {
+        String[] args = new String[]{"%" + queryString + "%","%" + queryString + "%"};
+
+        String query = "SELECT _id, name, address FROM organization ";
+
+        if (city != -1 || category != -1){
+            if (city != -1 && category != -1) query += "WHERE id_city="+String.valueOf(city)+" AND id_category="+String.valueOf(category);
+            if (city != -1 && category == -1) query += "WHERE id_city="+String.valueOf(city);
+            if (city == -1 && category != -1) query += "WHERE id_category="+String.valueOf(category);
+        }
+
+        query += " AND ( name LIKE ? OR address LIKE ?  ) ";
 
 
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATA_BASE_NAME = "base_of_org";
-    public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE TABLE organization (  "+
+    public static final String ON_DATA_BASE_CREATE_ORGANIZATION = "CREATE  TABLE organization  (  "+
             " _id integer primary key, name text not null,description text, "+
             " id_city integer, address text, t_number text, site text, id_category integer,"+
             " last_mod text , email text, lat text, lng text );";
@@ -400,12 +423,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
             " country text);";
 
     public static final String ON_DATA_BASE_CREATE_RADIO = " create table radio (_id integer primary key, link text," +
-            " country text);";
+            "name text, img text, country text);";
 
     public static final String ON_DATA_BASE_CREATE_COUNTRY = " create table country (_id integer primary key , country text ," +
             " name text);";
 
-    private static final int DATA_BASE_VERSION = 7;
+
 
     public DatabaseHelper(Context context){
         super(context,DATA_BASE_NAME,null,DATA_BASE_VERSION);
@@ -462,12 +485,20 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query,new String[]{name,time,String.valueOf(0),String.valueOf(0)});
     }
 
+    private static final int DATA_BASE_VERSION = 7;
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
         if (i != i2){
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS city");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS radio");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS rss");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS country");
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RADIO);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
+            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
+
         }
 
     }

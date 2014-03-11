@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -25,9 +27,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.util.Locale;
 
@@ -255,7 +255,10 @@ public class LoadingActivity extends Activity{
                         int radio_id = radio.getJSONObject(i).getInt("id_radio");
                         String link = radio.getJSONObject(i).getString("link");
                         String country = radio.getJSONObject(i).getString("country");
-                        database.updateRadio(radio_id,link,country);
+                        String name = radio.getJSONObject(i).getString("name");
+                        String img = radio.getJSONObject(i).getString("img");
+                        new DownloadImageTask(String.valueOf(radio_id)).execute(img);
+                        database.updateRadio(radio_id,link,name,img,country);
                     }
                 }
 
@@ -278,10 +281,9 @@ public class LoadingActivity extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Locale locale = Locale.getDefault();
-            String l = locale.getLanguage();
-            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", l);
-            Cursor rss = database.getRSS(country_id);
+            String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+            Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
+            Cursor rss = database.getRSS(country.getString(country.getColumnIndex("country")));
             String[] rssLink = new String[rss.getCount()];
             for (int i = 0; i < rss.getCount() ; i++){
                 rssLink[i] = rss.getString(rss.getColumnIndex("link"));
@@ -335,6 +337,45 @@ public class LoadingActivity extends Activity{
 
             }
             loadText.setText("Загрузка - "+message.toString());
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        String  sourceId;
+
+
+        public DownloadImageTask(String sourceId) {
+            this.sourceId = sourceId;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.outHeight = 48;
+            options.outWidth = 48;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in,null,options);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            String path = context.getExternalCacheDir()+"/"+
+                    sourceId+
+                    ".png";
+            if (result == null)
+                result = BitmapFactory.decodeResource(getResources(),R.drawable.btn_alarm_enable);
+            try {
+                FileOutputStream  out = new FileOutputStream(path);
+                result.compress(Bitmap.CompressFormat.PNG, 90, out);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
