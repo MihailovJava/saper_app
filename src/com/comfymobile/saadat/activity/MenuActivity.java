@@ -17,15 +17,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
-
-import java.util.Calendar;
-import java.util.TimeZone;
 
 /**
  * User: Nixy
@@ -152,7 +147,7 @@ public class MenuActivity extends SherlockActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isOrganizations()){
+        if (!isNotDatabase()){
             if (!isOnline()){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Требуется обновление, включите интернет соединение")
@@ -200,12 +195,19 @@ public class MenuActivity extends SherlockActivity {
         return false;
     }
 
-    private boolean isOrganizations(){
-        Cursor organizations = LocalDatabase.getInstance(this).getListSource(-1,-1);
-        if (organizations.getCount() > 0)
-            return true;
-        else
-            return false;
+    private boolean isNotDatabase(){
+        boolean result = true;
+        LocalDatabase db = LocalDatabase.getInstance(this);
+        Cursor organizations = db.getListSource(-1,-1);
+        Cursor city = db.getCitySource();
+        Cursor country = db.getCountryList();
+        Cursor category = db.getCategorySource(-1);
+        if (organizations.getCount() == 0) result = false;
+        if (city.getCount() == 0) result = false;
+        if (country.getCount() == 0) result = false;
+        if (category.getCount() == 0) result = false;
+
+        return result;
     }
 
 }

@@ -2,6 +2,7 @@ package com.comfymobile.saadat.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -66,7 +67,11 @@ public class SearchActivity extends SherlockActivity {
         View dialog = getLayoutInflater().inflate(R.layout.add_organization, null);
         builder.setView(dialog);
         builder.setNegativeButton("Отмена", null);
-        builder.setPositiveButton("Добавить",null);
+        builder.setPositiveButton("Добавить",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
         AlertDialog alert = builder.create();
         alert.show();
     }

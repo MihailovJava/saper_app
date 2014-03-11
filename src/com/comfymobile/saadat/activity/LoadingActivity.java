@@ -126,6 +126,8 @@ public class LoadingActivity extends Activity{
         return null;
     }
 
+
+
     public void synchronizeDataBase(Context context){
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
