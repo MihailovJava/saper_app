@@ -28,12 +28,12 @@
                       android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/event_time"
                       android:id="@+id/textView7"/>
             <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/time"
-                      android:hint="@string/event_time" android:inputType="phone"/>
+                      android:hint="@string/event_time"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                       android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/event_city"
                       android:id="@+id/textView8"/>
             <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/city"
-                      android:hint="@string/event_city" android:inputType="phone"/>
+                      android:hint="@string/event_city"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
