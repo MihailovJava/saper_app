@@ -199,8 +199,8 @@ public class MenuActivity extends SherlockActivity {
         boolean result = true;
         LocalDatabase db = LocalDatabase.getInstance(this);
         Cursor organizations = db.getListSource(-1,-1);
-        Cursor city = db.getCitySource();
-        Cursor country = db.getCountryList();
+        Cursor city = db.getCitySource(-1);
+        Cursor country = db.getCountryList(-1);
         Cursor category = db.getCategorySource(-1);
         if (organizations.getCount() == 0) result = false;
         if (city.getCount() == 0) result = false;

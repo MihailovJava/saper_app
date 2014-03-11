@@ -2,6 +2,8 @@ package com.comfymobile.saadat.json;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Author Grinch
  * Date: 05.03.14
@@ -9,15 +11,17 @@ import com.google.gson.annotations.SerializedName;
  */
 public class OrganizationRequest {
     @SerializedName("name")
-    String name;
+    public String name;
     @SerializedName("category")
-    String category;
+    public String category;
     @SerializedName("address")
-    String address;
+    public String address;
     @SerializedName("tn")
-    String tn;
+    public String tn;
     @SerializedName("site")
-    String site;
+    public String site;
     @SerializedName("additional")
-    String additional;
+    public String additional;
+    @SerializedName("date")
+    public Date date = new Date();
 }

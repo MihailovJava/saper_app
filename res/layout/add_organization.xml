@@ -17,7 +17,7 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText" android:hint="@string/org_name"/>
+                    android:id="@+id/name" android:hint="@string/org_name"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText2" android:hint="@string/org_category"/>
+                    android:id="@+id/category" android:hint="@string/org_category"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:ems="10"
-                    android:id="@+id/editText3" android:hint="@string/org_address" android:gravity="top"
+                    android:id="@+id/address" android:hint="@string/org_address" android:gravity="top"
                     android:minHeight="70dp"/>
             <TextView
                     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText4" android:hint="@string/org_tnumber" android:inputType="phone"/>
+                    android:id="@+id/tn" android:hint="@string/org_tnumber" android:inputType="phone"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText5" android:hint="@string/org_site"/>
+                    android:id="@+id/site" android:hint="@string/org_site"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
                     android:ems="10"
-                    android:id="@+id/editText6" android:hint="@string/org_additional" android:minHeight="75dp"
+                    android:id="@+id/addition" android:hint="@string/org_additional" android:minHeight="75dp"
                     android:gravity="top"/>
         </LinearLayout>
     </ScrollView>

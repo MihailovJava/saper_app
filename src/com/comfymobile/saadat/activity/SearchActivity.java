@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import com.actionbarsherlock.app.ActionBar;
@@ -19,8 +20,10 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.json.OrganizationRequest;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.gson.Gson;
 
 
 public class SearchActivity extends SherlockActivity {
@@ -65,11 +68,28 @@ public class SearchActivity extends SherlockActivity {
     private void showAddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View dialog = getLayoutInflater().inflate(R.layout.add_organization, null);
+        final EditText eName = (EditText) dialog.findViewById(R.id.name);
+        final EditText eCategory = (EditText) dialog.findViewById(R.id.category);
+        final EditText eAddress = (EditText) dialog.findViewById(R.id.address);
+        final EditText eTN = (EditText) dialog.findViewById(R.id.tn);
+        final EditText eAddition = (EditText) dialog.findViewById(R.id.addition);
         builder.setView(dialog);
         builder.setNegativeButton("Отмена", null);
         builder.setPositiveButton("Добавить",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
+                String name = eName.getText().toString();
+                String category = eCategory.getText().toString();
+                String address = eAddress.getText().toString();
+                String tn = eTN.getText().toString();
+                String additional = eAddition.getText().toString();
+                OrganizationRequest request = new OrganizationRequest();
+                request.name = name;
+                request.category = category;
+                request.address = address;
+                request.tn = tn;
+                request.additional = additional;
+                String json = new Gson().toJson(request);
+                LocalDatabase.getInstance(context).addRequestOrg(json,request.date.getTime()/1000);
             }
         });
         AlertDialog alert = builder.create();

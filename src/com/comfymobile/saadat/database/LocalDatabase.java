@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.comfymobile.saadat.activity.Saadat;
 import com.comfymobile.saadat.adapter.PrayTime;
 
 import java.util.ArrayList;
@@ -145,6 +144,11 @@ public class LocalDatabase{
         database.execSQL(query,new String[]{text,title});
     }
 
+    public void addRequestOrg(String json,long modification){
+        String query = "insert into req_org ( json , modification ) values (?,?)";
+        database.execSQL(query,new String[]{json,String.valueOf(modification)});
+    }
+
     public void updateRSS(int id_rss, String link, String country){
         String query = "insert or replace into rss (_id, link, country) values (?,?,?)";
         database.execSQL(query, new String[]{String.valueOf(id_rss),link,country});
@@ -205,12 +209,18 @@ public class LocalDatabase{
     }
 
     public Cursor getCitySource(int id){
-          String query = "SELECT _id , name, country_id FROM city WHERE _id = ?";
-          Cursor cursor = database.rawQuery(query,new String[]{String.valueOf(id)});
-          if (cursor != null) {
-                  cursor.moveToFirst();
-              }
-          return cursor;
+        String args[] = null;
+          String query = "SELECT _id , name, country_id FROM city ";
+
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
     public Cursor getCitySourceByCountry(int country_id){
@@ -329,7 +339,7 @@ public class LocalDatabase{
             cursor.moveToFirst();
         }
         return  cursor;
-    };
+    }
 
     public Cursor getRadio(String country){
         String query = "select _id, link, name , img, country from radio where country = ?";
@@ -338,11 +348,25 @@ public class LocalDatabase{
             cursor.moveToFirst();
         }
         return  cursor;
-    };
+    }
 
     public Cursor getCountryList(int id){
         String[] args = null;
         String query = "select _id, country, name from country";
+        if (id > 0){
+            query += " WHERE _id = ?";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor!= null){
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public Cursor getRequestOrg(int id){
+        String[] args = null;
+        String query = "select _id, json, modification from req_org";
         if (id > 0){
             query += " WHERE _id = ?";
             args = new String[]{String.valueOf(id)};
@@ -427,7 +451,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String ON_DATA_BASE_CREATE_COUNTRY = " create table country (_id integer primary key , country text ," +
             " name text);";
-
+    public static final String ON_REQUEST_ORGANIZATION = " create table req_org (_id integer primary key autoincrement, json text ," +
+            " modification integer);";
 
 
     public DatabaseHelper(Context context){
@@ -449,6 +474,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RADIO);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
+        sqLiteDatabase.execSQL(ON_REQUEST_ORGANIZATION);
         fillNamasTable(sqLiteDatabase);
     }
 
@@ -485,7 +511,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query,new String[]{name,time,String.valueOf(0),String.valueOf(0)});
     }
 
-    private static final int DATA_BASE_VERSION = 7;
+    private static final int DATA_BASE_VERSION = 8;
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
@@ -498,6 +524,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
+            sqLiteDatabase.execSQL(ON_REQUEST_ORGANIZATION);
 
         }
 
