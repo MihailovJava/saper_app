@@ -131,7 +131,8 @@ public class RadioActivity extends SherlockActivity {
         super.onPause();
         if (player.getStatus() == AsyncTask.Status.RUNNING)
              player.cancel(true);
-        if (!player.getMediaPlayer().isPlaying()){
+
+        if (player.getPrepared() && !player.getMediaPlayer().isPlaying()){
             player.getMediaPlayer().release();
             player.prepared = false;
         }
@@ -177,11 +178,13 @@ public class RadioActivity extends SherlockActivity {
             }
         }
 
-        if (player.getMediaPlayer().isPlaying()){
-            playButton.setImageResource(R.drawable.btn_pause);
-        }else {
-            playButton.setImageResource(R.drawable.btn_play);
-        }
+        if (player.getPrepared())
+            if (player.getMediaPlayer().isPlaying()){
+                playButton.setVisibility(View.VISIBLE);
+                playButton.setImageResource(R.drawable.btn_pause);
+            }else {
+                playButton.setImageResource(R.drawable.btn_play);
+            }
 
         radioList.setAdapter(new RadioAdapter(this,radio));
 
@@ -189,7 +192,7 @@ public class RadioActivity extends SherlockActivity {
 
     private void initUI(){
         playButton = (ImageView) findViewById(R.id.playbutton);
-        playButton.setVisibility(View.GONE);
+        playButton.setVisibility(View.INVISIBLE);
         playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -214,7 +217,7 @@ public class RadioActivity extends SherlockActivity {
                 Player.getInstance(context).getMediaPlayer().reset();
                 Player.getInstance(context).finished = true;
                 player = Player.getInstance(context);
-                playButton.setVisibility(View.GONE);
+                playButton.setVisibility(View.INVISIBLE);
                 player.execute(radioLink);
                 radioList.setAdapter(new RadioAdapter(context,radio));
                 radioList.setSelection(cur);
@@ -231,7 +234,7 @@ public class RadioActivity extends SherlockActivity {
                 editor.commit();
                 Player.getInstance(context).getMediaPlayer().reset();
                 Player.getInstance(context).finished = true;
-                playButton.setVisibility(View.GONE);
+                playButton.setVisibility(View.INVISIBLE);
                 player = Player.getInstance(context);
                 player.execute(radioLink);
                 radioList.setAdapter(new RadioAdapter(context,radio));
@@ -249,7 +252,7 @@ public class RadioActivity extends SherlockActivity {
                 editor.commit();
                 Player.getInstance(context).getMediaPlayer().reset();
                 Player.getInstance(context).finished = true;
-                playButton.setVisibility(View.GONE);
+                playButton.setVisibility(View.INVISIBLE);
                 player = Player.getInstance(context);
                 player.execute(radioLink);
                 radioList.setAdapter(new RadioAdapter(context,radio));
@@ -316,14 +319,14 @@ public class RadioActivity extends SherlockActivity {
                 if ( me != null){
                     if ((me.getStatus() == Status.FINISHED || me.isCancelled() == true) && !me.prepared){
                         Player tmp = new Player(context);
-                        me.playButton.setVisibility(View.GONE);
+                        me.playButton.setVisibility(View.INVISIBLE);
                         tmp.setPlayButton(me.playButton);
                         me = tmp;
                         return me;
                     }
                     if (me.finished){
                         Player tmp = new Player(context);
-                        me.playButton.setVisibility(View.GONE);
+                        me.playButton.setVisibility(View.INVISIBLE);
                         tmp.setPlayButton(me.playButton);
                         me = tmp;
                         return me;
