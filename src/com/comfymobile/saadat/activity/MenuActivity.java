@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.json.RequestSync;
 import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -147,6 +148,7 @@ public class MenuActivity extends SherlockActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        new RequestSync(context).execute();
         if (!isNotDatabase()){
             if (!isOnline()){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

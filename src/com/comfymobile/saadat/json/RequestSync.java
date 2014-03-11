@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,7 +54,11 @@ public class RequestSync extends AsyncTask<Void,Void,Void>{
 
     @Override
     protected Void doInBackground(Void... params) {
-        sendRequests(context);
+        if (sendRequests(context)){
+            editor.putLong("sync",new Date().getTime()/1000);
+            editor.commit();
+        }
+
         return null;
     }
 
