@@ -59,7 +59,7 @@ public class DetalNewsActivity extends SherlockActivity {
         if (isNews)
          sourceEvent = LocalDatabase.getInstance(this).getNews(currentID,id_s);
         else
-         sourceEvent = LocalDatabase.getInstance(this).getEvents(currentID);
+         sourceEvent = LocalDatabase.getInstance(this).getCityEvent(currentID);
 
         StringBuilder info = new StringBuilder();
         String link = null;
