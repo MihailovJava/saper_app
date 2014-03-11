@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
+import com.comfymobile.saadat.json.RequestSync;
 import com.google.analytics.tracking.android.EasyTracker;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,7 +30,6 @@ import org.json.JSONArray;
 
 import java.io.*;
 import java.net.URI;
-import java.util.Locale;
 
 
 public class LoadingActivity extends Activity{
@@ -289,6 +289,7 @@ public class LoadingActivity extends Activity{
                 rssLink[i] = rss.getString(rss.getColumnIndex("link"));
                 rss.moveToNext();
             }
+            new RequestSync(context).execute();
             new RSSReader(context,true).execute(rssLink);
             publishProgress(LOAD_NEWS);
         }

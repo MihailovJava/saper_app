@@ -91,6 +91,7 @@ public class SearchActivity extends SherlockActivity {
                 request.additional = additional;
                 String json = new Gson().toJson(request);
                 LocalDatabase.getInstance(context).addRequest(json,request.date.getTime()/1000, RequestSync.TYPE_ORGANIZATIONS);
+                new RequestSync(context).execute();
             }
         });
         AlertDialog alert = builder.create();
