@@ -285,6 +285,30 @@ public class LocalDatabase{
         return cursor;
     }
 
+    public Cursor getCityEvent(int id){
+        String args[] = null;
+        String query = "SELECT " +
+                "T1.title , " +
+                "T1.events_text, " +
+                "T1.last_mod, " +
+                "T1.time, " +
+                "T1.city, " +
+                "T1.address, " +
+                "T2.name, " +
+                "T2._id, " +
+                "T1._id " +
+                "FROM events as T1, city as T2 WHERE T1.city = T2._id";
+        if (id > 0){
+            query += " AND T1._id = ? ";
+            args = new String[]{String.valueOf(id)};
+        }
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
     public Cursor getEvents(int id){
         String args[] = null;
         String query = "SELECT " +
