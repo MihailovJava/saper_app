@@ -9,10 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -70,7 +67,14 @@ public class SearchActivity extends SherlockActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View dialog = getLayoutInflater().inflate(R.layout.add_organization, null);
         final EditText eName = (EditText) dialog.findViewById(R.id.name);
-        final EditText eCategory = (EditText) dialog.findViewById(R.id.category);
+        final Spinner eCategory = (Spinner) dialog.findViewById(R.id.category);
+        categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID());
+        SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
+                R.layout.org_list_item,
+                categorySource,
+                new String[] {"name","_id"},
+                new int[] { R.id.name });
+        eCategory.setAdapter(categoryAdapter);
         final EditText eAddress = (EditText) dialog.findViewById(R.id.address);
         final EditText eTN = (EditText) dialog.findViewById(R.id.tn);
         final EditText eAddition = (EditText) dialog.findViewById(R.id.addition);
@@ -79,7 +83,9 @@ public class SearchActivity extends SherlockActivity {
         builder.setPositiveButton("Добавить",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 String name = eName.getText().toString();
-                String category = eCategory.getText().toString();
+                int category_id = eCategory.getSelectedItemPosition();
+                categorySource.moveToPosition(category_id);
+                String category = categorySource.getString(categorySource.getColumnIndex("name"));
                 String address = eAddress.getText().toString();
                 String tn = eTN.getText().toString();
                 String additional = eAddition.getText().toString();

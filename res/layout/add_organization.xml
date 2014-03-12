@@ -24,7 +24,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/org_category"
                     android:id="@+id/textView2"/>
-            <EditText
+            <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/category" android:hint="@string/org_category"/>
