@@ -75,6 +75,7 @@ public class LoadingActivity extends Activity{
     public static final String RSS = "rss";
     public static final String RADIO = "radio";
     public static final String COUNTRY = "country";
+    public static final String AD = "ad";
 
 
     public static final String PROTOCOL = "http://";
@@ -153,6 +154,7 @@ public class LoadingActivity extends Activity{
         JSONArray rss;
         JSONArray radio;
         JSONArray country;
+        JSONArray ad;
 
 
         Context context;
@@ -268,6 +270,16 @@ public class LoadingActivity extends Activity{
                         String countryS = country.getJSONObject(i).getString("country");
                         String name = country.getJSONObject(i).getString("name");
                         database.updateCountry(id,countryS, name);
+                    }
+                }
+
+                if (ad != null){
+                    database.clearAd();
+                    for (int i = 0; i < ad.length(); i++){
+                        int id = ad.getJSONObject(i).getInt("id_ad");
+                        String html = ad.getJSONObject(i).getString("html");
+                        int city = ad.getJSONObject(i).getInt("city");
+                        database.updateAd(id,html,city);
                     }
                 }
 

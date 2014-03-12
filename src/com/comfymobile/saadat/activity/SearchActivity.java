@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -23,6 +24,8 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.gson.Gson;
 
+import java.util.Random;
+
 
 public class SearchActivity extends SherlockActivity {
 
@@ -31,6 +34,8 @@ public class SearchActivity extends SherlockActivity {
     ListView category;
     Cursor cityCursor;
     Cursor categorySource;
+    WebView web;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +110,7 @@ public class SearchActivity extends SherlockActivity {
     }
 
     void initUI(){
-
+        web = (WebView) findViewById(R.id.webView);
         category = (ListView) findViewById(R.id.listView);
         updateCategories();
     }
@@ -165,6 +170,15 @@ public class SearchActivity extends SherlockActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Cursor ad = LocalDatabase.getInstance(context).getAd(getCityID());
+        if (ad.getCount() > 0){
+            int position = new Random().nextInt(ad.getCount());
+            ad.moveToPosition(position);
+            String html = ad.getString(ad.getColumnIndex("html"));
+            web.loadDataWithBaseURL(null, html , "text/html", "utf-8", null);
+        }
+    }
 }
