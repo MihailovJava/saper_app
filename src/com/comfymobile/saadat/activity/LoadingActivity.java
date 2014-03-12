@@ -187,6 +187,7 @@ public class LoadingActivity extends Activity{
                 rss = getData(RSS);
                 radio = getData(RADIO);
                 country = getData(COUNTRY);
+                ad = getData(AD);
 
                 if (org != null){ database.clearOrganization();
                 //update organization
@@ -303,7 +304,6 @@ public class LoadingActivity extends Activity{
             }
             new RequestSync(context).execute();
             new RSSReader(context,true).execute(rssLink);
-            publishProgress(LOAD_NEWS);
         }
 
         private static final int LOAD_START = 0;
@@ -333,10 +333,6 @@ public class LoadingActivity extends Activity{
                 }
                 case LOAD_CATS:{
                     message = "категории...";
-                    break;
-                }
-                case LOAD_NEWS:{
-                    message = "новости...";
                     break;
                 }
                 case LOAD_DONE:{
