@@ -30,7 +30,7 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Наш сайт"
+                android:text="@string/info_web_site"
                 android:id="@+id/site"
                 style="@style/ButtonStyle"
                 android:paddingTop="5dp"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.gson.Gson;
  */
 public class NewsListActivity extends SherlockActivity {
 
+    private static final long DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
     Cursor cursor;
     Context context;
     int sourceID;
@@ -38,6 +40,7 @@ public class NewsListActivity extends SherlockActivity {
     String sourceTitle;
     boolean isNews;
     String sourceDescription;
+    Cursor city;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +86,23 @@ public class NewsListActivity extends SherlockActivity {
         View dialog = getLayoutInflater().inflate(R.layout.add_event, null);
         final EditText eTitle = (EditText) dialog.findViewById(R.id.title);
         final EditText eText = (EditText) dialog.findViewById(R.id.text);
-        final EditText eTime = (EditText) dialog.findViewById(R.id.time);
-        final EditText eCity = (EditText) dialog.findViewById(R.id.city);
+        final TimePicker eTime = (TimePicker) dialog.findViewById(R.id.timePicker);
+        eTime.setIs24HourView(true);
+        final DatePicker eDate = (DatePicker)  dialog.findViewById(R.id.datePicker);
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            eDate.setCalendarViewShown(false);
+            eDate.setSpinnersShown(true);
+            eDate.setMinDate(System.currentTimeMillis()+DAY_IN_MILLIS);
+        }
+        final Spinner eCity = (Spinner) dialog.findViewById(R.id.city);
+        String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+        city = LocalDatabase.getInstance(context).getCitySourceByCountry(Integer.valueOf(country_id));
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
+                R.layout.org_list_item,
+                city,
+                new String[]{"name"},
+                new int[]{R.id.name});
+        eCity.setAdapter(cursorAdapter);
         final EditText eAddress = (EditText) dialog.findViewById(R.id.address);
         final EditText eAddition = (EditText) dialog.findViewById(R.id.additional);
         builder.setView(dialog);
@@ -93,15 +111,19 @@ public class NewsListActivity extends SherlockActivity {
             public void onClick(DialogInterface dialog, int id) {
                 String title = eTitle.getText().toString();
                 String text = eText.getText().toString();
-                String time = eTime.getText().toString();
-                String city = eCity.getText().toString();
+                String date = String.valueOf(eDate.getDayOfMonth()) + "/" + String.valueOf(eDate.getMonth()+1) + "/" +
+                        String.valueOf(eDate.getYear());
+                String time = String.valueOf(eTime.getCurrentHour()) + ":" + String.valueOf(eTime.getCurrentMinute());
+                int city_id = eCity.getSelectedItemPosition();
+                city.moveToPosition(city_id);
+                String cityString = city.getString(city.getColumnIndex("name")) ;
                 String address = eAddress.getText().toString();
                 String additional = eAddition.getText().toString();
                 EventRequest request = new EventRequest();
                 request.title = title;
                 request.text = text;
-                request.time = time;
-                request.city = city;
+                request.time = date + " " + time;
+                request.city = cityString;
                 request.address = address;
                 request.additional = additional;
                 String json = new Gson().toJson(request);

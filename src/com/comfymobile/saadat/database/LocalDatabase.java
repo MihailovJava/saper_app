@@ -81,6 +81,10 @@ public class LocalDatabase{
         database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_NEWS_STATE);
     }
 
+    public void clearAd(){
+        database.execSQL("Drop table ad");
+        database.execSQL(DatabaseHelper.ON_DATA_BASE_CREATE_AD);
+    }
 
 
     public void updateOrganization(int id, String name, String description, int id_city,
@@ -129,6 +133,7 @@ public class LocalDatabase{
         database.execSQL(query);
     }
 
+
     public void updateNamasMiss(int id, int miss){
         String query = " update namas set miss = ? WHERE _id = ?";
         database.execSQL(query,new  String[]{String.valueOf(miss),String.valueOf(id)});
@@ -162,6 +167,11 @@ public class LocalDatabase{
     public void updateCountry(int id ,String country, String name) {
         String query = "insert or replace into country (_id, country, name) values (?,?,?)";
         database.execSQL(query, new String[]{String.valueOf(id),country,name});
+    }
+
+    public void updateAd(int id,String html,int city){
+        String query = " insert or replace into ad ( _id , html, city) values (?,?,?)";
+        database.execSQL(query,new String[]{String.valueOf(id),html,String.valueOf(city)});
     }
 
 
@@ -438,6 +448,22 @@ public class LocalDatabase{
         }
         return cursor;
     }
+
+    public Cursor getAd(int city){
+        String[] args = null;
+
+        String query = " SELECT _id , html from ad";
+        if (city > -1){
+            query += " WHERE city = ?";
+            args = new String[]{String.valueOf(city)};
+        }
+
+        Cursor cursor = database.rawQuery(query,args);
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
 }
 
 class DatabaseHelper extends SQLiteOpenHelper {
@@ -475,8 +501,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String ON_DATA_BASE_CREATE_COUNTRY = " create table country (_id integer primary key , country text ," +
             " name text);";
+
     public static final String ON_REQUEST = " create table requests (_id integer primary key autoincrement, json text ," +
             " modification integer, type integer);";
+
+    public static final String ON_DATA_BASE_CREATE_AD = " create table ad (_id integer primary key, html text, city integer);";
 
 
     public DatabaseHelper(Context context){
@@ -499,6 +528,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
         sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
         sqLiteDatabase.execSQL(ON_REQUEST);
+        sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_AD);
         fillNamasTable(sqLiteDatabase);
     }
 
@@ -548,6 +578,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
             sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
+            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_AD);
             sqLiteDatabase.execSQL(ON_REQUEST);
         }
     }

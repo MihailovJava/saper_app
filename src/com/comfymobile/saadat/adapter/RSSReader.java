@@ -68,11 +68,19 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
 
     @Override
     protected void onPreExecute() {
+
+
         if (!fromLoading){
             dialog = ProgressDialog.show(context,
                     context.getString(R.string.rss_dialog_title),
                     context.getString(R.string.rss_dialog_message));
             dialog.setCanceledOnTouchOutside(false);
+        } else {
+            Intent intent = new Intent(context, MenuActivity.class);
+            context.startActivity(intent);
+            View layout = View.inflate(context,R.layout.loading,null);
+            TextView loadText = (TextView) layout.findViewById(R.id.loadText);
+            loadText.setText("Загрузка - Новости...");
         }
     }
 

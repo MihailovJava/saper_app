@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -22,6 +24,8 @@ import com.comfymobile.saadat.database.LocalDatabase;
 import com.comfymobile.saadat.json.RequestSync;
 import com.comfymobile.saadat.service.SaadatService;
 import com.google.analytics.tracking.android.EasyTracker;
+
+import java.util.Locale;
 
 /**
  * User: Nixy
@@ -143,6 +147,14 @@ public class MenuActivity extends SherlockActivity {
         setContentView(R.layout.menu);
         initUI();
 
+        String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+        Cursor country = LocalDatabase.getInstance(this).getCountryName(Integer.valueOf(country_id));
+        Resources res = context.getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
+        res.updateConfiguration(conf, dm);
     }
 
     @Override

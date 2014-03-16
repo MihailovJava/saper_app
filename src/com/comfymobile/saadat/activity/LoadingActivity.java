@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 
 import java.io.*;
 import java.net.URI;
+import java.util.Locale;
 
 
 public class LoadingActivity extends Activity{
@@ -51,6 +54,8 @@ public class LoadingActivity extends Activity{
         context = this;
         synchronizeDataBase(this);
         loadText = (TextView) findViewById(R.id.loadText);
+
+
     }
 
     @Override
@@ -75,6 +80,7 @@ public class LoadingActivity extends Activity{
     public static final String RSS = "rss";
     public static final String RADIO = "radio";
     public static final String COUNTRY = "country";
+    public static final String AD = "ad";
 
 
     public static final String PROTOCOL = "http://";
@@ -153,6 +159,7 @@ public class LoadingActivity extends Activity{
         JSONArray rss;
         JSONArray radio;
         JSONArray country;
+        JSONArray ad;
 
 
         Context context;
@@ -185,6 +192,7 @@ public class LoadingActivity extends Activity{
                 rss = getData(RSS);
                 radio = getData(RADIO);
                 country = getData(COUNTRY);
+                ad = getData(AD);
 
                 if (org != null){ database.clearOrganization();
                 //update organization
@@ -269,6 +277,24 @@ public class LoadingActivity extends Activity{
                         String name = country.getJSONObject(i).getString("name");
                         database.updateCountry(id,countryS, name);
                     }
+                    String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+                    Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
+                    Resources res = context.getResources();
+                    // Change locale settings in the app.
+                    DisplayMetrics dm = res.getDisplayMetrics();
+                    android.content.res.Configuration conf = res.getConfiguration();
+                    conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
+                    res.updateConfiguration(conf, dm);
+                }
+
+                if (ad != null){
+                    database.clearAd();
+                    for (int i = 0; i < ad.length(); i++){
+                        int id = ad.getJSONObject(i).getInt("id_ad");
+                        String html = ad.getJSONObject(i).getString("html");
+                        int city = ad.getJSONObject(i).getInt("city");
+                        database.updateAd(id,html,city);
+                    }
                 }
 
             } catch (Exception e) {
@@ -291,7 +317,6 @@ public class LoadingActivity extends Activity{
             }
             new RequestSync(context).execute();
             new RSSReader(context,true).execute(rssLink);
-            publishProgress(LOAD_NEWS);
         }
 
         private static final int LOAD_START = 0;
@@ -321,10 +346,6 @@ public class LoadingActivity extends Activity{
                 }
                 case LOAD_CATS:{
                     message = "категории...";
-                    break;
-                }
-                case LOAD_NEWS:{
-                    message = "новости...";
                     break;
                 }
                 case LOAD_DONE:{

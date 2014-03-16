@@ -22,6 +22,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView" android:layout_below="@+id/textView1"  android:layout_centerHorizontal="true"
             android:layout_marginLeft="8dp" android:layout_marginRight="8dp" android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" android:layout_above="@+id/webView"/>
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/webView" android:layout_alignParentTop="false" android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" android:layout_marginBottom="8dp" android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
 
 </RelativeLayout>

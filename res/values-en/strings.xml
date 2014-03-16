@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Saadat</string>
+    <string name="search_button">search</string>
+    <string name="back_button">Back</string>
+    <string name="choose_city">Select a city</string>
+    <string name="choose_cat">Select a category</string>
+    <string name="menu_button">Menu</string><string name="Loading_logo">Saadat\nMuslim guide</string>
+    <string name="miradio">Playing:\n______________________</string>
+    <string name="info">Saadat - is the information-reference application.\nCall: +7(916)026-92-91</string>
+    <string name="btn_news">News</string>
+    <string name="btn_namaz">Salat</string>
+    <string name="btn_afisha">Events</string>
+    <string name="btn_radio">Radio</string>
+    <string name="btn_info">Info</string>
+    <string name="btn_catalog">Places</string>
+    <string name="pref_city_title">Select a city</string>
+    <string name="pref_notify_city">City changed</string>
+    <string name="ab_sync">Sync</string>
+    <string name="rss_dialog_message">Sync news...</string>
+    <string name="rss_dialog_title">Loading</string>
+    <string name="ab_title"/>
+    <string name="ab_info_title">Feedback</string>
+    <string name="ab_news_title">News</string>
+    <string name="ab_namas_title">Salat</string>
+    <string name="ab_locations_title">Places</string>
+    <string name="ab_settings_title">Settings</string>
+    <string name="ab_radio_title">Radio</string>
+    <string name="ab_events_title">Events</string>
+    <string name="ab_map_item">Map</string>
+    <string name="org_not_found">No accurate data</string>
+    <string name="ten_minutes_offset">10 minutes</string>
+    <string name="five_minutes_offset">5 minutes</string>
+    <string name="one_minutes_offset">1 minute</string>
+    <string name="in_time_offset">w/o</string>
+    <string name="offset_title">Alert in </string>
+    <string name="pref_notify_offset">Alert in</string>
+    <string name="pref_country_title">Select country</string>
+    <string name="pref_notify_country">Country changed - </string>
+    <string name="listTab">List</string>
+    <string name="mapTab">Map</string>
+    <string name="info_web_site">Web site</string>
+    <string name="namas_today_btn">Today:</string>
+    <string name="org_name">Name of organization</string>
+    <string name="org_category">Category</string>
+    <string name="org_address">Address</string>
+    <string name="org_tnumber">Phone number</string>
+    <string name="org_site">Web site</string>
+    <string name="org_additional">Description</string>
+    <string name="event_title">Name of event</string>
+    <string name="event_text">Description</string>
+    <string name="event_time">Date and time of event</string>
+    <string name="event_city">City </string>
+
+</resources>
