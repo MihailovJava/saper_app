@@ -217,7 +217,6 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
         countryList.setTitle(R.string.pref_country_title);
 
 
-
         country = database.getCountryName(Integer.valueOf(country_id));
         countryList.setSummary(country.getString(country.getColumnIndex("name")));
         countryList.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

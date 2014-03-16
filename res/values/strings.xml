@@ -8,12 +8,7 @@
     <string name="menu_button">Меню</string><string name="Loading_logo">Саадат\nМусульманский гид</string>
     <string name="miradio">Сейчас в эфире:\n______________________</string>
     <string name="info">Саадат - приложение информационно-справочного характера.\nТелефон: +7(916)026-92-91</string>
-    <string name="btn_news">Новости</string>
-    <string name="btn_namaz">Намаз</string>
-    <string name="btn_afisha">События</string>
-    <string name="btn_radio">Радио</string>
-    <string name="btn_info">Инфо</string>
-    <string name="btn_catalog">Места</string>
+
     <string name="pref_city_title">Выберите город</string>
     <string name="pref_notify_city">Город успешно изменен на</string>
     <string name="ab_sync">Синхронизация</string>
@@ -38,6 +33,17 @@
     <string name="pref_country_title">Выберите страну</string>
     <string name="pref_notify_country">Страна изменена на</string>
     <string name="listTab">Список</string>
-    <string name="mapTab">На карте</string><string name="org_name">Название организации</string><string name="org_category">Категория</string><string name="org_address">Полный адрес</string><string name="org_tnumber">Телефон</string><string name="org_site">Сайт</string><string name="org_additional">Дополнительная информация</string><string name="event_title">Название мероприятия</string><string name="event_text">Описание события</string><string name="event_time">Дата и время события</string><string name="event_city">Город события</string>
+    <string name="mapTab">На карте</string>
+
+    <string name="org_name">Название организации</string>
+    <string name="org_category">Категория</string>
+    <string name="org_address">Полный адрес</string>
+    <string name="org_tnumber">Телефон</string>
+    <string name="org_site">Сайт</string>
+    <string name="org_additional">Дополнительная информация</string>
+    <string name="event_title">Название мероприятия</string>
+    <string name="event_text">Описание события</string>
+    <string name="event_time">Дата и время события</string>
+    <string name="event_city">Город события</string>
 
 </resources>

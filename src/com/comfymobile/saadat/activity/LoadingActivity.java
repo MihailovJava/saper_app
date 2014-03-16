@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 
 import java.io.*;
 import java.net.URI;
+import java.util.Locale;
 
 
 public class LoadingActivity extends Activity{
@@ -51,6 +54,8 @@ public class LoadingActivity extends Activity{
         context = this;
         synchronizeDataBase(this);
         loadText = (TextView) findViewById(R.id.loadText);
+
+
     }
 
     @Override
@@ -272,6 +277,14 @@ public class LoadingActivity extends Activity{
                         String name = country.getJSONObject(i).getString("name");
                         database.updateCountry(id,countryS, name);
                     }
+                    String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
+                    Cursor country = LocalDatabase.getInstance(context).getCountryName(Integer.valueOf(country_id));
+                    Resources res = context.getResources();
+                    // Change locale settings in the app.
+                    DisplayMetrics dm = res.getDisplayMetrics();
+                    android.content.res.Configuration conf = res.getConfiguration();
+                    conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
+                    res.updateConfiguration(conf, dm);
                 }
 
                 if (ad != null){
