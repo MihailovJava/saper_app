@@ -113,15 +113,4 @@ public class RequestSync extends AsyncTask<Void,Void,Void>{
         Log.d("Saadat","Result json: "+new Gson().toJson(list));
         return new Gson().toJson(list);
     }
-
-   /* Object getObject(String json, int type){
-        switch (type){
-            case TYPE_ORGANIZATIONS:
-                return new Gson().fromJson(json,OrganizationRequest.class);
-            case TYPE_EVENTS:
-                return new Gson().fromJson(json,EventRequest.class);
-            default:
-                return new Gson().fromJson(json,Object.class);
-        }
-    }*/
 }
