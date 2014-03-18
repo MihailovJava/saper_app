@@ -2,11 +2,7 @@
 <resources>
     <string name="app_name">Saadat</string>
     <string name="search_button">search</string>
-    <string name="back_button">Back</string>
-    <string name="choose_city">Select a city</string>
     <string name="choose_cat">Select a category</string>
-    <string name="menu_button">Menu</string><string name="Loading_logo">Saadat\nMuslim guide</string>
-    <string name="miradio">Playing:\n______________________</string>
     <string name="info">Saadat - is the information-reference application.\nCall: +7(916)026-92-91</string>
     <string name="btn_news">News</string>
     <string name="btn_namaz">Salat</string>
@@ -19,7 +15,8 @@
     <string name="ab_sync">Sync</string>
     <string name="rss_dialog_message">Sync news...</string>
     <string name="rss_dialog_title">Loading</string>
-    <string name="ab_title"/>
+    <string name="rss_read">More </string>
+
     <string name="ab_info_title">Feedback</string>
     <string name="ab_news_title">News</string>
     <string name="ab_namas_title">Salat</string>

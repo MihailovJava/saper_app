@@ -45,9 +45,9 @@ import java.util.Locale;
  * Time: 22:47
  */
 public class RadioActivity extends SherlockActivity {
-        private ImageView playButton;
-        private ImageView prevButton;
-        private ImageView nextButton;
+        ImageView playButton;
+        ImageView prevButton;
+        ImageView nextButton;
         Context context;
         Player player;
         PhoneStateListener phoneStateListener;
@@ -317,7 +317,7 @@ public class RadioActivity extends SherlockActivity {
                     pref =  PreferenceManager.getDefaultSharedPreferences(context);
                 }
                 if ( me != null){
-                    if ((me.getStatus() == Status.FINISHED || me.isCancelled() == true) && !me.prepared){
+                    if ((me.getStatus() == Status.FINISHED || me.isCancelled()) && !me.prepared){
                         Player tmp = new Player(context);
                         me.playButton.setVisibility(View.INVISIBLE);
                         tmp.setPlayButton(me.playButton);

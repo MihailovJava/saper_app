@@ -79,7 +79,7 @@ public class NamasActivity extends SherlockActivity {
             });
             namas = database.getNamas(i+1)  ;
             n[i].setText(PrayTime.getNamasTimeFromMillis(namas.getString(namas.getColumnIndex("time"))));
-            flags[i].setChecked(namas.getInt(namas.getColumnIndex("flag")) == 0 ? false : true);
+            flags[i].setChecked(namas.getInt(namas.getColumnIndex("flag")) != 0 );
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
