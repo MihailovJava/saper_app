@@ -16,7 +16,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Читать полностью"
+            android:text="@string/rss_read"
             android:id="@+id/full" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true" android:layout_margin="8dp"/>
 </RelativeLayout>

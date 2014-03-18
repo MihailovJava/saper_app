@@ -2,11 +2,8 @@
 <resources>
     <string name="app_name">Saadat</string>
     <string name="search_button">ПОИСК</string>
-    <string name="back_button">Назад</string>
-    <string name="choose_city">Выбрать город</string>
     <string name="choose_cat">Выбрать категорию</string>
-    <string name="menu_button">Меню</string><string name="Loading_logo">Саадат\nМусульманский гид</string>
-    <string name="miradio">Сейчас в эфире:\n______________________</string>
+
     <string name="info">Саадат - приложение информационно-справочного характера.\nТелефон: +7(916)026-92-91</string>
     <string name="btn_news">Новости</string>
     <string name="btn_namaz">Намаз</string>
@@ -19,7 +16,8 @@
     <string name="ab_sync">Синхронизация</string>
     <string name="rss_dialog_message">Обновление новостей...</string>
     <string name="rss_dialog_title">Загрузка</string>
-    <string name="ab_title"/>
+    <string name="rss_read">Читать полностью</string>
+
     <string name="ab_info_title">Обратная связь</string>
     <string name="ab_news_title">Новости</string>
     <string name="ab_namas_title">Намаз</string>

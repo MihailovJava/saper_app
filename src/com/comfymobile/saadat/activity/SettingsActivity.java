@@ -75,14 +75,22 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(R.string.ab_settings_title);
+
     }
 
     void updateRoot(){
+        loadTitles();
         root.addPreference(offsetList);
         root.addPreference(countryList);
         root.addPreference(cityList);
         setPreferenceScreen(root);
+    }
+
+    private void loadTitles() {
+        getSupportActionBar().setTitle(R.string.ab_settings_title);
+        offsetList.setTitle(getString(R.string.offset_title));
+        cityList.setTitle(getString(R.string.pref_city_title));
+        countryList.setTitle(R.string.pref_country_title);
     }
 
     @Override
@@ -225,6 +233,14 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                 Integer id = Integer.valueOf((String)newValue);
                 Cursor country = database.getCountryName(id);
                 Cursor city = database.getCitySourceByCountry(country.getInt(country.getColumnIndex("_id")));
+
+                Resources res = context.getResources();
+                // Change locale settings in the app.
+                DisplayMetrics dm = res.getDisplayMetrics();
+                android.content.res.Configuration conf = res.getConfiguration();
+                conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
+                res.updateConfiguration(conf, dm);
+
                 if (city.getCount() != 0){
                     Toast notify = Toast.makeText(context,
                             getString(R.string.pref_notify_city)+" " +city.getString(city.getColumnIndex("name")),
@@ -243,12 +259,7 @@ public class SettingsActivity extends SherlockPreferenceActivity   {
                     createCityPref();
                     updateRoot();
                 }
-                Resources res = context.getResources();
-                // Change locale settings in the app.
-                DisplayMetrics dm = res.getDisplayMetrics();
-                android.content.res.Configuration conf = res.getConfiguration();
-                conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
-                res.updateConfiguration(conf, dm);
+
 
 
                 Toast notify = Toast.makeText(context,
