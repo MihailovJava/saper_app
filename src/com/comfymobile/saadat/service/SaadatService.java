@@ -58,44 +58,51 @@ public class SaadatService extends Service {
     }
 
     void checkAlarm(){
-        Calendar currentTime = Calendar.getInstance();
-        pray = database.getNamas(-1);
-        long currentTimeInMillis = currentTime.getTimeInMillis();
-        while (!pray.isAfterLast()){
-            Long namasTimeInMillis = Long.valueOf(pray.getString(pray.getColumnIndex("time")));
-            int isMiss = pray.getInt(pray.getColumnIndex("miss"));
-            int flag = pray.getInt(pray.getColumnIndex("flag"));
-            int id = pray.getInt(pray.getColumnIndex("_id"));
-            String name = pray.getString(pray.getColumnIndex("name"));
-            if ( isTimeToAlarm(id ,namasTimeInMillis , currentTimeInMillis,isMiss,flag) ){
+        try {
 
-                String text = name;
-                Uri soundURI = Uri.parse("android.resource://" +
-                        context.getResources().getResourcePackageName(R.raw.lt_notification_sound) + "/" +
-                        R.raw.lt_notification_sound);
-                NotificationManager nm = (NotificationManager)context
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                        .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
-                        .setSmallIcon(R.drawable.ic_launcher)
-                        .setSound(soundURI)
-                        .setContentText(text)
-                        .setAutoCancel(true)
-                        .setContentTitle(text)
-                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
-                Context c = getApplicationContext();
-                PendingIntent actionPendingIntent = PendingIntent.getActivity(
-                        c,
-                        0,
-                        new Intent(c, NamasActivity.class),
-                        0
-                );
-                builder.setContentIntent(actionPendingIntent);
+            Calendar currentTime = Calendar.getInstance();
+            pray = database.getNamas(-1);
+            long currentTimeInMillis = currentTime.getTimeInMillis();
+            while (!pray.isAfterLast()){
+                Long namasTimeInMillis = Long.valueOf(pray.getString(pray.getColumnIndex("time")));
+                int isMiss = pray.getInt(pray.getColumnIndex("miss"));
+                int flag = pray.getInt(pray.getColumnIndex("flag"));
+                int id = pray.getInt(pray.getColumnIndex("_id"));
+                String name = pray.getString(pray.getColumnIndex("name"));
+                if ( isTimeToAlarm(id ,namasTimeInMillis , currentTimeInMillis,isMiss,flag) ){
 
-                nm.notify(1990, builder.getNotification());
+                    String text = name;
+                    Uri soundURI = Uri.parse("android.resource://" +
+                            context.getResources().getResourcePackageName(R.raw.lt_notification_sound) + "/" +
+                            R.raw.lt_notification_sound);
+                    NotificationManager nm = (NotificationManager)context
+                            .getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                            .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setSound(soundURI)
+                            .setContentText(text)
+                            .setAutoCancel(true)
+                            .setContentTitle(text)
+                            .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+                    Context c = getApplicationContext();
+                    PendingIntent actionPendingIntent = PendingIntent.getActivity(
+                            c,
+                            0,
+                            new Intent(c, NamasActivity.class),
+                            0
+                    );
+                    builder.setContentIntent(actionPendingIntent);
+
+                    nm.notify(1990, builder.getNotification());
+                }
+
+                pray.moveToNext();
             }
 
-            pray.moveToNext();
+            pray.close();
+        }catch (Exception e){
+
         }
     }
 

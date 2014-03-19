@@ -8,7 +8,7 @@
     <uses-sdk android:minSdkVersion="10"
               android:targetSdkVersion="10"/>
 
-    <uses-library android:name="com.google.android.maps" />
+
     <!--
     IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
     to match your app's package name + ".permission.C2D_MESSAGE".
@@ -41,6 +41,9 @@
                  android:theme="@style/Theme.Sherlock.Light"
                  android:name=".activity.Saadat"
             >
+
+        <uses-library android:name="com.google.android.maps" />
+
         <activity android:name=".activity.LoadingActivity"
 
                   android:screenOrientation="portrait">

@@ -34,13 +34,13 @@ import java.util.Locale;
  */
 public class MenuActivity extends SherlockActivity {
 
-    private Button news_button;
-    private Button namaz_button;
-    private Button afisha_button;
-    private Button radio_button;
-    private Button catalog_button;
-    private Button info_button;
-    private ImageView settings;
+    Button news_button;
+    Button namaz_button;
+    Button afisha_button;
+    Button radio_button;
+    Button catalog_button;
+    Button info_button;
+    ImageView settings;
 
     private Context context;
 
@@ -144,8 +144,8 @@ public class MenuActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         context = this;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.menu);
-        initUI();
+        /*setContentView(R.layout.menu);
+        initUI();*/
 
         String country_id = PreferenceManager.getDefaultSharedPreferences(context).getString("country_id", "1");
         Cursor country = LocalDatabase.getInstance(this).getCountryName(Integer.valueOf(country_id));
@@ -153,13 +153,16 @@ public class MenuActivity extends SherlockActivity {
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
-        conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
+        if (country != null && country.getCount() > 0)
+            conf.locale = new Locale(country.getString(country.getColumnIndex("country")).toLowerCase());
         res.updateConfiguration(conf, dm);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        setContentView(R.layout.menu);
+        initUI();
         new RequestSync(context).execute();
         if (!isNotDatabase()){
             if (!isOnline()){
