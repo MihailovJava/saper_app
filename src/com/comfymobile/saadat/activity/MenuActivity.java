@@ -159,6 +159,7 @@ public class MenuActivity extends SherlockActivity {
 
     @Override
     protected void onResume() {
+        onCreate(new Bundle());
         super.onResume();
         new RequestSync(context).execute();
         if (!isNotDatabase()){

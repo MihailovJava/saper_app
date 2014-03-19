@@ -82,6 +82,7 @@ public class RequestSync extends AsyncTask<Void,Void,Void>{
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                 }
+                Log.d("Saadat",sb.toString());
                 if (sb.toString().contains("OK"))
                     result = true;
             }
