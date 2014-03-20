@@ -9,6 +9,7 @@ import android.util.Log;
 import com.comfymobile.saadat.database.LocalDatabase;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -74,7 +75,7 @@ public class RequestSync extends AsyncTask<Void,Void,Void>{
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
-            if (response.getEntity().getContentLength() > 0){
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 StringBuilder sb = new StringBuilder();
                 BufferedReader reader =
                         new BufferedReader(new InputStreamReader(response.getEntity().getContent()), 65728);
@@ -82,7 +83,7 @@ public class RequestSync extends AsyncTask<Void,Void,Void>{
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                 }
-                Log.d("Saadat",sb.toString());
+                Log.d("Saadat","From server: "+sb.toString());
                 if (sb.toString().contains("OK"))
                     result = true;
             }
