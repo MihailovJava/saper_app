@@ -570,16 +570,21 @@ class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
         if (i != i2){
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS organization");
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS city");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS category");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS news");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS newssource");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS events");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS namas");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS newsstate");
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS radio");
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS rss");
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS country");
-            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RADIO);
-            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_RSS);
-            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_COUNTRY);
-            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_CITY);
-            sqLiteDatabase.execSQL(ON_DATA_BASE_CREATE_AD);
-            sqLiteDatabase.execSQL(ON_REQUEST);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS requests");
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS ad");
+
+            onCreate(sqLiteDatabase);
         }
     }
 }
