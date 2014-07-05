@@ -44,7 +44,7 @@ public class SearchActivity extends SherlockActivity {
         setContentView(R.layout.search);
         context = this;
 
-        cityCursor = LocalDatabase.getInstance(context).getCitySource(getCityID());
+        cityCursor = LocalDatabase.getInstance(context).getCitySource(getCityID(context));
         String cityName = cityCursor.getString(cityCursor.getColumnIndex("name"));
 
         ActionBar ab = getSupportActionBar();
@@ -73,7 +73,7 @@ public class SearchActivity extends SherlockActivity {
         View dialog = getLayoutInflater().inflate(R.layout.add_organization, null);
         final EditText eName = (EditText) dialog.findViewById(R.id.name);
         final Spinner eCategory = (Spinner) dialog.findViewById(R.id.category);
-        categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID());
+        categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID(context));
         SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
                 R.layout.org_list_item,
                 categorySource,
@@ -131,7 +131,7 @@ public class SearchActivity extends SherlockActivity {
     }
 
     void updateCategories(){
-        categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID());
+        categorySource = LocalDatabase.getInstance(this).getCategorySource(getCityID(context));
         SimpleCursorAdapter categoryAdapter = new SimpleCursorAdapter(this,
                 R.layout.org_list_item,
                 categorySource,
@@ -142,7 +142,7 @@ public class SearchActivity extends SherlockActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, OrganizationListActivity.class);
-                intent.putExtra("cityID", getCityID());
+                intent.putExtra("cityID", getCityID(context));
                 categorySource.moveToPosition(position);
                 int categoryID = categorySource.getInt(categorySource.getColumnIndex("_id"));
                 intent.putExtra("categoryID", categoryID);
@@ -158,8 +158,8 @@ public class SearchActivity extends SherlockActivity {
         });
     }
 
-    int getCityID(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    public  static  int getCityID(Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         int cityId = Integer.valueOf(preferences.getString("city_id", "12"));
         return cityId;
     }
@@ -176,7 +176,7 @@ public class SearchActivity extends SherlockActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Cursor ad = LocalDatabase.getInstance(context).getAd(getCityID());
+        Cursor ad = LocalDatabase.getInstance(context).getAd(getCityID(context));
         if (ad.getCount() > 0){
             int position = new Random().nextInt(ad.getCount());
             ad.moveToPosition(position);

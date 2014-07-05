@@ -10,13 +10,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
-            android:layout_above="@+id/linearLayout" android:layout_marginBottom="8dp"
             android:divider="#9ec2a8" android:layout_alignParentTop="true" android:layout_marginTop="16dp"
-            android:dividerHeight="1dp"/>
+            android:dividerHeight="1dp" android:layout_above="@+id/linearLayout" android:layout_marginBottom="8dp"/>
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" android:id="@+id/linearLayout" android:layout_margin="16dp">
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_above="@+id/webView" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp" android:layout_marginTop="4dp">
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -40,5 +41,10 @@
                 android:layout_weight="1"
                 android:src="@drawable/btn_next" android:layout_centerVertical="true" android:padding="8dp"/>
     </LinearLayout>
-
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/webView"
+            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
 </RelativeLayout>

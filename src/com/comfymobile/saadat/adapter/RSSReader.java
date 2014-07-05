@@ -4,23 +4,18 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import com.comfymobile.saadat.R;
 import com.comfymobile.saadat.activity.MenuActivity;
-import com.comfymobile.saadat.activity.NewsListActivity;
 import com.comfymobile.saadat.activity.SourceListActivity;
 import com.comfymobile.saadat.database.LocalDatabase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -64,6 +59,12 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
         this.context = context;
         this.fromLoading = fromLoading;
         database = LocalDatabase.getInstance(context);
+    }
+
+    private  String getStringFromElement(Element element){
+       if (element != null && element.getChildNodes() != null && element.getChildNodes().getLength() > 0)
+           return  element.getFirstChild().getNodeValue();
+       return  "";
     }
 
     @Override
@@ -117,9 +118,9 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
 
 
 
-                        String title = eTitle.getFirstChild().getNodeValue();
-                        String description = eDescription.getFirstChild().getNodeValue();
-                        String link = eLink.getFirstChild().getNodeValue();
+                        String title = getStringFromElement(eTitle);
+                        String description = getStringFromElement(eDescription);
+                        String link = getStringFromElement(eLink);
 
                         database.updateNewsSource(j,title,description,link);
 
@@ -135,10 +136,10 @@ public class RSSReader extends AsyncTask<String,Void,Void> {
                             Element iLink = (Element) item.getElementsByTagName(ITEM_URL).item(0);
 
 
-                            String ititle = iTitle.getFirstChild().getNodeValue();
-                            String idescription = iDescription.getFirstChild().getNodeValue();
-                            String ipubDate = iDate.getFirstChild().getNodeValue();
-                            String ilink = iLink.getFirstChild().getNodeValue();
+                            String ititle = getStringFromElement(iTitle);
+                            String idescription = getStringFromElement(iDescription);
+                            String ipubDate = getStringFromElement(iDate);
+                            String ilink = getStringFromElement(iLink);
 
                             DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
                             Date nDate;

@@ -12,7 +12,8 @@
             android:id="@+id/listView"
             android:smoothScrollbar="true"
             android:layout_below="@+id/caption"
-            android:layout_alignParentBottom="true" android:layout_margin="16dp"/>
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp" android:layout_marginTop="16dp"
+            android:layout_above="@+id/webView" android:layout_marginBottom="8dp"/>
     <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="title"
               android:id="@+id/source" android:layout_gravity="left|center_vertical"
               style="@style/SpinerSelectTextStyle"
@@ -25,4 +26,11 @@
               android:layout_alignLeft="@+id/source" android:layout_below="@+id/source"
               android:textSize="16dp"
               android:layout_marginRight="16dp"/>
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/webView"
+            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"/>
 </RelativeLayout>

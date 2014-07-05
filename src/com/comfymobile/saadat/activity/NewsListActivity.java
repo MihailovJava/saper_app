@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -23,6 +24,8 @@ import com.comfymobile.saadat.json.RequestSync;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.gson.Gson;
+
+import java.util.Random;
 
 /**
  * User: Nixy
@@ -41,6 +44,7 @@ public class NewsListActivity extends SherlockActivity {
     boolean isNews;
     String sourceDescription;
     Cursor city;
+    private WebView web;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,13 @@ public class NewsListActivity extends SherlockActivity {
     protected void onResume() {
         initUI();
         super.onResume();
+        Cursor ad = LocalDatabase.getInstance(context).getAd(SearchActivity.getCityID(context));
+        if (ad.getCount() > 0){
+            int position = new Random().nextInt(ad.getCount());
+            ad.moveToPosition(position);
+            String html = ad.getString(ad.getColumnIndex("html"));
+            web.loadDataWithBaseURL(null, html , "text/html", "utf-8", null);
+        }
     }
 
     @Override
@@ -136,6 +147,8 @@ public class NewsListActivity extends SherlockActivity {
     }
 
     void initUI(){
+        web = (WebView) findViewById(R.id.webView);
+
         CursorAdapter listAdapter;
         ListView list = (ListView) findViewById(R.id.listView);
 

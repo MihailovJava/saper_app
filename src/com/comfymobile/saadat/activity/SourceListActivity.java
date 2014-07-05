@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.*;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -20,6 +21,7 @@ import com.comfymobile.saadat.adapter.RSSReader;
 import com.comfymobile.saadat.database.LocalDatabase;
 
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * User: Nixy
@@ -31,6 +33,7 @@ public class SourceListActivity extends SherlockActivity {
     Cursor listSource;
     Context context;
     ListView list;
+    private WebView web;
 
 
     @Override
@@ -70,6 +73,18 @@ public class SourceListActivity extends SherlockActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Cursor ad = LocalDatabase.getInstance(context).getAd(SearchActivity.getCityID(context));
+        if (ad.getCount() > 0){
+            int position = new Random().nextInt(ad.getCount());
+            ad.moveToPosition(position);
+            String html = ad.getString(ad.getColumnIndex("html"));
+            web.loadDataWithBaseURL(null, html , "text/html", "utf-8", null);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) { //needs import android.view.MenuItem;
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -92,8 +107,8 @@ public class SourceListActivity extends SherlockActivity {
     }
 
     void initUI(){
-
-        SimpleCursorAdapter listAdapter;
+         web = (WebView) findViewById(R.id.webView);
+         SimpleCursorAdapter listAdapter;
          list = (ListView) findViewById(R.id.listView);
 
          listSource = LocalDatabase.getInstance(this).getNewsSource();

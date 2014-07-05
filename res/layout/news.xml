@@ -10,5 +10,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/listView"  android:layout_alignParentTop="true"
-            android:smoothScrollbar="true" android:layout_margin="16dp"/>
+            android:smoothScrollbar="true" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp" android:layout_above="@+id/webView" android:layout_marginBottom="8dp"/>
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/webView"
+            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"/>
 </RelativeLayout>

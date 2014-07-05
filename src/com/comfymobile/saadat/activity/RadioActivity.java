@@ -23,6 +23,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
+import java.util.Random;
 
 /**
  * User: Nixy
@@ -56,9 +58,10 @@ public class RadioActivity extends SherlockActivity {
         ListView radioList;
         String[] radioLink;
         Cursor radio;
+        WebView web;
 
 
-        @Override
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -188,9 +191,18 @@ public class RadioActivity extends SherlockActivity {
 
         radioList.setAdapter(new RadioAdapter(this,radio));
 
+        Cursor ad = LocalDatabase.getInstance(context).getAd(SearchActivity.getCityID(context));
+        if (ad.getCount() > 0){
+            int position = new Random().nextInt(ad.getCount());
+            ad.moveToPosition(position);
+            String html = ad.getString(ad.getColumnIndex("html"));
+            web.loadDataWithBaseURL(null, html , "text/html", "utf-8", null);
+        }
+
     }
 
     private void initUI(){
+        web = (WebView) findViewById(R.id.webView);
         playButton = (ImageView) findViewById(R.id.playbutton);
         playButton.setVisibility(View.INVISIBLE);
         playButton.setOnClickListener(new View.OnClickListener() {

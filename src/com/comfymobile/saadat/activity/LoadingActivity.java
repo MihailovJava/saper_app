@@ -32,6 +32,9 @@ import org.json.JSONArray;
 
 import java.io.*;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -244,6 +247,12 @@ public class LoadingActivity extends Activity{
                     String text = events.getJSONObject(i).getString("text");
                     String last_mod = events.getJSONObject(i).getString("last_mod");
                     String time = events.getJSONObject(i).getString("time");
+                    String oldFormat = "yyyy-MM-dd HH:mm:ss";
+                    String newFormat = "dd-MM-yyyy HH:mm";
+                    DateFormat format = new SimpleDateFormat(oldFormat);
+                    Date oldDate = format.parse(time);
+                    format = new SimpleDateFormat(newFormat);
+                    time = format.format(oldDate);
                     String city = events.getJSONObject(i).getString("city");
                     String address = events.getJSONObject(i).getString("address");
                     database.updateEvents(events_id,title,text,last_mod,time,city,address);
@@ -323,7 +332,6 @@ public class LoadingActivity extends Activity{
         private static final int LOAD_ORG = 1;
         private static final int LOAD_CITY = 2;
         private static final int LOAD_CATS = 3;
-        private static final int LOAD_NEWS = 4;
         private static final int LOAD_EVENTS = 5;
         private static final int LOAD_DONE = 100;
 
